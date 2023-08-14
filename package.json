@@ -1,0 +1,16 @@
+{
+  "name": "13-century-knight",
+  "version": "1.0.0",
+  "description": "In the 13th Century the Demon Lord will come to destroy Humanity! Train and inherit knowledge of your previous generations to defeat the Demon Lord!",
+  "scripts": {
+    "start": "webpack serve --open",
+    "build": "npx webpack --config webpack.config.js"
+  },
+  "author": "Igor Estevao",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "5.50.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "4.1.0"
+  }
+}
