@@ -10,6 +10,9 @@ let gameHgAsPixels;
 
 let score;
 
+let roomWidth = 33;
+let roomHeight = 15;
+
 const resetGameVars = () => {
     GameVars.score = 0;
 
@@ -32,6 +35,9 @@ export const GameVars = {
     gameHgAsPixels,
 
     score,
+
+    roomWidth,
+    roomHeight,
 
     resetGameVars
 }
