@@ -31,16 +31,20 @@ export class Player {
         let newRectX = this.collisionObj.x;
         let newRectY = this.collisionObj.y;
 
-        const isMultiDirection = GameVars.keys ? Object.keys(GameVars.keys).filter((key) => (key == 'd' || key == 'D' || key == 'a' || key == 'A' || key == 'w' || key == 'W' || key == 's' || key == 'S') && GameVars.keys[key]).length > 1 : false;
+        const isMultiDirection = GameVars.keys ? Object.keys(GameVars.keys).filter((key) => (
+            key == 'w' || key == 's' || key == 'a' || key == 'd' ||
+            key == 'W' || key == 'S' || key == 'A' || key == 'D' ||
+            key == 'ArrownUp' || key == 'ArrownDown' || key == 'ArrownLeft' || key == 'ArrownRight')
+            && GameVars.keys[key]).length > 1 : false;
 
         //todo momentarily solution
         const playerSpeed = toPixelSize(1);
         const distance = isMultiDirection ? playerSpeed / 1.4142 : playerSpeed;
 
-        if (GameVars.keys['d'] || GameVars.keys['D']) { newRectX += distance; }
-        if (GameVars.keys['a'] || GameVars.keys['A']) { newRectX -= distance; }
-        if (GameVars.keys['w'] || GameVars.keys['W']) { newRectY -= distance; }
-        if (GameVars.keys['s'] || GameVars.keys['S']) { newRectY += distance; }
+        if (GameVars.keys['d'] || GameVars.keys['D'] || GameVars.keys['ArrowRight']) { newRectX += distance; }
+        if (GameVars.keys['a'] || GameVars.keys['A'] || GameVars.keys['ArrowLeft']) { newRectX -= distance; }
+        if (GameVars.keys['w'] || GameVars.keys['W'] || GameVars.keys['ArrowUp']) { newRectY -= distance; }
+        if (GameVars.keys['s'] || GameVars.keys['S'] || GameVars.keys['ArrowDown']) { newRectY += distance; }
 
         this.fakeMovRect.x = newRectX;
         this.fakeMovRect.y = newRectY;
