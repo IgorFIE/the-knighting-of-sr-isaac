@@ -8,33 +8,29 @@ import { Weapon } from "./weapon";
 
 export class Player {
     constructor(roomX, roomY) {
+        this.isAtk = false;
         this.roomX = roomX;
         this.roomY = roomY;
 
         this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(6));
         this.fakeMovRect = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
-        this.playerDiv = createElem(GameVars.gameDiv, "div", "player");
+        this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
         this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(3), knight.length * toPixelSize(3));
-        this.collisionCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
-        this.playerWeapon = new Weapon(this.collisionObj.x, this.collisionObj.y, WeaponType.FIST);
+        this.playerWeapon = new Weapon(this.collisionObj.x, this.collisionObj.y, WeaponType.GREATSWORD);
 
         this.update();
         this.draw();
     }
 
     update() {
-        this.move();
+        if (!this.isAtk) this.move();
         this.playerWeapon.update(this.collisionObj.x, this.collisionObj.y);
-        this.playerCanv.style.transform = 'translate(' +
+        this.playerDiv.style.transform = 'translate(' +
             (this.collisionObj.x - (knight[0].length * toPixelSize(3)) / 2) + 'px, ' +
             (this.collisionObj.y - (knight.length * toPixelSize(3)) / 4 * 3) + 'px)';
-
-        // let context = this.collisionCanv.getContext("2d");
-        // context.beginPath();
-        // context.arc(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r, 0, 2 * Math.PI, false);
-        // context.stroke();
+        this.atk();
     }
 
     move() {
@@ -44,14 +40,14 @@ export class Player {
         const movKeys = Object.keys(GameVars.keys).filter((key) => (
             key == 'w' || key == 's' || key == 'a' || key == 'd' ||
             key == 'W' || key == 'S' || key == 'A' || key == 'D' ||
-            key == 'ArrowUp' || key == 'ArrowDown' || key == 'ArrowLeft' || key == 'ArrowRight')
-            && GameVars.keys[key]);
+            key == 'ArrowUp' || key == 'ArrowDown' || key == 'ArrowLeft' || key == 'ArrowRight') && GameVars.keys[key]);
+
         if (movKeys.length > 0) {
-            this.playerDiv.style.animation = "walk 0.16s infinite ease-in-out";
-            this.playerWeapon.weaponDiv.style.animation = "walk2 0.16s infinite ease-in-out";
+            this.playerCanv.style.animation = "walk 0.16s infinite ease-in-out";
+            this.playerWeapon.weaponCanv.style.animation = "walk2 0.16s infinite ease-in-out";
         } else {
-            this.playerDiv.style.animation = "";
-            this.playerWeapon.weaponDiv.style.animation = "";
+            this.playerCanv.style.animation = "";
+            this.playerWeapon.weaponCanv.style.animation = "";
         }
 
         //todo momentarily solution
@@ -69,6 +65,18 @@ export class Player {
         if (!GameVars.gameBoard.board[this.roomY][this.roomX].walls.find((wall) => rectCircleCollision(this.fakeMovRect, wall.collisionObj))) {
             this.collisionObj.x = newRectX;
             this.collisionObj.y = newRectY;
+        }
+    }
+
+    atk() {
+        if (!this.isAtk && GameVars.keys[' ']) {
+            this.isAtk = true;
+            this.playerCanv.style.animation = "";
+            this.playerWeapon.atk();
+            this.playerWeapon.weaponCanv.addEventListener("animationend", () => {
+                this.isAtk = false;
+                this.playerWeapon.weaponCanv.style.animation = "";
+            });
         }
     }
 

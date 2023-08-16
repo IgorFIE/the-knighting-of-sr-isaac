@@ -1,3 +1,5 @@
+import { WeaponType } from "../enums/weapon-type";
+
 const nu = null;
 const sk = "#e7c688"; // skin
 const bl = "#000000"; // black
@@ -111,3 +113,12 @@ export const greatsword = [
     [nu, nu, nu, gm, nu, nu, nu],
     [nu, nu, nu, gd, nu, nu, nu],
 ];
+
+export const getWeaponSprite = (weaponType) => {
+    switch (weaponType) {
+        case WeaponType.GREATSWORD:
+            return greatsword;
+        default:
+            return fist;
+    }
+}

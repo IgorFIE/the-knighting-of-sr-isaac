@@ -32,7 +32,9 @@
             display: initial;
         }
 
-        canvas {
+        canvas,
+        .weapon,
+        .player {
             position: absolute;
         }
     </style>
@@ -42,11 +44,11 @@
 
             0%,
             100% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(0deg);
             }
 
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-10px) rotate(-10deg);
             }
         }
 
@@ -54,11 +56,22 @@
 
             0%,
             100% {
-                transform: translateY(-5px);
+                transform: translateX(-5px) translateY(-5px) rotate(-10deg);
             }
 
             50% {
-                transform: translateY(0px);
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+        }
+
+        @keyframes greatswordAtk {
+
+            0% {
+                transform: rotate(0deg)
+            }
+
+            100% {
+                transform: rotate(360deg);
             }
         }
     </style>
