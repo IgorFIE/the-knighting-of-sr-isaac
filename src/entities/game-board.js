@@ -1,4 +1,5 @@
 import { RoomType, isSpecialRoom } from "../enums/room-type";
+import { GameVars } from "../game-variables";
 import { randomNumb } from "../utilities/general-utilities";
 import { Room } from "./room";
 
@@ -9,6 +10,7 @@ export class GameBoard {
         this.rooms = [];
         this.initBoardArray();
         this.createBoardRooms();
+        this.createPaths();
     }
 
     initBoardArray() {
@@ -87,6 +89,27 @@ export class GameBoard {
             }
         }
         return false;
+    }
+
+    createPaths() {
+        this.rooms.forEach((room) => {
+            const w = room.backBlocks[0].length;
+            const h = room.backBlocks.length;
+            if (room.roomY - 1 >= 0 && this.board[room.roomY - 1][room.roomX]) {
+                room.setDoor((w / 2) - 2, (w / 2) + 2, 0, 1);
+            }
+            if (room.roomY + 1 < this.board.length && this.board[room.roomY + 1][room.roomX]) {
+                room.setDoor((w / 2) - 2, (w / 2) + 2, h - 2, h - 1);
+            }
+            if (room.roomX - 1 >= 0 && this.board[room.roomY][room.roomX - 1]) {
+                room.setDoor(0, 1, (h / 2) - 2, (h / 2) + 2);
+            }
+            if (room.roomX + 1 < this.board[0].length && this.board[room.roomY][room.roomX + 1]) {
+                room.setDoor(w - 2, w - 1, (h / 2) - 2, (h / 2) + 2);
+            }
+            room.update(0, 0);
+            room.draw();
+        });
     }
 
     // TODO Remove after

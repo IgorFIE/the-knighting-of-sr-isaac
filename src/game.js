@@ -6,6 +6,8 @@ import { createElem } from "./utilities/draw-utilities";
 export class Game {
     constructor() {
         GameVars.gameBoard = new GameBoard(5);
+        GameVars.gameBoard.printBoard();
+
         this.player = new Player(GameVars.gameBoard.board.length / 2, GameVars.gameBoard.board.length / 2);
 
         GameVars.gameBoard.board[this.player.roomY][this.player.roomX].roomCanv.classList.remove("hidden");

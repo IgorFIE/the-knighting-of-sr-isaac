@@ -16,9 +16,6 @@ export class Room {
         this.roomCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
         this.initRoomBlocks();
-
-        this.update(0, 0);
-        this.draw();
     }
 
     initRoomBlocks() {
@@ -52,13 +49,23 @@ export class Room {
         }
     }
 
+    setDoor(startX, finishX, startY, finishY) {
+        for (let y = Math.round(startY); y <= Math.round(finishY); y++) {
+            for (let x = Math.round(startX); x <= Math.round(finishX); x++) {
+                this.walls.splice(this.walls.indexOf(this.backBlocks[y][x]), 1);
+                this.backBlocks[y][x].blockType = BlockType.DOOR;
+                // this.frontBlocks[y][x] = new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.DOOR, this.roomCanv);
+            }
+        }
+    }
+
     update(x, y) {
         this.roomCanv.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     }
 
     draw() {
         this.backBlocks.forEach(row => row.forEach(block => block?.draw()));
-        this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
+        // this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
     }
 
     // TODO Remove after

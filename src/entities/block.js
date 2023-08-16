@@ -16,6 +16,10 @@ export class Block {
                 ctx.fillStyle = "#686b7a";
                 break;
 
+            case BlockType.DOOR:
+                ctx.fillStyle = "#3e3846";
+                break;
+
             case BlockType.FLOOR:
                 ctx.fillStyle = "#41663d";
                 break;
