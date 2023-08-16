@@ -8,17 +8,18 @@ export class Weapon {
         this.x = x;
         this.y = y;
 
-        this.weaponCanv = createElem(GameVars.gameDiv, "canvas", null, null, greatsword[0].length * toPixelSize(2), greatsword.length * toPixelSize(2));
+        this.weaponDiv = createElem(GameVars.gameDiv, "div");
+        this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, greatsword[0].length * toPixelSize(3), greatsword.length * toPixelSize(3));
 
         this.update(x, y);
         this.draw();
     }
 
     update(x, y) {
-        this.weaponCanv.style.transform = 'translate(' + (x + toPixelSize(5)) + 'px, ' + (y - toPixelSize(7)) + 'px) rotate(45deg)';
+        this.weaponCanv.style.transform = 'translate(' + (x + toPixelSize(1)) + 'px, ' + (y - toPixelSize(31)) + 'px) rotate(45deg)';
     }
 
     draw() {
-        drawSprite(this.weaponCanv, greatsword, toPixelSize(2));
+        drawSprite(this.weaponCanv, greatsword, toPixelSize(3));
     }
 }

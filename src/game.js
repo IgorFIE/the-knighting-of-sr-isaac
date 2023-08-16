@@ -5,10 +5,10 @@ import { createElem } from "./utilities/draw-utilities";
 
 export class Game {
     constructor() {
-        this.gameBoard = new GameBoard(5);
-        this.player = new Player(this.gameBoard.board.length / 2, this.gameBoard.board.length / 2);
+        GameVars.gameBoard = new GameBoard(5);
+        this.player = new Player(GameVars.gameBoard.board.length / 2, GameVars.gameBoard.board.length / 2);
 
-        this.gameBoard.board[this.player.roomY][this.player.roomX].roomCanv.classList.remove("hidden");
+        GameVars.gameBoard.board[this.player.roomY][this.player.roomX].roomCanv.classList.remove("hidden");
     }
 
     update() {

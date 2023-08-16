@@ -26,7 +26,7 @@ function init() {
     createMainMenu();
     createGameDiv();
 
-    createFpsElement(mainDiv);
+    // createFpsElement(mainDiv);
 
     window.requestAnimationFrame(() => gameLoop());
 }
@@ -80,7 +80,8 @@ function gameLoop() {
     elapsed = Date.now() - then;
     if (elapsed > fpsInterval) {
         then = Date.now() - (elapsed % fpsInterval);
-        updateFps(then);
+
+        // updateFps(then);
 
         if (game) {
             game.update();

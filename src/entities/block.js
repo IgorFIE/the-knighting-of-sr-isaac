@@ -1,10 +1,10 @@
+import { SquareObject } from "../collision-objects/square-object";
 import { BlockType } from "../enums/block-type";
 import { toPixelSize } from "../game-variables";
 
 export class Block {
     constructor(x, y, blockType, canvas) {
-        this.x = x;
-        this.y = y;
+        this.collisionObj = new SquareObject(x, y, toPixelSize(16), toPixelSize(16));
         this.blockType = blockType;
         this.canvas = canvas;
     }
@@ -20,6 +20,6 @@ export class Block {
                 ctx.fillStyle = "#41663d";
                 break;
         }
-        ctx.fillRect(this.x, this.y, toPixelSize(16), toPixelSize(16));
+        ctx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
     }
 }

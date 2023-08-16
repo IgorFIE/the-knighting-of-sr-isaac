@@ -11,6 +11,7 @@ export class Room {
         this.roomType = RoomType.EMPTY;
         this.backBlocks = [];
         this.frontBlocks = [];
+        this.walls = [];
 
         this.roomCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
@@ -21,12 +22,15 @@ export class Room {
     }
 
     initRoomBlocks() {
+        let obj;
         for (let y = 0; y < GameVars.roomHeight; y++) {
             this.backBlocks.push([]);
             this.frontBlocks.push([]);
             for (let x = 0; x < GameVars.roomWidth; x++) {
                 if (y <= 1 || x <= 1 || y >= GameVars.roomHeight - 2 || x >= GameVars.roomWidth - 2) {
-                    this.backBlocks[y].push(new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.WALL, this.roomCanv));
+                    obj = new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.WALL, this.roomCanv);
+                    this.backBlocks[y].push(obj);
+                    this.walls.push(obj)
                 } else {
                     this.backBlocks[y].push(new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.FLOOR, this.roomCanv));
                 }
@@ -49,9 +53,7 @@ export class Room {
     }
 
     update(x, y) {
-        this.roomCanv.style.transform = 'translate(' +
-            (x + (GameVars.gameW / 2) - (this.backBlocks[0].length * toPixelSize(8))) + 'px, ' +
-            (y + (GameVars.gameH / 2) - (this.backBlocks.length * toPixelSize(8))) + 'px)';
+        this.roomCanv.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     }
 
     draw() {
