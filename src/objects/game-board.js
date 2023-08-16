@@ -2,7 +2,7 @@ import { RoomType, isSpecialRoom } from "../enums/room-type";
 import { randomNumb } from "../utilities/general-utilities";
 import { Room } from "./room";
 
-export class Board {
+export class GameBoard {
     constructor(size) {
         this.size = size;
         this.board = [];
@@ -46,8 +46,6 @@ export class Board {
                     break;
             }
         }
-        this.printBoard();
-
         this.createSpecialRoom(RoomType.KEY);
         this.createSpecialRoom(RoomType.TREASURE);
         this.createSpecialRoom(RoomType.BOSS);
@@ -90,7 +88,6 @@ export class Board {
         }
         return false;
     }
-
 
     // TODO Remove after
     printBoard() {

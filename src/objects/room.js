@@ -1,6 +1,7 @@
 import { BlockType } from "../enums/block-type";
 import { RoomType } from "../enums/room-type";
-import { GameVars } from "../game-variables";
+import { GameVars, toPixelSize } from "../game-variables";
+import { createElem } from "../utilities/draw-utilities";
 import { Block } from "./block";
 
 export class Room {
@@ -10,7 +11,13 @@ export class Room {
         this.roomType = RoomType.EMPTY;
         this.backBlocks = [];
         this.frontBlocks = [];
+
+        this.roomCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+
         this.initRoomBlocks();
+
+        this.update(0, 0);
+        this.draw();
     }
 
     initRoomBlocks() {
@@ -18,10 +25,10 @@ export class Room {
             this.backBlocks.push([]);
             this.frontBlocks.push([]);
             for (let x = 0; x < GameVars.roomWidth; x++) {
-                if (y == 0 || x == 0 || y == GameVars.roomHeight - 1 || x == GameVars.roomWidth - 1) {
-                    this.backBlocks[y].push(new Block(x, y, BlockType.WALL));
+                if (y <= 1 || x <= 1 || y >= GameVars.roomHeight - 2 || x >= GameVars.roomWidth - 2) {
+                    this.backBlocks[y].push(new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.WALL, this.roomCanv));
                 } else {
-                    this.backBlocks[y].push(new Block(x, y, BlockType.FLOOR));
+                    this.backBlocks[y].push(new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.FLOOR, this.roomCanv));
                 }
                 this.frontBlocks[y].push(null);
             }
@@ -39,6 +46,12 @@ export class Room {
         } else if (this.roomType == RoomType.BOSS) {
             this.frontBlocks[heightCenter][widthCenter] = new Block(widthCenter, heightCenter, BlockType.BOSS);
         }
+    }
+
+    update(x, y) {
+        this.roomCanv.style.transform = 'translate(' +
+            (x + (GameVars.gameW / 2) - (this.backBlocks[0].length * toPixelSize(8))) + 'px, ' +
+            (y + (GameVars.gameH / 2) - (this.backBlocks.length * toPixelSize(8))) + 'px)';
     }
 
     draw() {

@@ -10,22 +10,19 @@ let mainDiv;
 let mainMenuDiv;
 let mainMenuCanv;
 let mainMenuCtx;
-let mainMenuBtn;
-let gameDiv;
 
 let game;
 
-let fpsInterval = 1000 / 60; // lock to 60fps
+let fpsInterval = 1000 / GameVars.fps;
 let then = Date.now();
 
 function init() {
-    mainDiv = document.getElementById("main");
-
     GameVars.resetGameVars();
 
-    gameDiv = createElem(mainDiv, "div", "game", ["hidden"]);
+    mainDiv = document.getElementById("main");
 
     createMainMenu();
+    createGameDiv();
 
     createFpsElement(mainDiv);
 
@@ -36,7 +33,7 @@ function createMainMenu() {
     mainMenuDiv = createElem(mainDiv, "div", null, null, GameVars.gameW, GameVars.gameH);
     mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
 
-    mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, 140 * GameVars.pixelSize, 60 * GameVars.pixelSize, null, (e) => startGame());
+    let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, 140 * GameVars.pixelSize, 60 * GameVars.pixelSize, null, (e) => startGame());
     mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + "px " +
         ((GameVars.gameH / 2) - (mainMenuBtn.height / 2) + (40 * GameVars.pixelSize)) + "px";
 
@@ -49,7 +46,7 @@ function createMainMenu() {
 }
 
 function drawMainMenu() {
-    mainMenuCtx.clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
+    mainMenuCanv.getContext("2d").clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
 
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
 
@@ -60,10 +57,14 @@ function drawMainMenu() {
     drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "black", 2);
 }
 
+function createGameDiv() {
+    GameVars.gameDiv = createElem(mainDiv, "div", "game", ["hidden"]);
+}
+
 function startGame() {
     mainMenuDiv.classList.add("hidden");
-    gameDiv.classList.remove("hidden");
-    game = new Game(gameDiv);
+    GameVars.gameDiv.classList.remove("hidden");
+    game = new Game();
 }
 
 function gameLoop() {
@@ -74,6 +75,7 @@ function gameLoop() {
 
         if (game) {
             game.update();
+            game.draw();
         }
     }
     window.requestAnimationFrame(() => gameLoop());

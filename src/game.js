@@ -1,19 +1,20 @@
-import { RoomType } from "./enums/room-type";
-import { Board } from "./objects/board";
-import { Room } from "./objects/room";
+import { GameVars } from "./game-variables";
+import { GameBoard } from "./objects/game-board";
+import { Player } from "./objects/player";
+import { createElem } from "./utilities/draw-utilities";
 
 export class Game {
-    constructor(gameDiv) {
-        this.gameDiv = gameDiv;
+    constructor() {
+        this.gameBoard = new GameBoard(5);
+        this.player = new Player(this.gameBoard.board.length / 2, this.gameBoard.board.length / 2);
 
-        this.board = new Board(5);
-
-        this.room = new Room(0, 0);
-        this.room.setSpecialRoomType(RoomType.KEY);
+        this.gameBoard.board[this.player.roomY][this.player.roomX].roomCanv.classList.remove("hidden");
     }
 
     update() {
-        this.board.printBoard();
-        this.room.printRoom();
+
+    }
+
+    draw() {
     }
 }

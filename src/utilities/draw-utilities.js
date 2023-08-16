@@ -1,8 +1,8 @@
-export const drawSprite = (canvas, sprite, pixelSize, startX = 0, startY = 0, color = null) => {
+export const drawSprite = (canvas, sprite, pixelSize = 1, startX = 0, startY = 0, colorIds = null) => {
     const ctx = canvas.getContext("2d");
     sprite.forEach((row, y) => row.forEach((val, x) => {
         if (val !== null) {
-            ctx.fillStyle = color ? color : val;
+            ctx.fillStyle = colorIds ? colorIds[val] || val : val;
             ctx.fillRect(
                 (startX * pixelSize) + (x * pixelSize),
                 (startY * pixelSize) + (y * pixelSize),
