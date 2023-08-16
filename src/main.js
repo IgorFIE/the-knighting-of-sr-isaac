@@ -21,12 +21,21 @@ function init() {
 
     mainDiv = document.getElementById("main");
 
+    addKeyListenerEvents();
+
     createMainMenu();
     createGameDiv();
 
     createFpsElement(mainDiv);
 
     window.requestAnimationFrame(() => gameLoop());
+}
+
+function addKeyListenerEvents() {
+    window.addEventListener('keydown', (e) => {
+        GameVars.keys[e.key] = true;
+    });
+    window.addEventListener('keyup', (e) => GameVars.keys[e.key] = false);
 }
 
 function createMainMenu() {

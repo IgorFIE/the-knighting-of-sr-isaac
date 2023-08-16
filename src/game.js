@@ -1,6 +1,6 @@
 import { GameVars } from "./game-variables";
-import { GameBoard } from "./objects/game-board";
-import { Player } from "./objects/player";
+import { GameBoard } from "./entities/game-board";
+import { Player } from "./entities/player";
 import { createElem } from "./utilities/draw-utilities";
 
 export class Game {
@@ -12,7 +12,7 @@ export class Game {
     }
 
     update() {
-
+        this.player.update();
     }
 
     draw() {
