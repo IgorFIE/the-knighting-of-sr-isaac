@@ -85,7 +85,6 @@ function gameLoop() {
 
         if (game) {
             game.update();
-            game.draw();
         }
     }
     window.requestAnimationFrame(() => gameLoop());

@@ -22,6 +22,7 @@ let roomWidth = 33;
 let roomHeight = 17;
 
 let gameBoard;
+let player;
 
 const resetGameVars = () => {
     GameVars.score = 0;
@@ -61,6 +62,7 @@ export const GameVars = {
     roomHeight,
 
     gameBoard,
+    player,
 
     resetGameVars
 }
