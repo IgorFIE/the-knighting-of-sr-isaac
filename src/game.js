@@ -2,23 +2,31 @@ import { GameVars, toPixelSize } from "./game-variables";
 import { GameBoard } from "./entities/game-board";
 import { Player } from "./entities/player";
 import { rectCircleCollision } from "./utilities/collision-utilities";
+import { isSpecialRoom } from "./enums/room-type";
+import { randomNumb } from "./utilities/general-utilities";
 
 export class Game {
     constructor() {
         GameVars.gameBoard = new GameBoard(5);
         GameVars.gameBoard.printBoard();
 
-        this.player = new Player(GameVars.gameBoard.board.length / 2, GameVars.gameBoard.board.length / 2);
-
-        GameVars.gameBoard.board[this.player.roomY][this.player.roomX].roomCanv.classList.remove("hidden");
-
-        this.currentRoom = GameVars.gameBoard.board[this.player.roomY][this.player.roomX];
+        this.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
         this.nextRoom;
+
+        this.player = new Player(this.currentRoom.roomX, this.currentRoom.roomY);
+        GameVars.gameBoard.board[this.currentRoom.roomY][this.currentRoom.roomX].roomCanv.classList.remove("hidden");
 
         this.isChangingRoom = false;
         this.triggerBlock;
         this.transitionAmount;
         this.playerTransitionAmount;
+    }
+
+    getStartRoom(room) {
+        if (!isSpecialRoom(room)) {
+            return room;
+        }
+        return this.getStartRoom(GameVars.gameBoard.rooms[randomNumb(GameVars.gameBoard.rooms.length)]);
     }
 
     update() {
