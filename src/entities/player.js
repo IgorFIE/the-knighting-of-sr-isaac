@@ -25,15 +25,11 @@ export class Player {
     }
 
     update() {
-        if (!this.isAtk) this.move();
-        this.playerWeapon.update(this.collisionObj.x, this.collisionObj.y);
-        this.playerDiv.style.transform = 'translate(' +
-            (this.collisionObj.x - (knight[0].length * toPixelSize(3)) / 2) + 'px, ' +
-            (this.collisionObj.y - (knight.length * toPixelSize(3)) / 4 * 3) + 'px)';
+        if (!this.isAtk) this.handleInput();
         this.atk();
     }
 
-    move() {
+    handleInput() {
         let newRectX = this.collisionObj.x;
         let newRectY = this.collisionObj.y;
 
@@ -63,9 +59,17 @@ export class Player {
         this.fakeMovRect.y = newRectY;
 
         if (!GameVars.gameBoard.board[this.roomY][this.roomX].walls.find((wall) => rectCircleCollision(this.fakeMovRect, wall.collisionObj))) {
-            this.collisionObj.x = newRectX;
-            this.collisionObj.y = newRectY;
+            this.move(newRectX, newRectY);
         }
+    }
+
+    move(x, y) {
+        this.collisionObj.x = x;
+        this.collisionObj.y = y;
+        this.playerWeapon.update(this.collisionObj.x, this.collisionObj.y);
+        this.playerDiv.style.transform = 'translate(' +
+            (this.collisionObj.x - (knight[0].length * toPixelSize(3)) / 2) + 'px, ' +
+            (this.collisionObj.y - (knight.length * toPixelSize(3)) / 4 * 3) + 'px)';
     }
 
     atk() {

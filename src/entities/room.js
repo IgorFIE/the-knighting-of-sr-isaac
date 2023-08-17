@@ -2,16 +2,22 @@ import { BlockType } from "../enums/block-type";
 import { RoomType } from "../enums/room-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { createElem } from "../utilities/draw-utilities";
-import { Block } from "./block";
+import { Block } from "./blocks/block";
+import { DoorTrigger } from "./blocks/door-trigger";
 
 export class Room {
     constructor(roomX, roomY) {
         this.roomX = roomX;
         this.roomY = roomY;
+
+        this.x = 0;
+        this.y = 0;
+
         this.roomType = RoomType.EMPTY;
         this.backBlocks = [];
         this.frontBlocks = [];
         this.walls = [];
+        this.doorTriggers = [];
 
         this.roomCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
@@ -49,22 +55,29 @@ export class Room {
         }
     }
 
-    setDoor(startX, finishX, startY, finishY) {
+    setDoor(startX, finishX, startY, finishY, xDir, yDir) {
+        let block;
         for (let y = Math.round(startY); y <= Math.round(finishY); y++) {
             for (let x = Math.round(startX); x <= Math.round(finishX); x++) {
-                this.walls.splice(this.walls.indexOf(this.backBlocks[y][x]), 1);
-                this.backBlocks[y][x].blockType = BlockType.DOOR;
-                // this.frontBlocks[y][x] = new Block(x * toPixelSize(16), y * toPixelSize(16), BlockType.DOOR, this.roomCanv);
+                block = this.backBlocks[y][x];
+                this.walls.splice(this.walls.indexOf(block), 1);
+                this.backBlocks[y][x] = new DoorTrigger(block.collisionObj.x, block.collisionObj.y, BlockType.DOOR, this.roomCanv, xDir, yDir);
+                if ((xDir === -1 && x === 0) || (xDir === 1 && x === this.backBlocks[0].length - 1) ||
+                    (yDir === -1 && y === 0) || (yDir === 1 && y === this.backBlocks.length - 1)) {
+                    this.doorTriggers.push(this.backBlocks[y][x]);
+                }
             }
         }
     }
 
     update(x, y) {
+        this.x = x;
+        this.y = y;
         this.roomCanv.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     }
 
     draw() {
-        this.backBlocks.forEach(row => row.forEach(block => block?.draw()));
+        this.backBlocks.forEach(row => row.forEach(block => block.draw()));
         // this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
     }
 

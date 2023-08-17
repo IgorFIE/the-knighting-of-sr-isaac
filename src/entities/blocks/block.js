@@ -1,6 +1,6 @@
-import { SquareObject } from "../collision-objects/square-object";
-import { BlockType } from "../enums/block-type";
-import { toPixelSize } from "../game-variables";
+import { SquareObject } from "../../collision-objects/square-object";
+import { BlockType } from "../../enums/block-type";
+import { toPixelSize } from "../../game-variables";
 
 export class Block {
     constructor(x, y, blockType, canvas) {
