@@ -112,8 +112,7 @@ export class GameBoard {
         });
     }
 
-    // TODO Remove after
-    printBoard() {
+    consoleLogBoard() {
         let room = "";
         for (let y = 0; y < this.board.length; y++) {
             let newLine = "";

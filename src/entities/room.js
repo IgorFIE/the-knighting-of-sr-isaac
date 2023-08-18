@@ -81,8 +81,7 @@ export class Room {
         // this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
     }
 
-    // TODO Remove after
-    printRoom() {
+    consoleLogRoom() {
         let room = "";
         for (let y = 0; y < GameVars.roomHeight; y++) {
             let newLine = "";

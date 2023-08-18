@@ -55,11 +55,16 @@ export class Player {
         if (GameVars.keys['w'] || GameVars.keys['W'] || GameVars.keys['ArrowUp']) { newRectY -= distance; }
         if (GameVars.keys['s'] || GameVars.keys['S'] || GameVars.keys['ArrowDown']) { newRectY += distance; }
 
-        this.fakeMovRect.x = newRectX;
-        this.fakeMovRect.y = newRectY;
+        this.validateMovement(this.collisionObj.x, newRectY);
+        this.validateMovement(newRectX, this.collisionObj.y);
+    }
+
+    validateMovement(x, y) {
+        this.fakeMovRect.x = x;
+        this.fakeMovRect.y = y;
 
         if (!GameVars.gameBoard.board[this.roomY][this.roomX].walls.find((wall) => rectCircleCollision(this.fakeMovRect, wall.collisionObj))) {
-            this.move(newRectX, newRectY);
+            this.move(x, y);
         }
     }
 

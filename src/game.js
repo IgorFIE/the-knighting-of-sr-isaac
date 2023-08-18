@@ -9,7 +9,6 @@ import { Minimap } from "./entities/minimap";
 export class Game {
     constructor() {
         GameVars.gameBoard = new GameBoard(5);
-        GameVars.gameBoard.printBoard();
 
         this.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
         this.nextRoom;
