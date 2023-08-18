@@ -80,6 +80,7 @@ function gameLoop() {
     elapsed = Date.now() - then;
     if (elapsed > fpsInterval) {
         then = Date.now() - (elapsed % fpsInterval);
+        GameVars.deltaTime = elapsed / 1000;
 
         // updateFps(then);
 

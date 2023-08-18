@@ -4,6 +4,7 @@ const gameW = window.innerWidth;
 const gameH = window.innerHeight;
 
 const fps = 60;
+let deltaTime;
 
 let pixelSize;
 
@@ -22,6 +23,8 @@ let roomWidth = 33;
 let roomHeight = 17;
 
 let gameBoard;
+let currentRoom;
+
 let player;
 
 const resetGameVars = () => {
@@ -45,6 +48,7 @@ export const GameVars = {
     gameH,
 
     fps,
+    deltaTime,
 
     pixelSize,
     gameWdAsPixels,
@@ -62,6 +66,7 @@ export const GameVars = {
     roomHeight,
 
     gameBoard,
+    currentRoom,
     player,
 
     resetGameVars

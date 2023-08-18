@@ -81,10 +81,10 @@ export class Player {
     }
 
     atk() {
-        if (GameVars.keys['k'] || GameVars.keys['K']) {
+        if (GameVars.keys['v'] || GameVars.keys['V']) {
             this.playerRightWeapon.action();
         }
-        if (GameVars.keys['l'] || GameVars.keys['L']) {
+        if (GameVars.keys['b'] || GameVars.keys['B']) {
             this.playerLeftWeapon.action();
         }
     }

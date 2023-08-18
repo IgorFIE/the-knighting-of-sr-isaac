@@ -87,4 +87,8 @@ export class Weapon {
     draw(color) {
         drawSprite(this.weaponCanv, this.sprite, toPixelSize(3), null, null, { "sd": color });
     }
+
+    destroy() {
+        this.weaponDiv.parentNode.removeChild(this.weaponDiv);
+    }
 }

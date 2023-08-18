@@ -16,3 +16,9 @@ export const rectCircleCollision = (circle, rect) => {
     var dy = distY - rect.h / 2;
     return (dx * dx + dy * dy <= (circle.r * circle.r));
 }
+
+export const circleToCircleCollision = (circle1, circle2) => {
+    let num = circle1.x - circle2.x;
+    let num2 = circle1.y - circle2.y;
+    return Math.sqrt(num * num + num2 * num2) <= circle1.r + circle2.r;
+}

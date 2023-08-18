@@ -36,6 +36,8 @@ export const knight = [
     [bl, nu, bl]
 ];
 
+// WEAPONS
+
 export const fist = [
     [sk, sk],
     [sk, sk]
@@ -124,5 +126,14 @@ export const getWeaponSprite = (weaponType) => {
             return greatsword;
         default:
             return fist;
+    }
+}
+
+// ITEMS
+
+export const getItemSprite = (itemType) => {
+    switch (itemType) {
+        default:
+            return [];
     }
 }
