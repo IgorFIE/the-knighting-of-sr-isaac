@@ -15,6 +15,8 @@ let gameDiv;
 let gameCanv;
 let gameCtx;
 
+let weaponIcons;
+
 let keys = [];
 
 let score;
@@ -57,6 +59,8 @@ export const GameVars = {
     gameDiv,
     gameCanv,
     gameCtx,
+
+    weaponIcons,
 
     keys,
 

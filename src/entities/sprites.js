@@ -20,7 +20,7 @@ const hL = "hl"; // helmet light id
 const hD = "hd"; // helmet dark id
 const cM = "cm"; // chain mail id
 
-const sd = "sd" // shield id
+const wc = "wc" // weapon color id
 
 const enemyChainMailColors = ["#3c4f68", "#431313", "#2f492c", "#641f14"];
 export const playerColors = { "hd": ym, "hl": yl, "cm": yd };
@@ -49,8 +49,8 @@ export const shortSword = [
     [nu, wt, nu],
     [nu, wt, nu],
     [gl, gl, gl],
-    [nu, gm, nu],
-    [nu, gm, nu]
+    [nu, wc, nu],
+    [nu, wc, nu]
 ];
 
 export const morningStar = [
@@ -78,10 +78,10 @@ export const axe = [
 ];
 
 export const shield = [
-    [sd, wt, sd],
+    [wc, wt, wc],
     [wt, wt, wt],
-    [sd, wt, sd],
-    [sd, wt, sd]
+    [wc, wt, wc],
+    [wc, wt, wc]
 ];
 
 export const spear = [
@@ -110,9 +110,9 @@ export const greatsword = [
     [nu, nu, gl, gl, wt, nu, nu],
     [nu, nu, gl, gl, wt, nu, nu],
     [gd, gd, gd, gd, gd, gd, gd],
-    [nu, nu, nu, gm, nu, nu, nu],
-    [nu, nu, nu, gm, nu, nu, nu],
-    [nu, nu, nu, gm, nu, nu, nu],
+    [nu, nu, nu, wc, nu, nu, nu],
+    [nu, nu, nu, wc, nu, nu, nu],
+    [nu, nu, nu, wc, nu, nu, nu],
     [nu, nu, nu, gd, nu, nu, nu],
 ];
 

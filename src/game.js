@@ -8,6 +8,7 @@ import { Minimap } from "./entities/minimap";
 import { Item } from "./entities/item";
 import { ItemType } from "./enums/item-type";
 import { WeaponType } from "./enums/weapon-type";
+import { WeaponIcons } from "./entities/weapon-icons";
 
 export class Game {
     constructor() {
@@ -25,6 +26,7 @@ export class Game {
         GameVars.currentRoom.items.push(new Item(toPixelSize(64 * 3), toPixelSize(64), ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
 
         this.minimap = new Minimap();
+        GameVars.weaponIcons = new WeaponIcons();
 
         this.isChangingRoom = false;
         this.triggerBlock;
