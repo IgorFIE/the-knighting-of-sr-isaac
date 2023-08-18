@@ -116,6 +116,10 @@ export const greatsword = [
 
 export const getWeaponSprite = (weaponType) => {
     switch (weaponType) {
+        case WeaponType.SHIELD:
+            return shield;
+        case WeaponType.SWORD:
+            return shortSword;
         case WeaponType.GREATSWORD:
             return greatsword;
         default:

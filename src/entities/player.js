@@ -8,7 +8,6 @@ import { Weapon } from "./weapon";
 
 export class Player {
     constructor(roomX, roomY) {
-        this.isAtk = false;
         this.roomX = roomX;
         this.roomY = roomY;
 
@@ -18,14 +17,24 @@ export class Player {
         this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
         this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(3), knight.length * toPixelSize(3));
 
-        this.playerWeapon = new Weapon(this.collisionObj.x, this.collisionObj.y, WeaponType.GREATSWORD);
-
+        this.playerRightWeapon = new Weapon(0, 0, WeaponType.SHIELD, -1, this.playerDiv, playerColors.hd);
+        this.playerLeftWeapon = new Weapon(0, 0, WeaponType.SWORD, 1, this.playerDiv, playerColors.hd);
+        this.addWeaponsEvents();
         this.update();
         this.draw();
     }
 
+    addWeaponsEvents() {
+        this.playerLeftWeapon.weaponCanv.addEventListener("animationend", () => {
+            this.playerLeftWeapon.weaponCanv.style.animation = "";
+        });
+        this.playerRightWeapon.weaponCanv.addEventListener("animationend", () => {
+            this.playerRightWeapon.weaponCanv.style.animation = "";
+        });
+    }
+
     update() {
-        if (!this.isAtk) this.handleInput();
+        this.handleInput();
         this.atk();
     }
 
@@ -36,14 +45,17 @@ export class Player {
         const movKeys = Object.keys(GameVars.keys).filter((key) => (
             key == 'w' || key == 's' || key == 'a' || key == 'd' ||
             key == 'W' || key == 'S' || key == 'A' || key == 'D' ||
-            key == 'ArrowUp' || key == 'ArrowDown' || key == 'ArrowLeft' || key == 'ArrowRight') && GameVars.keys[key]);
+            key == 'ArrowUp' || key == 'ArrowDown' || key == 'ArrowLeft' || key == 'ArrowRight'
+        ) && GameVars.keys[key]);
 
         if (movKeys.length > 0) {
             this.playerCanv.style.animation = "walk 0.16s infinite ease-in-out";
-            this.playerWeapon.weaponCanv.style.animation = "walk2 0.16s infinite ease-in-out";
+            this.playerLeftWeapon.weaponCanv.style.animation = "weaponWalkLeft 0.16s infinite ease-in-out";
+            this.playerRightWeapon.weaponCanv.style.animation = "weaponWalkRight 0.16s infinite ease-in-out";
         } else {
             this.playerCanv.style.animation = "";
-            this.playerWeapon.weaponCanv.style.animation = "";
+            this.playerLeftWeapon.weaponCanv.style.animation = "";
+            this.playerRightWeapon.weaponCanv.style.animation = "";
         }
 
         //todo momentarily solution
@@ -71,21 +83,17 @@ export class Player {
     move(x, y) {
         this.collisionObj.x = x;
         this.collisionObj.y = y;
-        this.playerWeapon.update(this.collisionObj.x, this.collisionObj.y);
         this.playerDiv.style.transform = 'translate(' +
             (this.collisionObj.x - (knight[0].length * toPixelSize(3)) / 2) + 'px, ' +
             (this.collisionObj.y - (knight.length * toPixelSize(3)) / 4 * 3) + 'px)';
     }
 
     atk() {
-        if (!this.isAtk && GameVars.keys[' ']) {
-            this.isAtk = true;
-            this.playerCanv.style.animation = "";
-            this.playerWeapon.atk();
-            this.playerWeapon.weaponCanv.addEventListener("animationend", () => {
-                this.isAtk = false;
-                this.playerWeapon.weaponCanv.style.animation = "";
-            });
+        if (GameVars.keys['k'] || GameVars.keys['K']) {
+            this.playerRightWeapon.action();
+        }
+        if (GameVars.keys['l'] || GameVars.keys['L']) {
+            this.playerLeftWeapon.action();
         }
     }
 

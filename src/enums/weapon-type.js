@@ -1,5 +1,6 @@
 export const WeaponType = {
     FIST: 0,
-    SWORD_AND_SHIELD: 1,
-    GREATSWORD: 2
+    SHIELD: 1,
+    SWORD: 2,
+    GREATSWORD: 3
 };

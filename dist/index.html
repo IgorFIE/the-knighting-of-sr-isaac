@@ -52,7 +52,7 @@
             }
         }
 
-        @keyframes walk2 {
+        @keyframes weaponWalkLeft {
 
             0%,
             100% {
@@ -61,6 +61,54 @@
 
             50% {
                 transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+        }
+
+        @keyframes weaponWalkRight {
+
+            0%,
+            100% {
+                transform: translateX(5px) translateY(-5px) rotate(10deg);
+            }
+
+            50% {
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+        }
+
+        @keyframes fistAtk {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        @keyframes shieldBlock {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+
+            50% {
+                transform: translateY(10px) scale(2);
+            }
+        }
+
+        @keyframes swordAtk {
+
+            0%,
+            100% {
+                transform: rotate(0deg)
+            }
+
+            25% {
+                transform: rotate(180deg);
             }
         }
 
