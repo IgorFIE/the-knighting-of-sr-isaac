@@ -9,6 +9,7 @@ import { Weapon } from "./weapon";
 
 export class Item {
     constructor(x, y, itemType, subType, parentDiv) {
+        this.wasPicked = false;
         this.x = x;
         this.y = y;
         this.itemType = itemType;
@@ -40,14 +41,16 @@ export class Item {
         if (this.timeElapsed / 1 >= 1) {
             if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj)) {
                 if (this.itemType == ItemType.WEAPON) {
-                    if (GameVars.keys['v'] || GameVars.keys['V']) {
+                    if (!this.wasPicked && (GameVars.keys['v'] || GameVars.keys['V'])) {
+                        this.wasPicked = true;
                         this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
                         GameVars.player.playerRightWeapon.destroy();
                         GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player.playerDiv, playerColors.hd);
                         this.destroy();
                         GameVars.weaponIcons.update();
                     }
-                    if (GameVars.keys['b'] || GameVars.keys['B']) {
+                    if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
+                        this.wasPicked = true;
                         this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
                         GameVars.player.playerLeftWeapon.destroy();
                         GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player.playerDiv, playerColors.hd);

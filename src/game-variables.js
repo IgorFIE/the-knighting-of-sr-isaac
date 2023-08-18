@@ -3,7 +3,7 @@ const storeId = 'igorfie-13th-century-knight';
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
 
-const fps = 60;
+const fps = 90;
 let deltaTime;
 
 let pixelSize;

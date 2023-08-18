@@ -17,7 +17,6 @@ export class WeaponIcons {
     }
 
     update() {
-        console.log("HERE");
         this.drawIcon(this.leftCanv, "B", GameVars.player.playerLeftWeapon.weaponType);
         this.drawIcon(this.rightCanv, "V", GameVars.player.playerRightWeapon.weaponType);
     }
