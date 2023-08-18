@@ -10,12 +10,46 @@ export class Weapon {
         this.sprite = getWeaponSprite(this.weaponType);
         this.x = x;
         this.y = y;
+        this.isPerformingAction = false;
 
         this.weaponDiv = createElem(parentDiv, "div", null, ["weapon"]);
         this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(3), this.sprite.length * toPixelSize(3));
 
+        this.atkAnimation = this.getWeaponAnimation();
+        this.atkAnimation.cancel();
+
         this.setWeaponPos();
         this.draw(color);
+    }
+
+    getWeaponAnimation() {
+        switch (this.weaponType) {
+            case WeaponType.FIST:
+                return this.weaponCanv.animate({
+                    transform: ["translateY(0)", "translateY( " + toPixelSize(10) + "px)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 0.5]
+                }, 100);
+            case WeaponType.SHIELD:
+                return this.weaponCanv.animate({
+                    transform: ["translateY(0) scale(1)", "translateY( " + toPixelSize(5) + "px)  scale(2)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 0.5]
+                }, 200);
+            case WeaponType.SWORD:
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0)", "rotate(" + 180 * this.handDir + "deg)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 0.25]
+                }, 250);
+            case WeaponType.GREATSWORD:
+                this.weaponCanv.style.animation = "greatswordAtk 1s ease-in-out";
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0)", "rotate(" + 360 * this.handDir + "deg)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 1]
+                }, 1000);
+        }
     }
 
     setWeaponPos() {
@@ -28,29 +62,25 @@ export class Weapon {
                 break;
             case WeaponType.SWORD:
                 this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(9 * this.handDir)) + 'px, ' + (this.y + toPixelSize(0)) + 'px)';
+                this.weaponCanv.style.transformOrigin = "50% 90%";
                 break;
             case WeaponType.GREATSWORD:
-                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(24 * this.handDir)) + 'px, ' + (this.y - toPixelSize(16)) + 'px) rotate(45deg)';
+                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(this.handDir === - 1 ? -30 : 24)) + 'px, ' + (this.y - toPixelSize(this.handDir === - 1 ? 1 : 16)) + 'px) rotate(' + 45 * this.handDir + 'deg)';
+                this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
         }
     }
 
+    update() {
+        if (this.atkAnimation.playState === "finished") {
+            this.isPerformingAction = false;
+        }
+    }
+
     action() {
-        switch (this.weaponType) {
-            case WeaponType.FIST:
-                this.weaponCanv.style.animation = "fistAtk 0.1s ease-in-out";
-                break;
-            case WeaponType.SHIELD:
-                this.weaponCanv.style.animation = "shieldBlock 0.2s ease-in-out";
-                break;
-            case WeaponType.SWORD:
-                this.weaponCanv.style.animation = "swordAtk 0.25s ease-in";
-                this.weaponCanv.style.transformOrigin = "50% 90%";
-                break;
-            case WeaponType.GREATSWORD:
-                this.weaponCanv.style.animation = "greatswordAtk 1s ease-in-out";
-                this.weaponCanv.style.transformOrigin = "50% 100%";
-                break;
+        if (!this.isPerformingAction) {
+            this.isPerformingAction = true;
+            this.atkAnimation.play();
         }
     }
 

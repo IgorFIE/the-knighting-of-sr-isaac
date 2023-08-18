@@ -17,25 +17,17 @@ export class Player {
         this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
         this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(3), knight.length * toPixelSize(3));
 
-        this.playerRightWeapon = new Weapon(0, 0, WeaponType.SHIELD, -1, this.playerDiv, playerColors.hd);
-        this.playerLeftWeapon = new Weapon(0, 0, WeaponType.SWORD, 1, this.playerDiv, playerColors.hd);
-        this.addWeaponsEvents();
+        this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.playerDiv, playerColors.hd);
+        this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
         this.update();
         this.draw();
-    }
-
-    addWeaponsEvents() {
-        this.playerLeftWeapon.weaponCanv.addEventListener("animationend", () => {
-            this.playerLeftWeapon.weaponCanv.style.animation = "";
-        });
-        this.playerRightWeapon.weaponCanv.addEventListener("animationend", () => {
-            this.playerRightWeapon.weaponCanv.style.animation = "";
-        });
     }
 
     update() {
         this.handleInput();
         this.atk();
+        this.playerRightWeapon.update();
+        this.playerLeftWeapon.update();
     }
 
     handleInput() {
@@ -50,8 +42,8 @@ export class Player {
 
         if (movKeys.length > 0) {
             this.playerCanv.style.animation = "walk 0.16s infinite ease-in-out";
-            this.playerLeftWeapon.weaponCanv.style.animation = "weaponWalkLeft 0.16s infinite ease-in-out";
-            this.playerRightWeapon.weaponCanv.style.animation = "weaponWalkRight 0.16s infinite ease-in-out";
+            this.playerLeftWeapon.weaponCanv.style.animation = this.playerLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
+            this.playerRightWeapon.weaponCanv.style.animation = this.playerRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
         } else {
             this.playerCanv.style.animation = "";
             this.playerLeftWeapon.weaponCanv.style.animation = "";
