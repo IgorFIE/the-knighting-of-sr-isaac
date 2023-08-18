@@ -3,7 +3,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { rectCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { knight, playerColors } from "./sprites";
+import { knight, playerColors, shadow } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Player {
@@ -16,6 +16,9 @@ export class Player {
 
         this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
         this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(3), knight.length * toPixelSize(3));
+
+        this.shadowCanv = createElem(this.playerDiv, "canvas", null, null, toPixelSize(32), toPixelSize(32));
+        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(6) + 'px, ' + toPixelSize(15) + 'px)';
 
         this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.playerDiv, playerColors.hd);
         this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
@@ -91,5 +94,6 @@ export class Player {
 
     draw() {
         drawSprite(this.playerCanv, knight, toPixelSize(3), 0, 0, playerColors);
+        drawSprite(this.shadowCanv, shadow, toPixelSize(3));
     }
 }

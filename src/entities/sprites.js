@@ -3,6 +3,7 @@ import { WeaponType } from "../enums/weapon-type";
 const nu = null;
 const sk = "#e7c688"; // skin
 const bl = "#000000"; // black
+const sd = "#00000066"; // shadow
 const wt = "#edeef7"; // white
 
 const gl = "#999a9e"; // gray light
@@ -34,6 +35,14 @@ export const knight = [
     [cM, cM, cM],
     [cM, cM, cM],
     [bl, nu, bl]
+];
+
+export const shadow = [
+    [nu, sd, sd, sd, sd, sd, nu],
+    [sd, sd, sd, sd, sd, sd, sd],
+    [sd, sd, sd, sd, sd, sd, sd],
+    [sd, sd, sd, sd, sd, sd, sd],
+    [nu, sd, sd, sd, sd, sd, nu]
 ];
 
 // WEAPONS
