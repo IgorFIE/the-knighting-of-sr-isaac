@@ -7,6 +7,7 @@ import { DoorTrigger } from "./blocks/door-trigger";
 
 export class Room {
     constructor(roomX, roomY) {
+        this.isDoorsOpen = false;
         this.roomX = roomX;
         this.roomY = roomY;
 
@@ -18,6 +19,7 @@ export class Room {
         this.frontBlocks = [];
         this.floors = [];
         this.walls = [];
+        this.doors = [];
         this.doorTriggers = [];
         this.items = [];
         this.enemies = [];
@@ -36,7 +38,7 @@ export class Room {
             this.frontBlocks.push([]);
             for (let x = 0; x < GameVars.roomWidth; x++) {
                 blockType = (y <= 1 || x <= 1 || y >= GameVars.roomHeight - 2 || x >= GameVars.roomWidth - 2) ? BlockType.WALL : BlockType.FLOOR;
-                obj = new Block(x, y, blockType, this.roomCanv);
+                obj = new Block(this, x, y, blockType);
                 this.backBlocks[y].push(obj);
                 blockType === BlockType.WALL ? this.walls.push(obj) : this.floors.push(obj);
                 this.frontBlocks[y].push(null);
@@ -49,11 +51,11 @@ export class Room {
         let heightCenter = Math.floor(GameVars.roomHeight / 2);
         let widthCenter = Math.floor(GameVars.roomWidth / 2);
         if (this.roomType == RoomType.KEY) {
-            this.frontBlocks[heightCenter][widthCenter] = new Block(widthCenter, heightCenter, BlockType.KEY);
+            this.frontBlocks[heightCenter][widthCenter] = new Block(this, widthCenter, heightCenter, BlockType.KEY);
         } else if (this.roomType == RoomType.TREASURE) {
-            this.frontBlocks[heightCenter][widthCenter] = new Block(widthCenter, heightCenter, BlockType.TREASURE);
+            this.frontBlocks[heightCenter][widthCenter] = new Block(this, widthCenter, heightCenter, BlockType.TREASURE);
         } else if (this.roomType == RoomType.BOSS) {
-            this.frontBlocks[heightCenter][widthCenter] = new Block(widthCenter, heightCenter, BlockType.BOSS);
+            this.frontBlocks[heightCenter][widthCenter] = new Block(this, widthCenter, heightCenter, BlockType.BOSS);
         }
     }
 
@@ -63,8 +65,13 @@ export class Room {
             for (let x = Math.round(startX); x <= Math.round(finishX); x++) {
                 block = this.backBlocks[y][x];
                 this.walls.splice(this.walls.indexOf(block), 1);
-                this.backBlocks[y][x] = new DoorTrigger(block.roomX, block.roomY, BlockType.FLOOR, this.roomCanv, xDir, yDir);
+
+                block.blockType = BlockType.DOOR_OPEN;
+                this.doors.push(block);
+
+                this.backBlocks[y][x] = new DoorTrigger(this, block.blockRoomX, block.blockRoomY, BlockType.FLOOR, xDir, yDir);
                 this.floors.push(this.backBlocks[y][x]);
+
                 if ((xDir === -1 && x === 0) || (xDir === 1 && x === this.backBlocks[0].length - 1) ||
                     (yDir === -1 && y === 0) || (yDir === 1 && y === this.backBlocks.length - 1)) {
                     this.doorTriggers.push(this.backBlocks[y][x]);
@@ -86,6 +93,7 @@ export class Room {
         this.floors.forEach(block => block.draw());
         this.drawRoomShadows();
         this.walls.forEach(block => block.draw());
+        this.doors.forEach(block => block.draw());
         // this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
     }
 

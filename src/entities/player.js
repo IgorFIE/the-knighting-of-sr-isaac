@@ -72,7 +72,8 @@ export class Player {
         this.fakeMovRect.x = x;
         this.fakeMovRect.y = y;
 
-        if (!GameVars.gameBoard.board[this.roomY][this.roomX].walls.find((wall) => rectCircleCollision(this.fakeMovRect, wall.collisionObj))) {
+        if (!(GameVars.gameBoard.board[this.roomY][this.roomX].walls.find((wall) => rectCircleCollision(this.fakeMovRect, wall.collisionObj)) ||
+            (GameVars.currentRoom.isDoorsOpen && GameVars.gameBoard.board[this.roomY][this.roomX].doors.find((door) => rectCircleCollision(this.fakeMovRect, door.collisionObj))))) {
             this.move(x, y);
         }
     }

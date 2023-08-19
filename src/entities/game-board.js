@@ -10,6 +10,7 @@ export class GameBoard {
         this.initBoardArray();
         this.createBoardRooms();
         this.createPaths();
+        this.draw();
     }
 
     initBoardArray() {
@@ -111,8 +112,11 @@ export class GameBoard {
                 room.setDoor(w - 1, w - 1, (h / 2) - 3, (h / 2) + 1, 1, 0);
             }
             room.update(0, 0);
-            room.draw();
         });
+    }
+
+    draw() {
+        this.rooms.forEach(room => room.draw());
     }
 
     consoleLogBoard() {
