@@ -13,10 +13,9 @@ export class Weapon {
         this.isPerformingAction = false;
 
         this.weaponDiv = createElem(parentDiv, "div", null, ["weapon"]);
-        this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(3), this.sprite.length * toPixelSize(3));
+        this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(2), this.sprite.length * toPixelSize(2));
 
         this.atkAnimation = this.getWeaponAnimation();
-        this.atkAnimation.cancel();
 
         this.setWeaponPos();
         this.draw(color);
@@ -26,13 +25,13 @@ export class Weapon {
         switch (this.weaponType) {
             case WeaponType.FIST:
                 return this.weaponCanv.animate({
-                    transform: ["translateY(0)", "translateY( " + toPixelSize(10) + "px)"],
+                    transform: ["translateY(0)", "translateY( " + toPixelSize(6) + "px)"],
                     easing: ["ease-in", "ease-out"],
                     offset: [0, 0.5]
                 }, 100);
             case WeaponType.SHIELD:
                 return this.weaponCanv.animate({
-                    transform: ["translateY(0) scale(1)", "translateY( " + toPixelSize(5) + "px)  scale(2)"],
+                    transform: ["translateY(0) scale(1)", "translateY( " + toPixelSize(4) + "px)  scale(2)"],
                     easing: ["ease-in", "ease-out"],
                     offset: [0, 0.5]
                 }, 200);
@@ -55,17 +54,17 @@ export class Weapon {
     setWeaponPos() {
         switch (this.weaponType) {
             case WeaponType.FIST:
-                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(this.handDir === -1 ? -3 : 6)) + 'px, ' + (this.y + toPixelSize(13)) + 'px)';
+                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(this.handDir === -1 ? -2 : 4)) + 'px, ' + (this.y + toPixelSize(9)) + 'px)';
                 break;
             case WeaponType.SHIELD:
-                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(6 * this.handDir)) + 'px, ' + (this.y + toPixelSize(9)) + 'px)';
+                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(4 * this.handDir)) + 'px, ' + (this.y + toPixelSize(6)) + 'px)';
                 break;
             case WeaponType.SWORD:
-                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(9 * this.handDir)) + 'px, ' + (this.y + toPixelSize(0)) + 'px)';
+                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(6 * this.handDir)) + 'px, ' + (this.y + toPixelSize(0)) + 'px)';
                 this.weaponCanv.style.transformOrigin = "50% 90%";
                 break;
             case WeaponType.GREATSWORD:
-                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(this.handDir === - 1 ? -30 : 24)) + 'px, ' + (this.y - toPixelSize(this.handDir === - 1 ? 1 : 16)) + 'px) rotate(' + 45 * this.handDir + 'deg)';
+                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(this.handDir === - 1 ? -20 : 16)) + 'px, ' + (this.y - toPixelSize(this.handDir === - 1 ? 1 : 11)) + 'px) rotate(' + 45 * this.handDir + 'deg)';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
         }
@@ -85,7 +84,7 @@ export class Weapon {
     }
 
     draw(color) {
-        drawSprite(this.weaponCanv, this.sprite, toPixelSize(3), null, null, { "wc": color });
+        drawSprite(this.weaponCanv, this.sprite, toPixelSize(2), null, null, { "wc": color });
     }
 
     destroy() {

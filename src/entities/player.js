@@ -12,15 +12,15 @@ export class Player {
         this.roomX = roomX;
         this.roomY = roomY;
 
-        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(6));
+        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
         this.fakeMovRect = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
 
-        this.shadowCanv = createElem(this.playerDiv, "canvas", null, null, toPixelSize(3) * 7, toPixelSize(3) * 6);
-        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(6) + 'px, ' + toPixelSize(12) + 'px)';
+        this.shadowCanv = createElem(this.playerDiv, "canvas", null, null, toPixelSize(2) * 7, toPixelSize(2) * 6);
+        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(4) + 'px, ' + toPixelSize(8) + 'px)';
 
-        this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(3), knight.length * toPixelSize(3));
+        this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
         this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.playerDiv, playerColors.hd);
         this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
@@ -56,7 +56,7 @@ export class Player {
         }
 
         //todo momentarily solution
-        const playerSpeed = toPixelSize(4);
+        const playerSpeed = toPixelSize(2);
         const distance = movKeys.length > 1 ? playerSpeed / 1.4142 : playerSpeed;
 
         if (GameVars.keys['d'] || GameVars.keys['D'] || GameVars.keys['ArrowRight']) { newRectX += distance; }
@@ -81,8 +81,8 @@ export class Player {
         this.collisionObj.x = x;
         this.collisionObj.y = y;
         this.playerDiv.style.transform = 'translate(' +
-            (this.collisionObj.x - (knight[0].length * toPixelSize(3)) / 2) + 'px, ' +
-            (this.collisionObj.y - (knight.length * toPixelSize(3)) / 4 * 3) + 'px)';
+            (this.collisionObj.x - (knight[0].length * toPixelSize(2)) / 2) + 'px, ' +
+            (this.collisionObj.y - (knight.length * toPixelSize(2)) / 4 * 3) + 'px)';
     }
 
     atk() {
@@ -95,7 +95,7 @@ export class Player {
     }
 
     draw() {
-        genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(3), "#00000066", "#00000066");
-        drawSprite(this.playerCanv, knight, toPixelSize(3), 0, 0, playerColors);
+        genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(2), "#00000066", "#00000066");
+        drawSprite(this.playerCanv, knight, toPixelSize(2), 0, 0, playerColors);
     }
 }

@@ -6,8 +6,8 @@ import { Player } from "./player";
 
 export class Minimap {
     constructor() {
-        this.minimapCanv = createElem(GameVars.gameDiv, "canvas", "minimap", null, toPixelSize(56), toPixelSize(56));
-        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(16)) + 'px, ' + toPixelSize(16) + 'px)';
+        this.minimapCanv = createElem(GameVars.gameDiv, "canvas", "minimap", null, toPixelSize(46), toPixelSize(46));
+        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(12) + 'px)';
 
         this.visited = {};
 
@@ -21,7 +21,7 @@ export class Minimap {
 
         this.minimapCanv.getContext("2d").clearRect(0, 0, this.minimapCanv.width, this.minimapCanv.height);
 
-        genSmallBox(this.minimapCanv, 0, 0, 27, 27, toPixelSize(2), "#00000066", "#100f0f66");
+        genSmallBox(this.minimapCanv, 0, 0, 22, 22, toPixelSize(2), "#00000066", "#100f0f66");
         for (let y = -2; y <= 2; y++) {
             for (let x = -2; x <= 2; x++) {
                 if (x === 0 && y === 0) {
@@ -41,7 +41,7 @@ export class Minimap {
     }
 
     createMiniMapRoom(x, y, lineColor, backgroundColor) {
-        genSmallBox(this.minimapCanv, ((x + 2) * 5) + 1, ((y + 2) * 5) + 1, 5, 5, toPixelSize(2), lineColor, backgroundColor);
+        genSmallBox(this.minimapCanv, ((x + 2) * 4) + 1, ((y + 2) * 4) + 1, 4, 4, toPixelSize(2), lineColor, backgroundColor);
         this.createSpecialRoomIcon(x, y);
     }
 
@@ -58,7 +58,10 @@ export class Minimap {
                     ctx.fillStyle = "#ffff57";
                     break;
             }
-            ctx.fillRect(toPixelSize(6) + (x + 2) * toPixelSize(10), toPixelSize(6) + (y + 2) * toPixelSize(10), toPixelSize(4), toPixelSize(4));
+            this.minimapCanv.getContext("2d").fillRect(
+                ((x + 2) * toPixelSize(8)) + toPixelSize(5),
+                ((y + 2) * toPixelSize(8)) + toPixelSize(5),
+                toPixelSize(4), toPixelSize(4));
         }
     }
 

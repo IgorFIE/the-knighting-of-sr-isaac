@@ -32,16 +32,19 @@ let player;
 const resetGameVars = () => {
     GameVars.score = 0;
 
-    let hgPixelSize = Math.round((gameH - 270) * ((3 - 1) / (1100 - 270)) + 1);
-    let wdPixelSize = Math.round((gameW - 480) * ((3 - 1) / (1000 - 480)) + 1);
-
-    GameVars.pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+    GameVars.pixelSize = pixelCal(1.5, 4.5);
     GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
     GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
 
     GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
     GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
 }
+
+const pixelCal = (min, max) => {
+    let hgPixelSize = Math.round((gameH - 270) * ((max - min) / (1100 - 270)) + min);
+    let wdPixelSize = Math.round((gameW - 480) * ((max - min) / (1000 - 480)) + min);
+    return hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+};
 
 export const GameVars = {
     storeId,

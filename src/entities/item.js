@@ -21,7 +21,7 @@ export class Item {
         this.collisionObj = new CircleObject(x, y, toPixelSize(this.sprite[0].length * 6))
 
         this.itemDiv = createElem(parentDiv, "div", null, ["item"]);
-        this.itemCanv = createElem(this.itemDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(3), this.sprite.length * toPixelSize(3));
+        this.itemCanv = createElem(this.itemDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(2), this.sprite.length * toPixelSize(2));
 
         this.itemDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
 
@@ -78,6 +78,6 @@ export class Item {
     }
 
     draw() {
-        drawSprite(this.itemCanv, this.sprite, toPixelSize(3), null, null, { "wc": "#686b7a" });
+        drawSprite(this.itemCanv, this.sprite, toPixelSize(2), null, null, { "wc": "#686b7a" });
     }
 }

@@ -43,7 +43,7 @@ const generateBox = (canvas, startX, startY, endX, endY, pixelSize, color, condi
     }
 };
 
-const genetateInsideBoxColor = (canvas, startX, startY, endX, endY, pixelSize, bgColor) => {
+export const genetateInsideBoxColor = (canvas, startX, startY, endX, endY, pixelSize, bgColor) => {
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = bgColor;
     ctx.fillRect(
