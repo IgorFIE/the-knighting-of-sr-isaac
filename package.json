@@ -4,7 +4,8 @@
   "description": "In the 13th Century the Demon Lord will come to destroy Humanity! Train and inherit knowledge of your previous generations to defeat the Demon Lord!",
   "scripts": {
     "start": "webpack serve --open",
-    "build": "npx webpack --config webpack.config.js"
+    "build": "npx webpack --config webpack.config.js",
+    "compress": "npx roadroller ./dist/main.js -o ./dist/rolled.js"
   },
   "author": "Igor Estevao",
   "license": "ISC",
@@ -12,5 +13,8 @@
     "webpack": "5.50.0",
     "webpack-cli": "4.7.2",
     "webpack-dev-server": "4.1.0"
+  },
+  "dependencies": {
+    "roadroller": "^2.1.0"
   }
 }
