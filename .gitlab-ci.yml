@@ -29,6 +29,7 @@ cache:
 
 pages:
   script:
+  - export NODE_OPTIONS=--openssl-legacy-provider
   - npm ci
   - npm run build
   - mkdir .public
