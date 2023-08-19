@@ -57,6 +57,9 @@ function createMainMenu() {
 function drawMainMenu() {
     mainMenuCanv.getContext("2d").clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
 
+    mainMenuCanv.getContext("2d").fillStyle = "rgba(255,255,255,0.9)";
+    mainMenuCanv.getContext("2d").fillRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
+
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
 
     drawPixelTextInCanvas(convertTextToPixelArt("the 13th"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 6);
