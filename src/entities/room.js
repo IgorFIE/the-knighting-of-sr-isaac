@@ -63,7 +63,7 @@ export class Room {
             for (let x = Math.round(startX); x <= Math.round(finishX); x++) {
                 block = this.backBlocks[y][x];
                 this.walls.splice(this.walls.indexOf(block), 1);
-                this.backBlocks[y][x] = new DoorTrigger(block.roomX, block.roomY, BlockType.DOOR, this.roomCanv, xDir, yDir);
+                this.backBlocks[y][x] = new DoorTrigger(block.roomX, block.roomY, BlockType.FLOOR, this.roomCanv, xDir, yDir);
                 if ((xDir === -1 && x === 0) || (xDir === 1 && x === this.backBlocks[0].length - 1) ||
                     (yDir === -1 && y === 0) || (yDir === 1 && y === this.backBlocks.length - 1)) {
                     this.doorTriggers.push(this.backBlocks[y][x]);

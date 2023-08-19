@@ -21,9 +21,9 @@ export class Game {
         GameVars.gameBoard.board[GameVars.currentRoom.roomY][GameVars.currentRoom.roomX].roomDiv.classList.remove("hidden");
 
         //TODO REMOVE ME AFTERWARDS
-        GameVars.currentRoom.items.push(new Item(toPixelSize(64), toPixelSize(64), ItemType.WEAPON, WeaponType.SWORD, GameVars.currentRoom.roomDiv));
-        GameVars.currentRoom.items.push(new Item(toPixelSize(64 * 2), toPixelSize(64), ItemType.WEAPON, WeaponType.SHIELD, GameVars.currentRoom.roomDiv));
-        GameVars.currentRoom.items.push(new Item(toPixelSize(64 * 3), toPixelSize(64), ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
+        GameVars.currentRoom.items.push(new Item(GameVars.gameW / 4, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SWORD, GameVars.currentRoom.roomDiv));
+        GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 2, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SHIELD, GameVars.currentRoom.roomDiv));
+        GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
 
         this.minimap = new Minimap();
         GameVars.weaponIcons = new WeaponIcons();

@@ -95,16 +95,20 @@ export class GameBoard {
             const w = room.backBlocks[0].length;
             const h = room.backBlocks.length;
             if (room.roomY - 1 >= 0 && this.board[room.roomY - 1][room.roomX]) {
-                room.setDoor((w / 2) - 2, (w / 2) + 2, 0, 1, 0, -1);
+                room.setDoor((w / 2) - 3, (w / 2) + 1, 0, 0, 0, -1);
+                room.setDoor((w / 2) - 2, (w / 2), 1, 1, 0, -1);
             }
             if (room.roomY + 1 < this.board.length && this.board[room.roomY + 1][room.roomX]) {
-                room.setDoor((w / 2) - 2, (w / 2) + 2, h - 2, h - 1, 0, 1);
+                room.setDoor((w / 2) - 2, (w / 2), h - 2, h - 2, 0, 1);
+                room.setDoor((w / 2) - 3, (w / 2) + 1, h - 1, h - 1, 0, 1);
             }
             if (room.roomX - 1 >= 0 && this.board[room.roomY][room.roomX - 1]) {
-                room.setDoor(0, 1, (h / 2) - 2, (h / 2) + 2, -1, 0);
+                room.setDoor(0, 0, (h / 2) - 3, (h / 2) + 1, -1, 0);
+                room.setDoor(1, 1, (h / 2) - 2, (h / 2), -1, 0);
             }
             if (room.roomX + 1 < this.board[0].length && this.board[room.roomY][room.roomX + 1]) {
-                room.setDoor(w - 2, w - 1, (h / 2) - 2, (h / 2) + 2, 1, 0);
+                room.setDoor(w - 2, w - 2, (h / 2) - 2, (h / 2), 1, 0);
+                room.setDoor(w - 1, w - 1, (h / 2) - 3, (h / 2) + 1, 1, 0);
             }
             room.update(0, 0);
             room.draw();
