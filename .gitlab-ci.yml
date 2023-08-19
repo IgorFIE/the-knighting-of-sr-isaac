@@ -5,27 +5,27 @@ cache:
   paths:
   - node_modules/
 
-before_script:
-- npm ci
+# before_script:
+# - npm ci
 
-build:
-  before_script:
-  - apt-get update
-  - apt-get install -y p7zip-full
-  - npm ci
-  script:
-  - npm run build
-  - cd dist
-  - 7z a -mm=Deflate -mx=9 13thcenturykinght.zip *.html *.js
-  - cd -
-  - mv dist/13thcenturykinght.zip ./
-  - echo 'file_size $(stat --printf="%s" 13thcenturykinght.zip)' > metrics.txt
-  #- test $(stat --printf="%s" 13thcenturykinght.zip) -lt 13312
-  artifacts:
-    paths:
-    - 13thcenturykinght.zip
-    reports:
-      metrics: metrics.txt
+# build:
+#   before_script:
+#   - apt-get update
+#   - apt-get install -y p7zip-full
+#   - npm ci
+#   script:
+#   - npm run build
+#   - cd dist
+#   - 7z a -mm=Deflate -mx=9 13thcenturykinght.zip *.html *.js
+#   - cd -
+#   - mv dist/13thcenturykinght.zip ./
+#   # - echo 'file_size $(stat --printf="%s" 13thcenturykinght.zip)' > metrics.txt
+#   #- test $(stat --printf="%s" 13thcenturykinght.zip) -lt 13312
+#   artifacts:
+#     paths:
+#     - 13thcenturykinght.zip
+#     # reports:
+#     #   metrics: metrics.txt
 
 pages:
   script:
