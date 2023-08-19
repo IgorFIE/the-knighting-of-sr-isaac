@@ -95,7 +95,7 @@ export class Player {
     }
 
     draw() {
-        genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(2), "#00000066", "#00000066");
+        genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(2), "#00000033", "#00000033");
         drawSprite(this.playerCanv, knight, toPixelSize(2), 0, 0, playerColors);
     }
 }

@@ -16,9 +16,11 @@ export class Room {
         this.roomType = RoomType.EMPTY;
         this.backBlocks = [];
         this.frontBlocks = [];
+        this.floors = [];
         this.walls = [];
         this.doorTriggers = [];
         this.items = [];
+        this.enemies = [];
 
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room", "hidden"]);
         this.roomCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
@@ -28,17 +30,15 @@ export class Room {
 
     initRoomBlocks() {
         let obj;
+        let blockType;
         for (let y = 0; y < GameVars.roomHeight; y++) {
             this.backBlocks.push([]);
             this.frontBlocks.push([]);
             for (let x = 0; x < GameVars.roomWidth; x++) {
-                if (y <= 1 || x <= 1 || y >= GameVars.roomHeight - 2 || x >= GameVars.roomWidth - 2) {
-                    obj = new Block(x, y, BlockType.WALL, this.roomCanv);
-                    this.backBlocks[y].push(obj);
-                    this.walls.push(obj)
-                } else {
-                    this.backBlocks[y].push(new Block(x, y, BlockType.FLOOR, this.roomCanv));
-                }
+                blockType = (y <= 1 || x <= 1 || y >= GameVars.roomHeight - 2 || x >= GameVars.roomWidth - 2) ? BlockType.WALL : BlockType.FLOOR;
+                obj = new Block(x, y, blockType, this.roomCanv);
+                this.backBlocks[y].push(obj);
+                blockType === BlockType.WALL ? this.walls.push(obj) : this.floors.push(obj);
                 this.frontBlocks[y].push(null);
             }
         }
@@ -64,6 +64,7 @@ export class Room {
                 block = this.backBlocks[y][x];
                 this.walls.splice(this.walls.indexOf(block), 1);
                 this.backBlocks[y][x] = new DoorTrigger(block.roomX, block.roomY, BlockType.FLOOR, this.roomCanv, xDir, yDir);
+                this.floors.push(this.backBlocks[y][x]);
                 if ((xDir === -1 && x === 0) || (xDir === 1 && x === this.backBlocks[0].length - 1) ||
                     (yDir === -1 && y === 0) || (yDir === 1 && y === this.backBlocks.length - 1)) {
                     this.doorTriggers.push(this.backBlocks[y][x]);
@@ -82,8 +83,22 @@ export class Room {
     }
 
     draw() {
-        this.backBlocks.forEach(row => row.forEach(block => block.draw()));
+        this.floors.forEach(block => block.draw());
+        this.drawRoomShadows();
+        this.walls.forEach(block => block.draw());
         // this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
+    }
+
+    drawRoomShadows() {
+        let ctx = this.roomCanv.getContext("2d");
+        ctx.fillStyle = "#00000033";
+        ctx.fillRect(0, 0, toPixelSize(34), toPixelSize(GameVars.gameHgAsPixels));
+        ctx.fillRect(toPixelSize(34), 0, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(34));
+        ctx.fillRect(this.backBlocks[0][this.backBlocks[0].length - 2].collisionObj.x - toPixelSize(2), toPixelSize(34), toPixelSize(34), toPixelSize(GameVars.gameHgAsPixels));
+        ctx.fillRect(toPixelSize(34),
+            this.backBlocks[this.backBlocks.length - 2][0].collisionObj.y - toPixelSize(2),
+            this.backBlocks[this.backBlocks.length - 2][this.backBlocks[0].length - 4].collisionObj.x - toPixelSize(4),
+            toPixelSize(34));
     }
 
     consoleLogRoom() {
