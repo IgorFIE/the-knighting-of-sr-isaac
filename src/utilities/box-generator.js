@@ -28,7 +28,7 @@ export const genLargeBox = (canvas, startX, startY, endX, endY, pixelSize, color
     generateBox(canvas, startX, startY, endX, endY, pixelSize, color, conditionFn);
 };
 
-const generateBox = (canvas, startX, startY, endX, endY, pixelSize, color, conditionFn) => {
+export const generateBox = (canvas, startX, startY, endX, endY, pixelSize, color, conditionFn) => {
     const ctx = canvas.getContext("2d");
     for (let y = 0; y <= endY; y++) {
         for (let x = 0; x <= endX; x++) {
@@ -43,7 +43,7 @@ const generateBox = (canvas, startX, startY, endX, endY, pixelSize, color, condi
     }
 };
 
-export const genetateInsideBoxColor = (canvas, startX, startY, endX, endY, pixelSize, bgColor) => {
+const genetateInsideBoxColor = (canvas, startX, startY, endX, endY, pixelSize, bgColor) => {
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = bgColor;
     ctx.fillRect(

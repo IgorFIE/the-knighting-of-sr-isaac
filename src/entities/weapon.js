@@ -1,7 +1,7 @@
 import { WeaponType } from "../enums/weapon-type";
-import { GameVars, toPixelSize } from "../game-variables";
+import { toPixelSize } from "../game-variables";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { fist, getWeaponSprite, greatsword, shortSword } from "./sprites";
+import { getWeaponSprite } from "./sprites";
 
 export class Weapon {
     constructor(x, y, weaponType, handDir, parentDiv, color) {

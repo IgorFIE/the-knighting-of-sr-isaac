@@ -1,5 +1,4 @@
 import { RoomType, isSpecialRoom } from "../enums/room-type";
-import { GameVars } from "../game-variables";
 import { randomNumb } from "../utilities/general-utilities";
 import { Room } from "./room";
 

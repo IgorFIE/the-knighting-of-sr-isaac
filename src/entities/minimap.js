@@ -1,8 +1,7 @@
 import { RoomType, isSpecialRoom } from "../enums/room-type";
 import { GameVars, toPixelSize } from "../game-variables";
-import { genLargeBox, genSmallBox } from "../utilities/box-generator";
+import { genSmallBox } from "../utilities/box-generator";
 import { createElem } from "../utilities/draw-utilities";
-import { Player } from "./player";
 
 export class Minimap {
     constructor() {
