@@ -33,6 +33,8 @@ let currentRoom;
 let player;
 
 const resetGameVars = () => {
+    if (GameVars.isMobile) screen.orientation.lock('landscape');
+
     GameVars.score = 0;
 
     GameVars.pixelSize = pixelCal(1.5, 4.5);
