@@ -22,6 +22,7 @@ export const createElem = (parentElem, elemType, id, classList, width, height, b
     if (height) elem.height = height;
     if (backgroundColor) elem.style.backgroundColor = backgroundColor;
     if (clickFn) elem.addEventListener(GameVars.isMobile ? 'touchstart' : 'click', clickFn);
+    if (GameVars.isMobile && clickFn) elem.addEventListener('touchmove', clickFn);
     if (endClickFn) elem.addEventListener(GameVars.isMobile ? 'touchend' : 'mouseup', endClickFn);
     parentElem.appendChild(elem);
     return elem;

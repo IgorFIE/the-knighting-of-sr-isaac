@@ -99,6 +99,14 @@ const retrievePixelLetter = (letter) => {
             return rightParen;
         case '-':
             return minus;
+        case '<':
+            return arrowLeft;
+        case '>':
+            return arrowRight;
+        case '^':
+            return arrowUp;
+        case '~':
+            return arrowDown;
 
         case '0':
             return zer;
@@ -364,6 +372,38 @@ const minus = [
     [true, true],
     [false, false],
     [false, false]
+];
+
+const arrowDown = [
+    [false, false, false],
+    [false, false, false],
+    [true, true, true],
+    [false, true, false],
+    [false, false, false]
+];
+
+const arrowUp = [
+    [false, false, false],
+    [false, true, false],
+    [true, true, true],
+    [false, false, false],
+    [false, false, false]
+];
+
+const arrowLeft = [
+    [false, false, false],
+    [false, true, false],
+    [true, true, false],
+    [false, true, false],
+    [false, false, false]
+];
+
+const arrowRight = [
+    [false, false, false],
+    [false, true, false],
+    [false, true, true],
+    [false, true, false],
+    [false, false, false]
 ];
 
 const leftParen = [
