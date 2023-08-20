@@ -22,8 +22,14 @@ const cM = "cm"; // chain mail id
 
 const wc = "wc" // weapon color id
 
+const ho = "ho" // heart outside
+const hi = "hi" // heart inside
+
 const enemyChainMailColors = ["#3c4f68", "#431313", "#2f492c", "#641f14"];
 export const playerColors = { "hd": ym, "hl": yl, "cm": yd };
+
+export const fullHeartColors = { "ho": wt, "hi": "#a80000" };
+export const emptyHeartColors = { "ho": "#2f1519", "hi": "#100f0f" };
 
 export const knight = [
     [hD, hL, hD],
@@ -34,6 +40,16 @@ export const knight = [
     [cM, cM, cM],
     [cM, cM, cM],
     [bl, nu, bl]
+];
+
+export const heart = [
+    [nu, ho, ho, nu, ho, ho, nu],
+    [ho, hi, hi, ho, hi, hi, ho],
+    [ho, hi, hi, hi, hi, hi, ho],
+    [ho, hi, hi, hi, hi, hi, ho],
+    [nu, ho, hi, hi, hi, ho, nu],
+    [nu, nu, ho, hi, ho, nu, nu],
+    [nu, nu, nu, ho, nu, nu, nu]
 ];
 
 // WEAPONS

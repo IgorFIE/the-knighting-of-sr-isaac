@@ -5,6 +5,7 @@ import { genSmallBox } from "../utilities/box-generator";
 import { rectCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { knight, playerColors, shadow } from "./sprites";
+import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
 
 export class Player {
@@ -24,6 +25,9 @@ export class Player {
 
         this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.playerDiv, playerColors.hd);
         this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
+
+        this.lifeBar = new LifeBar(6, true, this.playerCanv);
+
         this.update();
         this.draw();
     }
@@ -31,6 +35,7 @@ export class Player {
     update() {
         this.handleInput();
         this.atk();
+        this.lifeBar.update();
     }
 
     handleInput() {
