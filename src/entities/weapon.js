@@ -1,5 +1,5 @@
 import { WeaponType } from "../enums/weapon-type";
-import { toPixelSize } from "../game-variables";
+import { GameVars, toPixelSize } from "../game-variables";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { getWeaponSprite } from "./sprites";
 
@@ -25,21 +25,21 @@ export class Weapon {
         switch (this.weaponType) {
             case WeaponType.FIST:
                 return this.weaponCanv.animate({
-                    transform: ["translateY(0)", "translateY( " + toPixelSize(6) + "px)"],
-                    easing: ["ease-in", "ease-out"],
-                    offset: [0, 0.5]
+                    transform: ["translateY(0)", "translateY( " + toPixelSize(6) + "px)", "translateY(0)"],
+                    easing: ["ease-in", "ease-out", "ease-out"],
+                    offset: [0, 0.5, 1]
                 }, 100);
             case WeaponType.SHIELD:
                 return this.weaponCanv.animate({
-                    transform: ["translateY(0) scale(1)", "translateY( " + toPixelSize(4) + "px)  scale(2)"],
-                    easing: ["ease-in", "ease-out"],
-                    offset: [0, 0.5]
+                    transform: ["translateY(0) scale(1)", "translateY( " + toPixelSize(6) + "px)  scale(2)", "translateY(0) scale(1)"],
+                    easing: ["ease-in", "ease-out", "ease-out"],
+                    offset: [0, 0.5, 1]
                 }, 200);
             case WeaponType.SWORD:
                 return this.weaponCanv.animate({
-                    transform: ["rotate(0)", "rotate(" + 180 * this.handDir + "deg)"],
-                    easing: ["ease-in", "ease-out"],
-                    offset: [0, 0.25]
+                    transform: ["rotate(0)", "rotate(" + 180 * this.handDir + "deg)", "rotate(0)"],
+                    easing: ["ease-in", "ease-out", "ease-in"],
+                    offset: [0, 0.25, 1]
                 }, 250);
             case WeaponType.GREATSWORD:
                 this.weaponCanv.style.animation = "greatswordAtk 1s ease-in-out";
@@ -60,7 +60,7 @@ export class Weapon {
                 this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(4 * this.handDir)) + 'px, ' + (this.y + toPixelSize(6)) + 'px)';
                 break;
             case WeaponType.SWORD:
-                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(6 * this.handDir)) + 'px, ' + (this.y + toPixelSize(0)) + 'px)';
+                this.weaponDiv.style.transform = 'translate(' + (this.x + toPixelSize(6 * this.handDir)) + 'px, ' + (this.y) + 'px)';
                 this.weaponCanv.style.transformOrigin = "50% 90%";
                 break;
             case WeaponType.GREATSWORD:
@@ -70,16 +70,11 @@ export class Weapon {
         }
     }
 
-    update() {
-        if (this.atkAnimation.playState === "finished") {
-            this.isPerformingAction = false;
-        }
-    }
-
     action() {
         if (!this.isPerformingAction) {
             this.isPerformingAction = true;
-            this.atkAnimation.play();
+            this.atkAnimation = this.getWeaponAnimation();
+            this.atkAnimation.finished.then(() => this.isPerformingAction = false);
         }
     }
 

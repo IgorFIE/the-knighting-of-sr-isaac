@@ -28,6 +28,7 @@ function init() {
     game = new Game();
 
     // createFpsElement(mainDiv);
+    GameVars.initDebug();
 
     window.requestAnimationFrame(() => gameLoop());
 }

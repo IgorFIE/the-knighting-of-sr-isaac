@@ -31,8 +31,6 @@ export class Player {
     update() {
         this.handleInput();
         this.atk();
-        this.playerRightWeapon.update();
-        this.playerLeftWeapon.update();
     }
 
     handleInput() {
@@ -40,9 +38,9 @@ export class Player {
         let newRectY = this.collisionObj.y;
 
         const movKeys = Object.keys(GameVars.keys).filter((key) => (
-            key == 'w' || key == 's' || key == 'a' || key == 'd' ||
-            key == 'W' || key == 'S' || key == 'A' || key == 'D' ||
-            key == 'ArrowUp' || key == 'ArrowDown' || key == 'ArrowLeft' || key == 'ArrowRight'
+            key === 'w' || key === 's' || key === 'a' || key === 'd' ||
+            key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
+            key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight'
         ) && GameVars.keys[key]);
 
         if (movKeys.length > 0) {

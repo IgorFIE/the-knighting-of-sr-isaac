@@ -7,6 +7,7 @@ const gameH = window.innerHeight;
 
 const fps = 90;
 let deltaTime;
+let debug;
 
 let pixelSize;
 
@@ -43,6 +44,13 @@ const resetGameVars = () => {
     GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
 }
 
+const initDebug = () => {
+    GameVars.debug = document.createElement("div");
+    GameVars.debug.style.fontSize = "50px";
+    GameVars.debug.style.position = "absolute";
+    document.getElementById("main").appendChild(GameVars.debug);
+}
+
 const pixelCal = (min, max) => {
     let hgPixelSize = Math.round((gameH - 270) * ((max - min) / (1100 - 270)) + min);
     let wdPixelSize = Math.round((gameW - 480) * ((max - min) / (1000 - 480)) + min);
@@ -59,6 +67,7 @@ export const GameVars = {
 
     fps,
     deltaTime,
+    debug,
 
     pixelSize,
     gameWdAsPixels,
@@ -82,7 +91,8 @@ export const GameVars = {
     currentRoom,
     player,
 
-    resetGameVars
+    resetGameVars,
+    initDebug
 }
 
 export const toPixelSize = (value) => {

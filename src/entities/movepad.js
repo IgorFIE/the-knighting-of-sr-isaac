@@ -23,26 +23,35 @@ export class MovePad {
                 GameVars.keys["s"] = yFinalValue > 0;
                 GameVars.keys["a"] = xFinalValue < 0;
                 GameVars.keys["d"] = xFinalValue > 0;
+                this.draw();
             },
-            (e) => { GameVars.keys["w"] = false; GameVars.keys["s"] = false; GameVars.keys["a"] = false; GameVars.keys["d"] = false; }
+            (e) => {
+                GameVars.keys["w"] = false;
+                GameVars.keys["s"] = false;
+                GameVars.keys["a"] = false;
+                GameVars.keys["d"] = false;
+                this.draw();
+            }
         );
         this.movePadCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + (GameVars.gameH - this.movePadCanv.height - toPixelSize(12)) + 'px)';
         this.draw();
     }
 
     draw() {
+        this.movePadCanv.getContext("2d").clearRect(0, 0, this.movePadCanv.width, this.movePadCanv.height);
+
         genSmallBox(this.movePadCanv, 13, 13, 6, 6, toPixelSize(2), "#ffff57", "#100f0f66");
 
-        genSmallBox(this.movePadCanv, 11, 1, 10, 10, toPixelSize(2), "#00000066", "#100f0f66");
+        genSmallBox(this.movePadCanv, 11, 1, 10, 10, toPixelSize(2), GameVars.keys["w"] ? "#ffffffaa" : "#00000066", GameVars.keys["w"] ? "#ffffff66" : "#100f0f66");
         drawPixelTextInCanvas(convertTextToPixelArt('^'), this.movePadCanv, toPixelSize(3), 11, 4, "#edeef7", 1);
 
-        genSmallBox(this.movePadCanv, 1, 11, 10, 10, toPixelSize(2), "#00000066", "#100f0f66");
+        genSmallBox(this.movePadCanv, 1, 11, 10, 10, toPixelSize(2), GameVars.keys["a"] ? "#ffffffaa" : "#00000066", GameVars.keys["a"] ? "#ffffff66" : "#100f0f66");
         drawPixelTextInCanvas(convertTextToPixelArt('<'), this.movePadCanv, toPixelSize(3), 4, 11, "#edeef7", 1);
 
-        genSmallBox(this.movePadCanv, 21, 11, 10, 10, toPixelSize(2), "#00000066", "#100f0f66");
+        genSmallBox(this.movePadCanv, 21, 11, 10, 10, toPixelSize(2), GameVars.keys["d"] ? "#ffffffaa" : "#00000066", GameVars.keys["d"] ? "#ffffff66" : "#100f0f66");
         drawPixelTextInCanvas(convertTextToPixelArt('>'), this.movePadCanv, toPixelSize(3), 18, 11, "#edeef7", 1);
 
-        genSmallBox(this.movePadCanv, 11, 21, 10, 10, toPixelSize(2), "#00000066", "#100f0f66");
+        genSmallBox(this.movePadCanv, 11, 21, 10, 10, toPixelSize(2), GameVars.keys["s"] ? "#ffffffaa" : "#00000066", GameVars.keys["s"] ? "#ffffff66" : "#100f0f66");
         drawPixelTextInCanvas(convertTextToPixelArt('~'), this.movePadCanv, toPixelSize(3), 11, 18, "#edeef7", 1);
     }
 }
