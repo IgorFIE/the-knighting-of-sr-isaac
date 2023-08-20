@@ -22,10 +22,10 @@ export const createElem = (parentElem, elemType, id, classList, width, height, b
     if (height) elem.height = height;
     if (backgroundColor) elem.style.backgroundColor = backgroundColor;
     if (clickFn) {
-        elem.addEventListener(GameVars.isMobile ? 'touchstart' : 'mousedown', clickFn);
-        if (GameVars.isMobile) elem.addEventListener('touchmove', clickFn);
+        elem.addEventListener(GameVars.isMobile ? 'click' : 'mousedown', clickFn);
+        // if (GameVars.isMobile) elem.addEventListener('touchmove', clickFn);
     }
-    if (endClickFn) elem.addEventListener(GameVars.isMobile ? 'touchend' : 'mouseup', endClickFn);
+    if (endClickFn) elem.addEventListener(GameVars.isMobile ? 'click' : 'mouseup', endClickFn);
     parentElem.appendChild(elem);
     return elem;
 }
