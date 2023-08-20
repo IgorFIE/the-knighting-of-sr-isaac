@@ -34,12 +34,6 @@ export class Game {
         this.triggerBlock;
         this.transitionAmount;
         this.playerTransitionAmount;
-
-        let fps = document.createElement("div");
-        fps.style.fontSize = "50px";
-        fps.style.position = "absolute";
-        fps.innerHTML = navigator.maxTouchPoints;
-        document.getElementById("main").appendChild(fps);
     }
 
     getStartRoom(room) {
