@@ -38,7 +38,7 @@ export class Game {
         let fps = document.createElement("div");
         fps.style.fontSize = "50px";
         fps.style.position = "absolute";
-        fps.innerHTML = navigator.userAgent;
+        fps.innerHTML = navigator.maxTouchPoints;
         document.getElementById("main").appendChild(fps);
     }
 
