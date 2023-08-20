@@ -23,7 +23,7 @@ export const createElem = (parentElem, elemType, id, classList, width, height, b
     if (backgroundColor) elem.style.backgroundColor = backgroundColor;
     if (clickFn) {
         elem.addEventListener(GameVars.isMobile ? 'touchstart' : 'mousedown', clickFn);
-        elem.addEventListener(GameVars.isMobile ? 'touchmove' : 'mousemove', clickFn);
+        if (GameVars.isMobile) elem.addEventListener('touchmove', clickFn);
     }
     if (endClickFn) elem.addEventListener(GameVars.isMobile ? 'touchend' : 'mouseup', endClickFn);
     parentElem.appendChild(elem);
