@@ -25,7 +25,7 @@ export const createElem = (parentElem, elemType, id, classList, width, height, b
         elem.addEventListener(GameVars.isMobile ? 'click' : 'mousedown', clickFn);
         // if (GameVars.isMobile) elem.addEventListener('touchmove', clickFn);
     }
-    if (endClickFn) elem.addEventListener(GameVars.isMobile ? 'click' : 'mouseup', endClickFn);
+    if (endClickFn) elem.addEventListener(GameVars.isMobile ? 'touchend' : 'mouseup', endClickFn);
     parentElem.appendChild(elem);
     return elem;
 }
