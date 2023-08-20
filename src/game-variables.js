@@ -1,6 +1,6 @@
 const storeId = 'igorfie-13th-century-knight';
 
-const isMobile = navigator?.userAgentData?.mobile;
+const isMobile = !!navigator.userAgent.toLowerCase().match(/\b(?:mobile|tablet|android|iphone|ipad)\b/g);
 
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
@@ -33,6 +33,7 @@ let currentRoom;
 let player;
 
 const resetGameVars = () => {
+
     GameVars.score = 0;
 
     GameVars.pixelSize = pixelCal(1.5, 4.5);
