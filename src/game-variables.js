@@ -1,6 +1,6 @@
 const storeId = 'igorfie-13th-century-knight';
 
-const isMobile = navigator.userAgentData.mobile;
+const isMobile = navigator?.userAgentData?.mobile;
 
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
