@@ -16,8 +16,8 @@ export class MovePad {
                 const xDir = xAmount < 0 ? -1 : 1;
                 const yDir = yAmount < 0 ? -1 : 1;
 
-                const xFinalValue = (Math.abs(xAmount) >= 0.2 ? 1 : 0) * xDir;
-                const yFinalValue = (Math.abs(yAmount) >= 0.2 ? 1 : 0) * yDir;
+                const xFinalValue = (Math.abs(xAmount) >= 0.1 ? 1 : 0) * xDir;
+                const yFinalValue = (Math.abs(yAmount) >= 0.1 ? 1 : 0) * yDir;
 
                 GameVars.keys["w"] = yFinalValue < 0;
                 GameVars.keys["s"] = yFinalValue > 0;
