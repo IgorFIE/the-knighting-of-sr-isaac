@@ -1,5 +1,7 @@
 const storeId = 'igorfie-13th-century-knight';
 
+const isMobile = navigator.userAgentData.mobile;
+
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
 
@@ -16,8 +18,9 @@ let gameCanv;
 let gameCtx;
 
 let weaponIcons;
+let movePad;
 
-let keys = [];
+let keys = {};
 
 let score;
 
@@ -49,6 +52,8 @@ const pixelCal = (min, max) => {
 export const GameVars = {
     storeId,
 
+    isMobile,
+
     gameW,
     gameH,
 
@@ -64,6 +69,7 @@ export const GameVars = {
     gameCtx,
 
     weaponIcons,
+    movePad,
 
     keys,
 

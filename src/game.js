@@ -9,6 +9,7 @@ import { Item } from "./entities/item";
 import { ItemType } from "./enums/item-type";
 import { WeaponType } from "./enums/weapon-type";
 import { WeaponIcons } from "./entities/weapon-icons";
+import { MovePad } from "./entities/movepad";
 
 export class Game {
     constructor() {
@@ -27,6 +28,7 @@ export class Game {
 
         this.minimap = new Minimap();
         GameVars.weaponIcons = new WeaponIcons();
+        if (GameVars.isMobile) GameVars.movePad = new MovePad();
 
         this.isChangingRoom = false;
         this.triggerBlock;
