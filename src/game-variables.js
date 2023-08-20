@@ -33,7 +33,6 @@ let currentRoom;
 let player;
 
 const resetGameVars = () => {
-
     GameVars.score = 0;
 
     GameVars.pixelSize = pixelCal(1.5, 4.5);
