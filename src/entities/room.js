@@ -87,6 +87,7 @@ export class Room {
             this.roomDiv.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
         }
         this.items.forEach(item => item.update());
+        this.enemies.forEach(enemy => enemy.update());
     }
 
     draw() {

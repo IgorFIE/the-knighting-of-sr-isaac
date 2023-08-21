@@ -1,3 +1,5 @@
+import { GameVars } from "../game-variables";
+
 export const rectCollision = (rect1, rect2) => {
     return !(rect2.x > rect1.w + rect1.x || rect1.x > rect2.w + rect2.x || rect2.y > rect1.h + rect1.y || rect1.y > rect2.h + rect2.y);
 }
@@ -21,4 +23,12 @@ export const circleToCircleCollision = (circle1, circle2) => {
     let num = circle1.x - circle2.x;
     let num2 = circle1.y - circle2.y;
     return Math.sqrt(num * num + num2 * num2) <= circle1.r + circle2.r;
+}
+
+export const validateMovement = (fakeMovCircle, roomX, roomY, fn) => {
+    if (!(GameVars.gameBoard.board[roomY][roomX].walls.find((wall) => rectCircleCollision(fakeMovCircle, wall.collisionObj)) ||
+        GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => circleToCircleCollision(fakeMovCircle, enemy.collisionObj)) ||
+        (GameVars.currentRoom.isDoorsOpen && GameVars.gameBoard.board[roomY][roomX].doors.find((door) => rectCircleCollision(fakeMovCircle, door.collisionObj))))) {
+        fn(fakeMovCircle);
+    }
 }

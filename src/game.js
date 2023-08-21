@@ -10,6 +10,8 @@ import { ItemType } from "./enums/item-type";
 import { WeaponType } from "./enums/weapon-type";
 import { WeaponIcons } from "./entities/weapon-icons";
 import { MovePad } from "./entities/movepad";
+import { Enemy } from "./entities/enemy";
+import { EnemyType } from "./enums/enemy-type";
 
 export class Game {
     constructor() {
@@ -21,10 +23,13 @@ export class Game {
         GameVars.player = new Player(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY);
         GameVars.gameBoard.board[GameVars.currentRoom.roomY][GameVars.currentRoom.roomX].roomDiv.classList.remove("hidden");
 
-        //TODO REMOVE ME AFTERWARDS
+        //TODO REMOVE ME AFTERWARDS OR LET PLAYER PICK SOME RANDOM WEAPONS?
         GameVars.currentRoom.items.push(new Item(GameVars.gameW / 4, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SWORD, GameVars.currentRoom.roomDiv));
         GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 2, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SHIELD, GameVars.currentRoom.roomDiv));
         GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
+
+        GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4), (GameVars.gameH / 4) * 3, EnemyType.BASIC, GameVars.currentRoom.roomDiv));
+        GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, EnemyType.BOSS, GameVars.currentRoom.roomDiv));
 
         this.minimap = new Minimap();
         GameVars.weaponIcons = new WeaponIcons();

@@ -2,7 +2,7 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { rectCircleCollision } from "../utilities/collision-utilities";
+import { rectCircleCollision, validateMovement } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { knight, playerColors, shadow } from "./sprites";
 import { LifeBar } from "./life-bar";
@@ -14,7 +14,7 @@ export class Player {
         this.roomY = roomY;
 
         this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
-        this.fakeMovRect = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
+        this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
 
@@ -72,18 +72,14 @@ export class Player {
     }
 
     validateMovement(x, y) {
-        this.fakeMovRect.x = x;
-        this.fakeMovRect.y = y;
-
-        if (!(GameVars.gameBoard.board[this.roomY][this.roomX].walls.find((wall) => rectCircleCollision(this.fakeMovRect, wall.collisionObj)) ||
-            (GameVars.currentRoom.isDoorsOpen && GameVars.gameBoard.board[this.roomY][this.roomX].doors.find((door) => rectCircleCollision(this.fakeMovRect, door.collisionObj))))) {
-            this.move(x, y);
-        }
+        this.fakeMovCircle.x = x;
+        this.fakeMovCircle.y = y;
+        validateMovement(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle));
     }
 
-    move(x, y) {
-        this.collisionObj.x = x;
-        this.collisionObj.y = y;
+    move(circle) {
+        this.collisionObj.x = circle.x;
+        this.collisionObj.y = circle.y;
         this.playerDiv.style.transform = 'translate(' +
             (this.collisionObj.x - (knight[0].length * toPixelSize(2)) / 2) + 'px, ' +
             (this.collisionObj.y - (knight.length * toPixelSize(2)) / 4 * 3) + 'px)';
