@@ -25,8 +25,8 @@ export class Weapon {
         this.relativePos = this.getRelativePos();
         this.setWeaponPos();
         this.atkLine = this.getWeaponAtkLine();
-        this.damagedObjs = {};
-        this.dmg = 1;
+        this.damagedObjs = new Map();
+        this.dmg = this.getDamage();
 
         this.draw(color);
     }
@@ -100,7 +100,6 @@ export class Weapon {
                     { x: this.relativePos.x + (this.sprite[0].length / 2 * toPixelSize(this.size)), y: this.relativePos.y + this.getPecentageValue(90, this.sprite.length * toPixelSize(this.size)) }
                 ];
             case WeaponType.GREATSWORD:
-                console.log(this.relativePos);
                 let anglePoint1 = this.retrieveAnglePoint(
                     this.relativePos.x,
                     this.relativePos.y,
@@ -171,22 +170,40 @@ export class Weapon {
     update() {
         if (GameVars.atkCanv) {
             const ctx = GameVars.atkCanv.getContext("2d");
-            if (this.isPerformingAction) {
-                let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
-                let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
+            // if (this.isPerformingAction) {
+            let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
+            let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
-                ctx.beginPath();
-                ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
-                ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
-                ctx.strokeStyle = 'red';
-                ctx.lineWidth = toPixelSize(1);
-                ctx.stroke();
+            // just for debug
+            ctx.beginPath();
+            ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
+            ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = toPixelSize(1);
+            ctx.stroke();
 
-                GameVars.currentRoom.enemies.filter(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj)).forEach((e) => {
+            GameVars.currentRoom.enemies.filter(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj)).forEach((e) => {
+                if (!this.damagedObjs.has(e)) {
+                    this.damagedObjs.set(e, true);
+                    e.lifeBar.life -= this.dmg;
                     // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
-                    console.log("cause damage");
-                });
-            }
+                    console.log("deals damage!!!");
+                }
+            });
+            // }
+        }
+    }
+
+    getDamage() {
+        switch (this.weaponType) {
+            case WeaponType.FIST:
+                return 1;
+            case WeaponType.SHIELD:
+                return 2;
+            case WeaponType.SWORD:
+                return 3;
+            case WeaponType.GREATSWORD:
+                return 9;
         }
     }
 
@@ -196,7 +213,7 @@ export class Weapon {
             this.atkAnimation = this.getWeaponAnimation();
             this.atkAnimation.finished.then(() => {
                 this.isPerformingAction = false;
-                this.damagedObjs = {};
+                this.damagedObjs.clear();
             });
         }
     }

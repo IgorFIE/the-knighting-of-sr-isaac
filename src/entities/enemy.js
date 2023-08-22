@@ -5,13 +5,14 @@ import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { rectCircleCollision, validateMovement } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
+import { createId, randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { LifeBar } from "./life-bar";
 import { enemyChainMailColors, knight } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Enemy {
     constructor(roomX, roomY, x, y, enemyType, roomCanv) {
+        this.id = createId();
         this.roomX = roomX;
         this.roomY = roomY;
         this.x = x;
@@ -37,7 +38,7 @@ export class Enemy {
         this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.enemyDiv, "#686b7a", this.enemySize);
         this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.enemyDiv, "#686b7a", this.enemySize);
 
-        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * 2, false, this.enemyCanv);
+        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * 8, false, this.enemyCanv);
 
         this.update();
         this.draw();

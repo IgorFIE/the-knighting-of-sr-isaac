@@ -5,3 +5,7 @@ export const randomNumbOnRange = (min, max) => {
 export const randomNumb = (max) => {
     return Math.floor(Math.random() * max);
 }
+
+export const createId = () => {
+    return Math.random().toString(16).slice(2);
+}

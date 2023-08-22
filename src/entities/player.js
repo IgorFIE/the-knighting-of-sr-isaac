@@ -7,9 +7,11 @@ import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { knight, playerColors, shadow } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
+import { createId } from "../utilities/general-utilities";
 
 export class Player {
     constructor(roomX, roomY) {
+        this.id = createId();
         this.roomX = roomX;
         this.roomY = roomY;
 
@@ -23,10 +25,10 @@ export class Player {
 
         this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.playerDiv, playerColors.hd);
+        this.playerRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this.playerDiv, playerColors.hd);
         this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
 
-        this.lifeBar = new LifeBar(6, true, this.playerCanv);
+        this.lifeBar = new LifeBar(24, true, this.playerCanv);
 
         this.update();
         this.draw();
