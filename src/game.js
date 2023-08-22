@@ -12,6 +12,7 @@ import { WeaponIcons } from "./entities/weapon-icons";
 import { MovePad } from "./entities/movepad";
 import { Enemy } from "./entities/enemy";
 import { EnemyType } from "./enums/enemy-type";
+import { createElem } from "./utilities/draw-utilities";
 
 export class Game {
     constructor() {
@@ -31,6 +32,8 @@ export class Game {
         GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4), (GameVars.gameH / 4) * 3, EnemyType.BASIC, GameVars.currentRoom.roomDiv));
         GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, EnemyType.BOSS, GameVars.currentRoom.roomDiv));
 
+        GameVars.atkCanv = createElem(GameVars.gameDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH);
+
         this.minimap = new Minimap();
         GameVars.weaponIcons = new WeaponIcons();
         if (GameVars.isMobile) GameVars.movePad = new MovePad();
@@ -49,6 +52,7 @@ export class Game {
     }
 
     update() {
+        GameVars.atkCanv.getContext("2d").clearRect(0, 0, GameVars.atkCanv.width, GameVars.atkCanv.height);
         if (!this.isChangingRoom) {
             this.triggerBlock = GameVars.currentRoom.doorTriggers.find(trigger => rectCircleCollision(GameVars.player.collisionObj, trigger.collisionObj));
             if (this.triggerBlock) {

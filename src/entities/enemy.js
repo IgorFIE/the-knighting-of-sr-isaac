@@ -45,7 +45,7 @@ export class Enemy {
 
     update() {
         this.handleInput();
-        this.atk();
+        // this.atk();
         this.lifeBar.update();
     }
 
@@ -53,30 +53,30 @@ export class Enemy {
         let newRectX = this.collisionObj.x;
         let newRectY = this.collisionObj.y;
 
-        const movKeys = Object.keys(GameVars.keys).filter((key) => (
-            key === 'w' || key === 's' || key === 'a' || key === 'd' ||
-            key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
-            key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight'
-        ) && GameVars.keys[key]);
+        // const movKeys = Object.keys(GameVars.keys).filter((key) => (
+        //     key === 'w' || key === 's' || key === 'a' || key === 'd' ||
+        //     key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
+        //     key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight'
+        // ) && GameVars.keys[key]);
 
-        if (movKeys.length > 0) {
-            this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
-            this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
-            this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
-        } else {
-            this.enemyCanv.style.animation = "";
-            this.enemyLeftWeapon.weaponCanv.style.animation = "";
-            this.enemyRightWeapon.weaponCanv.style.animation = "";
-        }
+        // if (movKeys.length > 0) {
+        //     this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
+        //     this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
+        //     this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
+        // } else {
+        //     this.enemyCanv.style.animation = "";
+        //     this.enemyLeftWeapon.weaponCanv.style.animation = "";
+        //     this.enemyRightWeapon.weaponCanv.style.animation = "";
+        // }
 
-        //todo momentarily solution
-        const playerSpeed = toPixelSize(2);
-        const distance = movKeys.length > 1 ? playerSpeed / 1.4142 : playerSpeed;
+        // //todo momentarily solution
+        // const playerSpeed = toPixelSize(2);
+        // const distance = movKeys.length > 1 ? playerSpeed / 1.4142 : playerSpeed;
 
-        if (GameVars.keys['d'] || GameVars.keys['D'] || GameVars.keys['ArrowRight']) { newRectX += distance; }
-        if (GameVars.keys['a'] || GameVars.keys['A'] || GameVars.keys['ArrowLeft']) { newRectX -= distance; }
-        if (GameVars.keys['w'] || GameVars.keys['W'] || GameVars.keys['ArrowUp']) { newRectY -= distance; }
-        if (GameVars.keys['s'] || GameVars.keys['S'] || GameVars.keys['ArrowDown']) { newRectY += distance; }
+        // if (GameVars.keys['d'] || GameVars.keys['D'] || GameVars.keys['ArrowRight']) { newRectX += distance; }
+        // if (GameVars.keys['a'] || GameVars.keys['A'] || GameVars.keys['ArrowLeft']) { newRectX -= distance; }
+        // if (GameVars.keys['w'] || GameVars.keys['W'] || GameVars.keys['ArrowUp']) { newRectY -= distance; }
+        // if (GameVars.keys['s'] || GameVars.keys['S'] || GameVars.keys['ArrowDown']) { newRectY += distance; }
 
         this.validateMovement(this.collisionObj.x, newRectY);
         this.validateMovement(newRectX, this.collisionObj.y);

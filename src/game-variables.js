@@ -18,6 +18,8 @@ let gameDiv;
 let gameCanv;
 let gameCtx;
 
+let atkCanv;
+
 let weaponIcons;
 let movePad;
 
@@ -76,6 +78,8 @@ export const GameVars = {
     gameDiv,
     gameCanv,
     gameCtx,
+
+    atkCanv,
 
     weaponIcons,
     movePad,

@@ -92,6 +92,8 @@ export class Player {
         if (GameVars.keys['b'] || GameVars.keys['B']) {
             this.playerLeftWeapon.action();
         }
+        this.playerRightWeapon.update();
+        this.playerLeftWeapon.update();
     }
 
     draw() {

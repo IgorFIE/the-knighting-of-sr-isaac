@@ -23,9 +23,9 @@ function init() {
 
     addKeyListenerEvents();
 
-    // createMainMenu();
+    createMainMenu();
     createGameDiv();
-    game = new Game();
+    // game = new Game();
 
     // createFpsElement(mainDiv);
     GameVars.initDebug();
