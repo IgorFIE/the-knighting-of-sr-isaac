@@ -2,7 +2,7 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { ItemType } from "../enums/item-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
-import { circleToCircleCollision } from "../utilities/collision-utilities";
+import { circleToCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { getItemSprite, getWeaponSprite, playerColors } from "./sprites";
 import { Weapon } from "./weapon";
@@ -18,7 +18,8 @@ export class Item {
 
         this.timeElapsed = 0;
 
-        this.collisionObj = new CircleObject(x, y, toPixelSize(this.sprite[0].length * 6))
+        this.collisionObj = new CircleObject(x, y, toPixelSize(this.sprite[0].length * 6));
+        this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.itemDiv = createElem(parentDiv, "div", null, ["item"]);
         this.itemCanv = createElem(this.itemDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(2), this.sprite.length * toPixelSize(2));
@@ -62,6 +63,14 @@ export class Item {
         } else {
             this.timeElapsed += GameVars.deltaTime;
         }
+    }
+
+    validateMovement(x, y) {
+        this.collisionObj.x = x;
+        this.collisionObj.y = y;
+        this.itemDiv.style.transform = 'translate(' +
+            (this.collisionObj.x - (this.sprite[0].length * toPixelSize(2)) / 2) + 'px, ' +
+            (this.collisionObj.y - (this.sprite.length * toPixelSize(2)) / 2) + 'px)';
     }
 
     dropCurrentWeapon(weapon) {

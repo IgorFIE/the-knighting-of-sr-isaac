@@ -1,9 +1,13 @@
 import { BlockType } from "../enums/block-type";
+import { EnemyType } from "../enums/enemy-type";
 import { RoomType } from "../enums/room-type";
 import { GameVars, toPixelSize } from "../game-variables";
+import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem } from "../utilities/draw-utilities";
+import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { DoorTrigger } from "./blocks/door-trigger";
+import { Enemy } from "./enemy";
 
 export class Room {
     constructor(roomX, roomY) {
@@ -24,10 +28,11 @@ export class Room {
         this.items = [];
         this.enemies = [];
 
-        this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room", "hidden"]);
+        this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
         this.roomCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
         this.initRoomBlocks();
+        this.populateRandomEnemies();
     }
 
     initRoomBlocks() {
@@ -46,16 +51,35 @@ export class Room {
         }
     }
 
+    populateRandomEnemies() {
+        let count = randomNumbOnRange(1, 3);
+        while (this.enemies.length !== count) {
+            let newEnemy = new Enemy(this.roomX, this.roomY,
+                randomNumbOnRange(GameVars.gameW / 4, (GameVars.gameW / 4) * 3),
+                randomNumbOnRange(GameVars.gameH / 4, (GameVars.gameH / 4) * 3),
+                EnemyType.BASIC, this.roomDiv);
+            if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj))) this.enemies.push(newEnemy);
+        }
+    }
+
     setSpecialRoomType(roomType) {
+        // let heightCenter = Math.floor(GameVars.roomHeight / 2);
+        // let widthCenter = Math.floor(GameVars.roomWidth / 2);
         this.roomType = roomType;
-        let heightCenter = Math.floor(GameVars.roomHeight / 2);
-        let widthCenter = Math.floor(GameVars.roomWidth / 2);
-        if (this.roomType == RoomType.KEY) {
-            this.frontBlocks[heightCenter][widthCenter] = new Block(this, widthCenter, heightCenter, BlockType.KEY);
-        } else if (this.roomType == RoomType.TREASURE) {
-            this.frontBlocks[heightCenter][widthCenter] = new Block(this, widthCenter, heightCenter, BlockType.TREASURE);
-        } else if (this.roomType == RoomType.BOSS) {
-            this.frontBlocks[heightCenter][widthCenter] = new Block(this, widthCenter, heightCenter, BlockType.BOSS);
+        this.cleanEnemies();
+        switch (this.roomType) {
+            // case RoomType.KEY:
+            // case RoomType.TREASURE:
+            //     break;
+            case RoomType.BOSS:
+                this.enemies.push(new Enemy(this.roomX, this.roomY, GameVars.gameW / 2, GameVars.gameH / 2, EnemyType.BOSS, this.roomDiv));
+                break;
+        }
+    }
+
+    cleanEnemies() {
+        while (this.enemies.length > 0) {
+            this.enemies[0].destroy();
         }
     }
 
@@ -81,13 +105,18 @@ export class Room {
     }
 
     update(x, y) {
-        if (x != null && y != null) {
+        if (x !== undefined && y !== undefined) {
+            let xAmount = x - this.x;
+            let yAmount = y - this.y;
             this.x = x;
             this.y = y;
-            this.roomDiv.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+            this.roomDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
+            this.enemies.forEach(enemy => enemy.validateMovement(enemy.collisionObj.x + xAmount, enemy.collisionObj.y + yAmount, true));
+            this.items.forEach(item => item.validateMovement(item.collisionObj.x + xAmount, item.collisionObj.y + yAmount));
+        } else {
+            this.items.forEach(item => item.update());
+            this.enemies.forEach(enemy => enemy.update());
         }
-        this.items.forEach(item => item.update());
-        this.enemies.forEach(enemy => enemy.update());
     }
 
     draw() {

@@ -25,9 +25,9 @@ export const circleToCircleCollision = (circle1, circle2) => {
     return Math.sqrt(num * num + num2 * num2) <= circle1.r + circle2.r;
 }
 
-export const validateMovement = (fakeMovCircle, roomX, roomY, fn) => {
+export const checkForCollisions = (fakeMovCircle, roomX, roomY, isPlayer, fn) => {
     if (!(GameVars.gameBoard.board[roomY][roomX].walls.find((wall) => rectCircleCollision(fakeMovCircle, wall.collisionObj)) ||
-        GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => circleToCircleCollision(fakeMovCircle, enemy.collisionObj)) ||
+        (isPlayer && GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => circleToCircleCollision(fakeMovCircle, enemy.collisionObj))) ||
         (GameVars.currentRoom.isDoorsOpen && GameVars.gameBoard.board[roomY][roomX].doors.find((door) => rectCircleCollision(fakeMovCircle, door.collisionObj))))) {
         fn(fakeMovCircle);
     }

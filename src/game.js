@@ -18,8 +18,10 @@ export class Game {
     constructor() {
         GameVars.isGameOver = false;
         GameVars.gameBoard = new GameBoard(5);
+        GameVars.gameBoard.init();
 
         GameVars.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
+        GameVars.currentRoom.cleanEnemies();
         this.nextRoom;
 
         GameVars.player = new Player(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY);
@@ -30,8 +32,8 @@ export class Game {
         GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 2, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SHIELD, GameVars.currentRoom.roomDiv));
         GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
 
-        GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4), (GameVars.gameH / 4) * 3, EnemyType.BASIC, GameVars.currentRoom.roomDiv));
-        GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, EnemyType.BOSS, GameVars.currentRoom.roomDiv));
+        // GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4), (GameVars.gameH / 4) * 3, EnemyType.BASIC, GameVars.currentRoom.roomDiv));
+        // GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, EnemyType.BOSS, GameVars.currentRoom.roomDiv));
 
         GameVars.atkCanv = createElem(GameVars.gameDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH);
 

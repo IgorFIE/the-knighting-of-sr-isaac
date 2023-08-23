@@ -2,7 +2,7 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { rectCircleCollision, validateMovement } from "../utilities/collision-utilities";
+import { rectCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { knight, playerColors, shadow } from "./sprites";
 import { LifeBar } from "./life-bar";
@@ -38,6 +38,7 @@ export class Player {
         let rect = this.playerCanv.getBoundingClientRect();
         this.div.style.width = rect.width + "px";
         this.div.style.height = rect.height + "px";
+        this.div.style.transformOrigin = "70% 95%";
     }
 
     update() {
@@ -47,6 +48,7 @@ export class Player {
             this.lifeBar.update();
         } else {
             if (this.isAlive) {
+                this.clearAnim();
                 this.lifeBar.update();
                 this.isAlive = false;
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
@@ -71,9 +73,7 @@ export class Player {
             this.playerLeftWeapon.weaponCanv.style.animation = this.playerLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
             this.playerRightWeapon.weaponCanv.style.animation = this.playerRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
         } else {
-            this.playerCanv.style.animation = "";
-            this.playerLeftWeapon.weaponCanv.style.animation = "";
-            this.playerRightWeapon.weaponCanv.style.animation = "";
+            this.clearAnim();
         }
 
         //todo momentarily solution
@@ -89,10 +89,16 @@ export class Player {
         this.validateMovement(newRectX, this.collisionObj.y);
     }
 
+    clearAnim() {
+        this.playerCanv.style.animation = "";
+        this.playerLeftWeapon.weaponCanv.style.animation = "";
+        this.playerRightWeapon.weaponCanv.style.animation = "";
+    }
+
     validateMovement(x, y) {
         this.fakeMovCircle.x = x;
         this.fakeMovCircle.y = y;
-        validateMovement(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle));
+        checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, true, (circle) => this.move(circle));
     }
 
     move(circle) {

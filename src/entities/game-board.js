@@ -7,10 +7,14 @@ export class GameBoard {
         this.size = size;
         this.board = [];
         this.rooms = [];
+    }
+
+    init() {
         this.initBoardArray();
         this.createBoardRooms();
         this.createPaths();
         this.draw();
+        this.hideRooms();
     }
 
     initBoardArray() {
@@ -111,12 +115,16 @@ export class GameBoard {
                 room.setDoor(w - 2, w - 2, (h / 2) - 2, (h / 2), 1, 0);
                 room.setDoor(w - 1, w - 1, (h / 2) - 3, (h / 2) + 1, 1, 0);
             }
-            room.update(0, 0);
+            // room.update(0, 0);
         });
     }
 
     draw() {
         this.rooms.forEach(room => room.draw());
+    }
+
+    hideRooms() {
+        this.rooms.forEach(room => room.roomDiv.classList.add("hidden"));
     }
 
     consoleLogBoard() {

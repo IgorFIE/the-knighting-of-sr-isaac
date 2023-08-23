@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
-import { rectCircleCollision, validateMovement } from "../utilities/collision-utilities";
+import { rectCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { createId, randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { LifeBar } from "./life-bar";
@@ -12,7 +12,7 @@ import { enemyChainMailColors, knight } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Enemy {
-    constructor(roomX, roomY, x, y, enemyType, roomCanv) {
+    constructor(roomX, roomY, x, y, enemyType, roomDiv) {
         this.isAlive = true;
         this.id = createId();
         this.roomX = roomX;
@@ -21,14 +21,14 @@ export class Enemy {
         this.y = y;
         this.enemyType = enemyType;
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
-        this.roomCanv = roomCanv;
+        this.roomCanv = roomDiv;
 
         this.enemyChainColor = enemyChainMailColors[randomNumb(enemyChainMailColors.length)];
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(enemyType === EnemyType.BASIC ? 4 : 8));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
-        this.div = createElem(roomCanv, "div", null, ["enemy"]);
+        this.div = createElem(roomDiv, "div", null, ["enemy"]);
 
         this.shadowCanv = createElem(this.div, "canvas", null, null, toPixelSize(this.enemySize) * 7, toPixelSize(this.enemySize) * 6);
         this.shadowCanv.style.transform = 'translate(' + -toPixelSize(this.enemySize * 2) + 'px, ' + toPixelSize(this.enemySize * 4) + 'px)';
@@ -37,12 +37,11 @@ export class Enemy {
             knight[0].length * toPixelSize(this.enemySize),
             knight.length * toPixelSize(this.enemySize));
 
-        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
+        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this, "#686b7a", this.enemySize);
         this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
 
         this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * GameVars.heartLifeVal, false, this.div);
 
-        this.update();
         this.draw();
 
         let rect = this.enemyCanv.getBoundingClientRect();
@@ -61,8 +60,7 @@ export class Enemy {
                 this.lifeBar.update();
                 this.isAlive = false;
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
-                    this.div.parentNode.removeChild(this.div);
-                    GameVars.currentRoom.enemies.splice(this, 1);
+                    this.destroy();
                 });
             }
         }
@@ -101,10 +99,10 @@ export class Enemy {
         this.validateMovement(newRectX, this.collisionObj.y);
     }
 
-    validateMovement(x, y) {
+    validateMovement(x, y, ignoreCollisions) {
         this.fakeMovCircle.x = x;
         this.fakeMovCircle.y = y;
-        validateMovement(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle));
+        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, false, (circle) => this.move(circle));
     }
 
     move(circle) {
@@ -116,13 +114,13 @@ export class Enemy {
     }
 
     atk() {
-        if (GameVars.keys['v'] || GameVars.keys['V']) {
-            this.enemyRightWeapon.action();
-        }
-        if (GameVars.keys['b'] || GameVars.keys['B']) {
-            this.enemyLeftWeapon.action();
-        }
+        // if (GameVars.keys['v'] || GameVars.keys['V']) {
+        // }
+        // if (GameVars.keys['b'] || GameVars.keys['B']) {
+        // this.enemyLeftWeapon.action();
+        // }
 
+        this.enemyRightWeapon.action();
         this.enemyRightWeapon.update();
         this.enemyLeftWeapon.update();
     }
@@ -130,5 +128,11 @@ export class Enemy {
     draw() {
         genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(this.enemySize), "#00000033", "#00000033");
         drawSprite(this.enemyCanv, knight, toPixelSize(this.enemySize), 0, 0, { "hd": "#999a9e", "hl": "#686b7a", "cm": this.enemyChainColor });
+    }
+
+    destroy() {
+        this.div.parentNode.removeChild(this.div);
+        GameVars.gameBoard.board[this.roomY][this.roomX].enemies.splice(
+            GameVars.gameBoard.board[this.roomY][this.roomX].enemies.indexOf(this), 1);
     }
 }
