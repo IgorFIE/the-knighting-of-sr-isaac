@@ -2,6 +2,7 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { EnemyType } from "../enums/enemy-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
+import { deadAnim } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
 import { rectCircleCollision, validateMovement } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
@@ -12,6 +13,7 @@ import { Weapon } from "./weapon";
 
 export class Enemy {
     constructor(roomX, roomY, x, y, enemyType, roomCanv) {
+        this.isAlive = true;
         this.id = createId();
         this.roomX = roomX;
         this.roomY = roomY;
@@ -26,28 +28,44 @@ export class Enemy {
         this.collisionObj = new CircleObject(x, y, toPixelSize(enemyType === EnemyType.BASIC ? 4 : 8));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
-        this.enemyDiv = createElem(this.roomCanv, "div", null, ["enemy"]);
+        this.div = createElem(roomCanv, "div", null, ["enemy"]);
 
-        this.shadowCanv = createElem(this.enemyDiv, "canvas", null, null, toPixelSize(this.enemySize) * 7, toPixelSize(this.enemySize) * 6);
+        this.shadowCanv = createElem(this.div, "canvas", null, null, toPixelSize(this.enemySize) * 7, toPixelSize(this.enemySize) * 6);
         this.shadowCanv.style.transform = 'translate(' + -toPixelSize(this.enemySize * 2) + 'px, ' + toPixelSize(this.enemySize * 4) + 'px)';
 
-        this.enemyCanv = createElem(this.enemyDiv, "canvas", null, null,
+        this.enemyCanv = createElem(this.div, "canvas", null, null,
             knight[0].length * toPixelSize(this.enemySize),
             knight.length * toPixelSize(this.enemySize));
 
-        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.enemyDiv, "#686b7a", this.enemySize);
-        this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.enemyDiv, "#686b7a", this.enemySize);
+        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
+        this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
 
-        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * GameVars.heartLifeVal, false, this.enemyCanv);
+        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * GameVars.heartLifeVal, false, this.div);
 
         this.update();
         this.draw();
+
+        let rect = this.enemyCanv.getBoundingClientRect();
+        this.div.style.width = rect.width + "px";
+        this.div.style.height = rect.height + "px";
+        this.div.style.transformOrigin = "70% 95%";
     }
 
     update() {
-        this.handleInput();
-        // this.atk();
-        this.lifeBar.update();
+        if (this.lifeBar.life > 0) {
+            this.handleInput();
+            this.atk();
+            this.lifeBar.update();
+        } else {
+            if (this.isAlive) {
+                this.lifeBar.update();
+                this.isAlive = false;
+                this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
+                    this.div.parentNode.removeChild(this.div);
+                    GameVars.currentRoom.enemies.splice(this, 1);
+                });
+            }
+        }
     }
 
     handleInput() {
@@ -92,7 +110,7 @@ export class Enemy {
     move(circle) {
         this.collisionObj.x = circle.x;
         this.collisionObj.y = circle.y;
-        this.enemyDiv.style.transform = 'translate(' +
+        this.div.style.transform = 'translate(' +
             (this.collisionObj.x - (knight[0].length * toPixelSize(this.enemySize)) / 2) + 'px, ' +
             (this.collisionObj.y - (knight.length * toPixelSize(this.enemySize)) / 4 * 3) + 'px)';
     }
@@ -104,6 +122,9 @@ export class Enemy {
         if (GameVars.keys['b'] || GameVars.keys['B']) {
             this.enemyLeftWeapon.action();
         }
+
+        this.enemyRightWeapon.update();
+        this.enemyLeftWeapon.update();
     }
 
     draw() {

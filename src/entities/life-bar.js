@@ -11,8 +11,8 @@ export class LifeBar {
         this.parentCanv = parentCanv;
         this.parentRect;
 
-        this.lifeBackgroundCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / 2) + 3), toPixelSize(11));
-        this.lifeCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
+        this.lifeBackgroundCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heartB"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
+        this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
 
         if (isPlayer) {
             this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(12) + 'px)';
@@ -22,15 +22,20 @@ export class LifeBar {
         this.draw();
     }
 
+    takeDmg(amount) {
+        this.life -= amount;
+        this.life = this.life < 0 ? 0 : this.life;
+    }
+
     update() {
         if (!this.isPlayer) {
             this.parentRect = this.parentCanv.getBoundingClientRect();
             this.lifeBackgroundCanv.style.transform = 'translate(' +
-                ((this.parentRect.x + this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
-                (this.parentRect.y - toPixelSize(13)) + 'px)';
+                ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
+                -toPixelSize(13) + 'px)';
             this.lifeCanv.style.transform = 'translate(' +
-                ((this.parentRect.x + this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
-                (this.parentRect.y - toPixelSize(13)) + 'px)';
+                ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
+                -toPixelSize(13) + 'px)';
         }
 
         this.lifeCanv.getContext("2d").clearRect((this.life * this.lifeCanv.width) / this.totalLife, 0, this.lifeCanv.width, this.lifeCanv.height);

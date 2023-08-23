@@ -8,9 +8,11 @@ import { knight, playerColors, shadow } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
 import { createId } from "../utilities/general-utilities";
+import { deadAnim } from "../utilities/animation-utilities";
 
 export class Player {
     constructor(roomX, roomY) {
+        this.isAlive = true;
         this.id = createId();
         this.roomX = roomX;
         this.roomY = roomY;
@@ -18,26 +20,40 @@ export class Player {
         this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
-        this.playerDiv = createElem(GameVars.gameDiv, "div", null, ["player"]);
+        this.div = createElem(GameVars.gameDiv, "div", null, ["player"]);
 
-        this.shadowCanv = createElem(this.playerDiv, "canvas", null, null, toPixelSize(2) * 7, toPixelSize(2) * 6);
+        this.shadowCanv = createElem(this.div, "canvas", null, null, toPixelSize(2) * 7, toPixelSize(2) * 6);
         this.shadowCanv.style.transform = 'translate(' + -toPixelSize(4) + 'px, ' + toPixelSize(8) + 'px)';
 
-        this.playerCanv = createElem(this.playerDiv, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
+        this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this.playerDiv, playerColors.hd);
-        this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
+        this.playerRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this, playerColors.hd);
+        this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, playerColors.hd);
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv);
 
         this.update();
         this.draw();
+
+        let rect = this.playerCanv.getBoundingClientRect();
+        this.div.style.width = rect.width + "px";
+        this.div.style.height = rect.height + "px";
     }
 
     update() {
-        this.handleInput();
-        this.atk();
-        this.lifeBar.update();
+        if (this.lifeBar.life > 0) {
+            this.handleInput();
+            this.atk();
+            this.lifeBar.update();
+        } else {
+            if (this.isAlive) {
+                this.lifeBar.update();
+                this.isAlive = false;
+                this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
+                    // game over
+                });
+            }
+        }
     }
 
     handleInput() {
@@ -82,7 +98,7 @@ export class Player {
     move(circle) {
         this.collisionObj.x = circle.x;
         this.collisionObj.y = circle.y;
-        this.playerDiv.style.transform = 'translate(' +
+        this.div.style.transform = 'translate(' +
             (this.collisionObj.x - (knight[0].length * toPixelSize(2)) / 2) + 'px, ' +
             (this.collisionObj.y - (knight.length * toPixelSize(2)) / 4 * 3) + 'px)';
     }

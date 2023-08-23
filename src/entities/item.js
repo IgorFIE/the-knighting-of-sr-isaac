@@ -45,7 +45,7 @@ export class Item {
                         this.wasPicked = true;
                         this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
                         GameVars.player.playerRightWeapon.destroy();
-                        GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player.playerDiv, playerColors.hd);
+                        GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player, playerColors.hd);
                         this.destroy();
                         GameVars.weaponIcons.update();
                     }
@@ -53,7 +53,7 @@ export class Item {
                         this.wasPicked = true;
                         this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
                         GameVars.player.playerLeftWeapon.destroy();
-                        GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player.playerDiv, playerColors.hd);
+                        GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player, playerColors.hd);
                         this.destroy();
                         GameVars.weaponIcons.update();
                     }

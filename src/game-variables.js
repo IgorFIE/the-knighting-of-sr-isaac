@@ -35,7 +35,7 @@ let currentRoom;
 
 let player;
 
-let heartLifeVal = 10;
+let heartLifeVal = 6;
 
 const resetGameVars = () => {
     GameVars.score = 0;

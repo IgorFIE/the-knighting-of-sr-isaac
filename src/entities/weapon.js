@@ -6,18 +6,19 @@ import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text"
 import { getWeaponSprite } from "./sprites";
 
 export class Weapon {
-    constructor(x, y, weaponType, handDir, parentDiv, color, size) {
+    constructor(x, y, weaponType, handDir, parent, color, size) {
         this.x = x;
         this.y = y;
         this.handDir = handDir;
         this.weaponType = weaponType;
-        this.parentDiv = parentDiv;
+        this.parent = parent
+        this.parentDiv = parent.div;
         this.size = size || 2;
         this.sprite = getWeaponSprite(this.weaponType);
         this.isPerformingAction = false;
-        this.isPlayer = parentDiv.classList.contains("player");
+        this.isPlayer = this.parentDiv.classList.contains("player");
 
-        this.weaponDiv = createElem(parentDiv, "div", null, ["weapon"]);
+        this.weaponDiv = createElem(this.parentDiv, "div", null, ["weapon"]);
         this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(this.size), this.sprite.length * toPixelSize(this.size));
 
         this.atkAnimation = this.getWeaponAnimation();
@@ -169,28 +170,32 @@ export class Weapon {
 
     update() {
         if (GameVars.atkCanv) {
-            const ctx = GameVars.atkCanv.getContext("2d");
-            // if (this.isPerformingAction) {
-            let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
-            let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
+            // const ctx = GameVars.atkCanv.getContext("2d");
+            if (this.isPerformingAction) {
+                let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
+                let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
-            // just for debug
-            ctx.beginPath();
-            ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
-            ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
-            ctx.strokeStyle = 'red';
-            ctx.lineWidth = toPixelSize(1);
-            ctx.stroke();
+                // just for debug
+                // ctx.beginPath();
+                // ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
+                // ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
+                // ctx.strokeStyle = 'red';
+                // ctx.lineWidth = toPixelSize(1);
+                // ctx.stroke();
 
-            GameVars.currentRoom.enemies.filter(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj)).forEach((e) => {
-                if (!this.damagedObjs.has(e)) {
-                    this.damagedObjs.set(e, true);
-                    e.lifeBar.life -= this.dmg;
-                    // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
-                    console.log("deals damage!!!");
+                let enemies = GameVars.currentRoom.enemies.filter(enemy => enemy !== this.parent && lineCircleCollision(newAtkLine, enemy.collisionObj))
+                if (!this.isPlayer && lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) {
+                    enemies.push(GameVars.player);
                 }
-            });
-            // }
+                enemies.forEach((e) => {
+                    if (!this.damagedObjs.has(e)) {
+                        this.damagedObjs.set(e, true);
+                        e.lifeBar.takeDmg(this.dmg);
+                        // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
+                        console.log("deals damage!!! " + e.lifeBar.life);
+                    }
+                });
+            }
         }
     }
 
