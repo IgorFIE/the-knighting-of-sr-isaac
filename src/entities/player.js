@@ -28,7 +28,7 @@ export class Player {
         this.playerRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this.playerDiv, playerColors.hd);
         this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.playerDiv, playerColors.hd);
 
-        this.lifeBar = new LifeBar(24, true, this.playerCanv);
+        this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv);
 
         this.update();
         this.draw();

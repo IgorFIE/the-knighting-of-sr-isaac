@@ -35,6 +35,8 @@ let currentRoom;
 
 let player;
 
+let heartLifeVal = 10;
+
 const resetGameVars = () => {
     GameVars.score = 0;
 
@@ -94,6 +96,8 @@ export const GameVars = {
     gameBoard,
     currentRoom,
     player,
+
+    heartLifeVal,
 
     resetGameVars,
     initDebug

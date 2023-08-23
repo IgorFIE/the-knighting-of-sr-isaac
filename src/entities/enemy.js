@@ -38,7 +38,7 @@ export class Enemy {
         this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this.enemyDiv, "#686b7a", this.enemySize);
         this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this.enemyDiv, "#686b7a", this.enemySize);
 
-        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * 8, false, this.enemyCanv);
+        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * GameVars.heartLifeVal, false, this.enemyCanv);
 
         this.update();
         this.draw();
