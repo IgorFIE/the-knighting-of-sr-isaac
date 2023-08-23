@@ -16,6 +16,7 @@ import { createElem } from "./utilities/draw-utilities";
 
 export class Game {
     constructor() {
+        GameVars.isGameOver = false;
         GameVars.gameBoard = new GameBoard(5);
 
         GameVars.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);

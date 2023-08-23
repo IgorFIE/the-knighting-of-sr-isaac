@@ -1,8 +1,8 @@
-const { GameVars } = require("./game-variables");
+const { GameVars, toPixelSize } = require("./game-variables");
 const { Game } = require("./game");
 const { createElem } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
-const { genLargeBox } = require("./utilities/box-generator");
+const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
 const { updateFps, createFpsElement } = require("./utilities/fps-utilities");
 
 let mainDiv;
@@ -11,10 +11,16 @@ let mainMenuDiv;
 let mainMenuCanv;
 let mainMenuCtx;
 
+let gameOverCanv;
+let gameOverCtx
+
+
 let game;
 
 let fpsInterval = 1000 / GameVars.fps;
 let then = Date.now();
+
+let skipElapsedTime = 0;
 
 function init() {
     GameVars.resetGameVars();
@@ -23,9 +29,10 @@ function init() {
 
     addKeyListenerEvents();
 
-    // createMainMenu();
+    createMainMenu();
     createGameDiv();
-    game = new Game();
+    createGameOverMenu();
+    // game = new Game();
 
     // createFpsElement(mainDiv);
     GameVars.initDebug();
@@ -42,13 +49,13 @@ function createMainMenu() {
     mainMenuDiv = createElem(mainDiv, "div", null, null, GameVars.gameW, GameVars.gameH);
     mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
 
-    let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, 140 * GameVars.pixelSize, 60 * GameVars.pixelSize, null, (e) => startGame());
+    let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(140), toPixelSize(60), null, () => startGame());
     mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + "px " +
-        ((GameVars.gameH / 2) - (mainMenuBtn.height / 2) + (40 * GameVars.pixelSize)) + "px";
+        ((GameVars.gameH / 2) - (mainMenuBtn.height / 2) + toPixelSize(40)) + "px";
 
-    genLargeBox(mainMenuBtn, 0, 0, 139, 59, GameVars.pixelSize, "black", "rgba(255, 255, 255, 0.9)");
-    drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuBtn, GameVars.pixelSize, 70, 22, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuBtn, GameVars.pixelSize, 70, 38, "black", 2);
+    genSmallBox(mainMenuBtn, 0, 0, 69, 29, toPixelSize(2), "#000000aa", "#100f0f66");
+    drawPixelTextInCanvas(convertTextToPixelArt("enter/click/touch"), mainMenuBtn, toPixelSize(1), 70, 24, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuBtn, toPixelSize(1), 70, 36, "#edeef7", 1);
 
     mainMenuCtx = mainMenuCanv.getContext("2d");
     drawMainMenu();
@@ -62,15 +69,27 @@ function drawMainMenu() {
 
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
 
-    drawPixelTextInCanvas(convertTextToPixelArt("the 13th"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 6);
-    drawPixelTextInCanvas(convertTextToPixelArt("century Knight"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "black", 6);
+    drawPixelTextInCanvas(convertTextToPixelArt("the 13th"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 4);
+    drawPixelTextInCanvas(convertTextToPixelArt("century Knight"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 24, "black", 4);
 
-    genLargeBox(mainMenuCanv, -20, Math.round(((GameVars.gameHgAsPixels / 24) * 23) - 15), GameVars.gameWdAsPixels + 40, 30, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
-    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "black", 2);
+    genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 11, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 12, toPixelSize(2), "#000000aa", "#100f0f66");
+    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels - 12, "#edeef7", 1);
 }
 
 function createGameDiv() {
     GameVars.gameDiv = createElem(mainDiv, "div", "game", ["hidden"]);
+}
+
+function createGameOverMenu() {
+    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden", "ontop"], GameVars.gameW, GameVars.gameH, "rgba(255,75,75,0.9)", () => skipGameOver());
+    gameOverCtx = gameOverCanv.getContext("2d");
+}
+
+function skipGameOver() {
+    gameOverCanv.classList.add("hidden");
+    mainMenuDiv.classList.remove("hidden");
+    GameVars.gameDiv.innerHTML = "";
+    game = null;
 }
 
 function startGame() {
@@ -86,12 +105,32 @@ function gameLoop() {
         GameVars.deltaTime = elapsed / 1000;
 
         // updateFps(then);
-
         if (game) {
-            game.update();
+            if (!GameVars.isGameOver) {
+                game.update();
+            } else {
+                drawGameOver();
+                gameOverCanv.classList.remove("hidden");
+                if (GameVars.keys['Enter']) {
+                    skipGameOver();
+                }
+            }
+        } else {
+            if (skipElapsedTime / 1 >= 1 && GameVars.keys['Enter']) {
+                startGame();
+                skipElapsedTime = 0;
+            } else {
+                skipElapsedTime += GameVars.deltaTime;
+            }
         }
     }
     window.requestAnimationFrame(() => gameLoop());
+}
+
+function drawGameOver() {
+    gameOverCtx.clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
+    genLargeBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
+    drawPixelTextInCanvas(convertTextToPixelArt("Game over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 50, "black", 6);
 }
 
 init();

@@ -27,6 +27,8 @@ let keys = {};
 
 let score;
 
+let isGameOver;
+
 let roomWidth = 33;
 let roomHeight = 17;
 
@@ -89,6 +91,8 @@ export const GameVars = {
     keys,
 
     score,
+
+    isGameOver,
 
     roomWidth,
     roomHeight,

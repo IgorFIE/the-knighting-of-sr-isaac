@@ -50,7 +50,7 @@ export class Player {
                 this.lifeBar.update();
                 this.isAlive = false;
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
-                    // game over
+                    GameVars.isGameOver = true;
                 });
             }
         }
