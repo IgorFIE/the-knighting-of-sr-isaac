@@ -1,3 +1,4 @@
+import { getDoorBasedOnRoomType } from "../enums/door-type";
 import { RoomType, isSpecialRoom } from "../enums/room-type";
 import { randomNumb } from "../utilities/general-utilities";
 import { Room } from "./room";
@@ -96,26 +97,32 @@ export class GameBoard {
     }
 
     createPaths() {
+        let w;
+        let h;
+        let doorType;
         this.rooms.forEach((room) => {
-            const w = room.backBlocks[0].length;
-            const h = room.backBlocks.length;
+            w = room.backBlocks[0].length;
+            h = room.backBlocks.length;
             if (room.roomY - 1 >= 0 && this.board[room.roomY - 1][room.roomX]) {
-                room.setDoor((w / 2) - 3, (w / 2) + 1, 0, 0, 0, -1);
-                room.setDoor((w / 2) - 2, (w / 2), 1, 1, 0, -1);
+                doorType = getDoorBasedOnRoomType(isSpecialRoom(this.board[room.roomY][room.roomX].roomType) ? this.board[room.roomY][room.roomX].roomType : this.board[room.roomY - 1][room.roomX].roomType);
+                room.setDoor((w / 2) - 3, (w / 2) + 1, 0, 0, 0, -1, doorType);
+                room.setDoor((w / 2) - 2, (w / 2), 1, 1, 0, -1, doorType);
             }
             if (room.roomY + 1 < this.board.length && this.board[room.roomY + 1][room.roomX]) {
-                room.setDoor((w / 2) - 2, (w / 2), h - 2, h - 2, 0, 1);
-                room.setDoor((w / 2) - 3, (w / 2) + 1, h - 1, h - 1, 0, 1);
+                doorType = getDoorBasedOnRoomType(isSpecialRoom(this.board[room.roomY][room.roomX].roomType) ? this.board[room.roomY][room.roomX].roomType : this.board[room.roomY + 1][room.roomX].roomType);
+                room.setDoor((w / 2) - 2, (w / 2), h - 2, h - 2, 0, 1, doorType);
+                room.setDoor((w / 2) - 3, (w / 2) + 1, h - 1, h - 1, 0, 1, doorType);
             }
             if (room.roomX - 1 >= 0 && this.board[room.roomY][room.roomX - 1]) {
-                room.setDoor(0, 0, (h / 2) - 3, (h / 2) + 1, -1, 0);
-                room.setDoor(1, 1, (h / 2) - 2, (h / 2), -1, 0);
+                doorType = getDoorBasedOnRoomType(isSpecialRoom(this.board[room.roomY][room.roomX].roomType) ? this.board[room.roomY][room.roomX].roomType : this.board[room.roomY][room.roomX - 1].roomType);
+                room.setDoor(0, 0, (h / 2) - 3, (h / 2) + 1, -1, 0, doorType);
+                room.setDoor(1, 1, (h / 2) - 2, (h / 2), -1, 0, doorType);
             }
             if (room.roomX + 1 < this.board[0].length && this.board[room.roomY][room.roomX + 1]) {
-                room.setDoor(w - 2, w - 2, (h / 2) - 2, (h / 2), 1, 0);
-                room.setDoor(w - 1, w - 1, (h / 2) - 3, (h / 2) + 1, 1, 0);
+                doorType = getDoorBasedOnRoomType(isSpecialRoom(this.board[room.roomY][room.roomX].roomType) ? this.board[room.roomY][room.roomX].roomType : this.board[room.roomY][room.roomX + 1].roomType);
+                room.setDoor(w - 2, w - 2, (h / 2) - 2, (h / 2), 1, 0, doorType);
+                room.setDoor(w - 1, w - 1, (h / 2) - 3, (h / 2) + 1, 1, 0, doorType);
             }
-            // room.update(0, 0);
         });
     }
 

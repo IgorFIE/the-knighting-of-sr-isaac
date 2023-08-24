@@ -1,5 +1,6 @@
 import { SquareObject } from "../../collision-objects/square-object";
 import { BlockType } from "../../enums/block-type";
+import { DoorType, getDoorColors } from "../../enums/door-type";
 import { GameVars, toPixelSize } from "../../game-variables";
 import { generateBox } from "../../utilities/box-generator";
 import { randomNumb } from "../../utilities/general-utilities";
@@ -11,6 +12,7 @@ export class Block {
         this.blockRoomY = blockRoomY;
         this.collisionObj = new SquareObject(blockRoomX * toPixelSize(16), blockRoomY * toPixelSize(16), toPixelSize(16), toPixelSize(16));
         this.blockType = blockType;
+        this.doorType = DoorType.NORMAL;
     }
 
     draw() {
@@ -51,13 +53,14 @@ export class Block {
                 break;
 
             case BlockType.DOOR_CLOSE:
+                const doorColors = getDoorColors(this.doorType);
                 this.createDoor(doorCtx, () => {
-                    doorCtx.fillStyle = "#843d0d";
+                    doorCtx.fillStyle = doorColors.md;
                     doorCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                     generateBox(this.room.doorCanv,
                         this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                         this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
-                        toPixelSize(2), "#865433", (x, y, endX, endY) => {
+                        toPixelSize(2), doorColors.lt, (x, y, endX, endY) => {
                             return (y === 0 && this.blockRoomY !== 1 && this.blockRoomY < Math.round(GameVars.roomHeight) - 1) || // Top lines
                                 (x === endX && this.blockRoomX > 0 && this.blockRoomX !== Math.round(GameVars.roomWidth) - 2) || // right Lines
                                 (y < 3 && this.blockRoomY === 0) || // topDoorFrame
@@ -67,7 +70,7 @@ export class Block {
                     generateBox(this.room.doorCanv,
                         this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                         this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
-                        toPixelSize(2), "#2f1519", (x, y, endX, endY) => {
+                        toPixelSize(2), doorColors.dk, (x, y, endX, endY) => {
                             return (y === endY && this.blockRoomY > 0 && this.blockRoomY !== Math.round(GameVars.roomHeight) - 2) || //Bottom lines
                                 (x === 0 && ((this.blockRoomX === 0 || this.blockRoomX === Math.round(GameVars.roomWidth) - 2) ||
                                     (this.blockRoomX > 1 && this.blockRoomX < Math.round(GameVars.roomWidth) - 2))) || // left lines

@@ -64,10 +64,7 @@ export class Room {
     }
 
     setSpecialRoomType(roomType) {
-        // let heightCenter = Math.floor(GameVars.roomHeight / 2);
-        // let widthCenter = Math.floor(GameVars.roomWidth / 2);
         this.roomType = roomType;
-        // this.cleanEnemies();
         switch (this.roomType) {
             // case RoomType.KEY:
             case RoomType.TREASURE:
@@ -86,7 +83,7 @@ export class Room {
         }
     }
 
-    setDoor(startX, finishX, startY, finishY, xDir, yDir) {
+    setDoor(startX, finishX, startY, finishY, xDir, yDir, doorType) {
         let block;
         for (let y = Math.round(startY); y <= Math.round(finishY); y++) {
             for (let x = Math.round(startX); x <= Math.round(finishX); x++) {
@@ -94,6 +91,7 @@ export class Room {
                 this.walls.splice(this.walls.indexOf(block), 1);
 
                 block.blockType = BlockType.DOOR_CLOSE;
+                block.doorType = doorType;
                 this.doors.push(block);
 
                 this.backBlocks[y][x] = new DoorTrigger(this, block.blockRoomX, block.blockRoomY, BlockType.FLOOR, xDir, yDir);
@@ -120,7 +118,7 @@ export class Room {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
         }
-        if (this.enemies.length === 0) {
+        if (this.enemies.length === 0 && !this.isDoorsOpen) {
             this.openDoors();
         }
     }
