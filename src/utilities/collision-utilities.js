@@ -28,7 +28,7 @@ export const circleToCircleCollision = (circle1, circle2) => {
 export const checkForCollisions = (fakeMovCircle, roomX, roomY, isPlayer, fn) => {
     if (!(GameVars.gameBoard.board[roomY][roomX].walls.find((wall) => rectCircleCollision(fakeMovCircle, wall.collisionObj)) ||
         (isPlayer && GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => circleToCircleCollision(fakeMovCircle, enemy.collisionObj))) ||
-        (GameVars.currentRoom.isDoorsOpen && GameVars.gameBoard.board[roomY][roomX].doors.find((door) => rectCircleCollision(fakeMovCircle, door.collisionObj))))) {
+        (!GameVars.currentRoom.isDoorsOpen && GameVars.gameBoard.board[roomY][roomX].doors.find((door) => rectCircleCollision(fakeMovCircle, door.collisionObj))))) {
         fn(fakeMovCircle);
     }
 }

@@ -13,6 +13,7 @@ import { MovePad } from "./entities/movepad";
 import { Enemy } from "./entities/enemy";
 import { EnemyType } from "./enums/enemy-type";
 import { createElem } from "./utilities/draw-utilities";
+import { BlockType } from "./enums/block-type";
 
 export class Game {
     constructor() {

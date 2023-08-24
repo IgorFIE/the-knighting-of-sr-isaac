@@ -14,11 +14,12 @@ export class Block {
     }
 
     draw() {
-        const ctx = this.room.roomCanv.getContext("2d");
+        const roomCtx = this.room.roomCanv.getContext("2d");
+        const doorCtx = this.room.doorCanv.getContext("2d");
         switch (this.blockType) {
             case BlockType.WALL:
-                ctx.fillStyle = "#686b7a";
-                ctx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
+                roomCtx.fillStyle = "#686b7a";
+                roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                 generateBox(this.room.roomCanv,
                     this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                     this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
@@ -49,30 +50,48 @@ export class Block {
                     });
                 break;
 
-            case BlockType.DOOR_OPEN:
-                if ((this.blockRoomX === this.room.backBlocks[0].length - 1 || this.blockRoomX === 0) &&
-                    this.blockRoomY - 1 > 0 && this.room.backBlocks[this.blockRoomY - 1][this.blockRoomX].blockType == BlockType.WALL) {
-                    this.createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y - toPixelSize(8));
-                } else if ((this.blockRoomX === this.room.backBlocks[0].length - 1 || this.blockRoomX === 0) &&
-                    this.blockRoomY + 1 < this.room.backBlocks.length && this.room.backBlocks[this.blockRoomY + 1][this.blockRoomX].blockType == BlockType.WALL) {
-                    this.createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y + toPixelSize(8));
-                } else if ((this.blockRoomY === this.room.backBlocks.length - 1 || this.blockRoomY === 0) &&
-                    this.blockRoomX - 1 > 0 && this.room.backBlocks[this.blockRoomY][this.blockRoomX - 1].blockType == BlockType.WALL) {
-                    this.createWallBlock(ctx, this.collisionObj.x - toPixelSize(8), this.collisionObj.y);
-                } else if ((this.blockRoomY === this.room.backBlocks.length - 1 || this.blockRoomY === 0) &&
-                    this.blockRoomX + 1 < this.room.backBlocks[0].length && this.room.backBlocks[this.blockRoomY][this.blockRoomX + 1].blockType == BlockType.WALL) {
-                    this.createWallBlock(ctx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y);
-                }
+            case BlockType.DOOR_CLOSE:
+                this.createDoor(doorCtx, () => {
+                    doorCtx.fillStyle = "#843d0d";
+                    doorCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
+                    generateBox(this.room.doorCanv,
+                        this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
+                        this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
+                        toPixelSize(2), "#865433", (x, y, endX, endY) => {
+                            return (y === 0 && this.blockRoomY !== 1 && this.blockRoomY < Math.round(GameVars.roomHeight) - 1) || // Top lines
+                                (x === endX && this.blockRoomX > 0 && this.blockRoomX !== Math.round(GameVars.roomWidth) - 2) || // right Lines
+                                (y < 3 && this.blockRoomY === 0) || // topDoorFrame
+                                (x > endX - 3 && this.blockRoomX === Math.round(GameVars.roomWidth) - 1)
+                                ;
+                        });
+                    generateBox(this.room.doorCanv,
+                        this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
+                        this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
+                        toPixelSize(2), "#2f1519", (x, y, endX, endY) => {
+                            return (y === endY && this.blockRoomY > 0 && this.blockRoomY !== Math.round(GameVars.roomHeight) - 2) || //Bottom lines
+                                (x === 0 && ((this.blockRoomX === 0 || this.blockRoomX === Math.round(GameVars.roomWidth) - 2) ||
+                                    (this.blockRoomX > 1 && this.blockRoomX < Math.round(GameVars.roomWidth) - 2))) || // left lines
+                                (y < 2 && this.blockRoomY === 0) || // top door frame
+                                (y > endY - 2 && this.blockRoomY === Math.round(GameVars.roomHeight) - 1) || // bottom door frame
+                                (x < 2 && this.blockRoomX === 0) || // left door frame
+                                (x > endX - 2 && this.blockRoomX === Math.round(GameVars.roomWidth) - 1) // right door frame
+                                ;
+                        });
+                    if (this.blockRoomY < 3 || this.blockRoomY > Math.round(GameVars.roomHeight) - 3) {
+                        this.createDoorFrame(doorCtx, this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(8));
+                    } else {
+                        this.createDoorFrame(doorCtx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y, toPixelSize(8), toPixelSize(16));
+                    }
+                });
                 break;
 
-            case BlockType.DOOR_CLOSE:
-                ctx.fillStyle = "#3e3846";
-                ctx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
+            case BlockType.DOOR_OPEN:
+                this.createDoor(doorCtx);
                 break;
 
             case BlockType.FLOOR:
-                ctx.fillStyle = "#41663d";
-                ctx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
+                roomCtx.fillStyle = "#41663d";
+                roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                 generateBox(this.room.roomCanv,
                     this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                     this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
@@ -108,6 +127,40 @@ export class Block {
         } else {
             return leftRightFn(x, y, endX, endY);
         }
+    }
+
+    createDoor(ctx, elseFn) {
+        if ((this.blockRoomX === this.room.backBlocks[0].length - 1 || this.blockRoomX === 0) &&
+            this.blockRoomY - 1 > 0 && this.room.backBlocks[this.blockRoomY - 1][this.blockRoomX].blockType == BlockType.WALL) {
+            this.createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y - toPixelSize(8));
+            this.createDoorFrame(ctx, this.collisionObj.x, this.collisionObj.y + toPixelSize(8), toPixelSize(16), toPixelSize(8));
+        } else if ((this.blockRoomX === this.room.backBlocks[0].length - 1 || this.blockRoomX === 0) &&
+            this.blockRoomY + 1 < this.room.backBlocks.length && this.room.backBlocks[this.blockRoomY + 1][this.blockRoomX].blockType == BlockType.WALL) {
+            this.createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y + toPixelSize(8));
+            this.createDoorFrame(ctx, this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(8));
+        } else if ((this.blockRoomY === this.room.backBlocks.length - 1 || this.blockRoomY === 0) &&
+            this.blockRoomX - 1 > 0 && this.room.backBlocks[this.blockRoomY][this.blockRoomX - 1].blockType == BlockType.WALL) {
+            this.createWallBlock(ctx, this.collisionObj.x - toPixelSize(8), this.collisionObj.y);
+            this.createDoorFrame(ctx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y, toPixelSize(8), toPixelSize(16));
+        } else if ((this.blockRoomY === this.room.backBlocks.length - 1 || this.blockRoomY === 0) &&
+            this.blockRoomX + 1 < this.room.backBlocks[0].length && this.room.backBlocks[this.blockRoomY][this.blockRoomX + 1].blockType == BlockType.WALL) {
+            this.createWallBlock(ctx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y);
+            this.createDoorFrame(ctx, this.collisionObj.x, this.collisionObj.y, toPixelSize(8), toPixelSize(16));
+        } else {
+            if (elseFn) elseFn();
+        }
+    }
+
+    createDoorFrame(ctx, x, y, w, h) {
+        ctx.fillStyle = "#843d0d";
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = "#865433";
+        ctx.fillRect(x, y, w, toPixelSize(2));
+        ctx.fillRect(x + w - toPixelSize(2), y, toPixelSize(2), h);
+        ctx.fillStyle = "#2f1519";
+        ctx.fillRect(x + toPixelSize(w / toPixelSize(2)), y + toPixelSize((h / toPixelSize(2)) - 2), toPixelSize(2), toPixelSize(2));
+        ctx.fillRect(x, y + h - toPixelSize(2), w, toPixelSize(2));
+        ctx.fillRect(x, y, toPixelSize(2), h);
     }
 
     convertToMapPixel(value, amount = 2) {

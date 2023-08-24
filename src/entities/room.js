@@ -30,6 +30,7 @@ export class Room {
 
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
         this.roomCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        this.doorCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
         this.initRoomBlocks();
         this.populateRandomEnemies();
@@ -66,12 +67,14 @@ export class Room {
         // let heightCenter = Math.floor(GameVars.roomHeight / 2);
         // let widthCenter = Math.floor(GameVars.roomWidth / 2);
         this.roomType = roomType;
-        this.cleanEnemies();
+        // this.cleanEnemies();
         switch (this.roomType) {
             // case RoomType.KEY:
-            // case RoomType.TREASURE:
-            //     break;
+            case RoomType.TREASURE:
+                this.cleanEnemies();
+                break;
             case RoomType.BOSS:
+                this.cleanEnemies();
                 this.enemies.push(new Enemy(this.roomX, this.roomY, GameVars.gameW / 2, GameVars.gameH / 2, EnemyType.BOSS, this.roomDiv));
                 break;
         }
@@ -90,7 +93,7 @@ export class Room {
                 block = this.backBlocks[y][x];
                 this.walls.splice(this.walls.indexOf(block), 1);
 
-                block.blockType = BlockType.DOOR_OPEN;
+                block.blockType = BlockType.DOOR_CLOSE;
                 this.doors.push(block);
 
                 this.backBlocks[y][x] = new DoorTrigger(this, block.blockRoomX, block.blockRoomY, BlockType.FLOOR, xDir, yDir);
@@ -117,6 +120,18 @@ export class Room {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
         }
+        if (this.enemies.length === 0) {
+            this.openDoors();
+        }
+    }
+
+    openDoors() {
+        this.isDoorsOpen = true;
+        this.doorCanv.getContext("2d").clearRect(0, 0, this.doorCanv.width, this.doorCanv.height);
+        this.doors.forEach(door => {
+            door.blockType = BlockType.DOOR_OPEN;
+            door.draw();
+        });
     }
 
     draw() {
