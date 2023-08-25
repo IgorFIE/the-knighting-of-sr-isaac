@@ -147,6 +147,15 @@ export const getWeaponSprite = (weaponType) => {
 }
 
 // ITEMS
+export const key = [
+    [wt, wt, wt],
+    [wt, nu, wt],
+    [wt, wt, wt],
+    [nu, wt, nu],
+    [wt, wt, nu],
+    [nu, wt, nu],
+    [wt, wt, nu]
+];
 
 export const getItemSprite = (itemType) => {
     switch (itemType) {

@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { getItemSprite, getWeaponSprite, playerColors } from "./sprites";
+import { getItemSprite, getWeaponSprite, key, playerColors } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Item {
@@ -31,6 +31,8 @@ export class Item {
 
     getSprite(itemType, subType) {
         switch (itemType) {
+            case ItemType.KEY:
+                return key;
             case ItemType.POWER_UP:
                 return getItemSprite(subType);
             case ItemType.WEAPON:
@@ -41,23 +43,31 @@ export class Item {
     update() {
         if (this.timeElapsed / 1 >= 1) {
             if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj)) {
-                if (this.itemType == ItemType.WEAPON) {
-                    if (!this.wasPicked && (GameVars.keys['v'] || GameVars.keys['V'])) {
-                        this.wasPicked = true;
-                        this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
-                        GameVars.player.playerRightWeapon.destroy();
-                        GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player, playerColors.hd);
+                switch (this.itemType) {
+                    case ItemType.KEY:
+                        GameVars.player.hasKey = true;
                         this.destroy();
-                        GameVars.weaponIcons.update();
-                    }
-                    if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
-                        this.wasPicked = true;
-                        this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
-                        GameVars.player.playerLeftWeapon.destroy();
-                        GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player, playerColors.hd);
-                        this.destroy();
-                        GameVars.weaponIcons.update();
-                    }
+                        break;
+                    case ItemType.POWER_UP:
+                        break;
+                    case ItemType.WEAPON:
+                        if (!this.wasPicked && (GameVars.keys['v'] || GameVars.keys['V'])) {
+                            this.wasPicked = true;
+                            this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
+                            GameVars.player.playerRightWeapon.destroy();
+                            GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player, playerColors.hd);
+                            this.destroy();
+                            GameVars.weaponIcons.update();
+                        }
+                        if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
+                            this.wasPicked = true;
+                            this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
+                            GameVars.player.playerLeftWeapon.destroy();
+                            GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player, playerColors.hd);
+                            this.destroy();
+                            GameVars.weaponIcons.update();
+                        }
+                        break;
                 }
             }
         } else {

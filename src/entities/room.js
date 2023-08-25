@@ -1,6 +1,9 @@
 import { BlockType } from "../enums/block-type";
+import { DoorType } from "../enums/door-type";
 import { EnemyType } from "../enums/enemy-type";
+import { ItemType } from "../enums/item-type";
 import { RoomType } from "../enums/room-type";
+import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem } from "../utilities/draw-utilities";
@@ -8,10 +11,10 @@ import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { DoorTrigger } from "./blocks/door-trigger";
 import { Enemy } from "./enemy";
+import { Item } from "./item";
 
 export class Room {
     constructor(roomX, roomY) {
-        this.isDoorsOpen = false;
         this.roomX = roomX;
         this.roomY = roomY;
 
@@ -20,7 +23,6 @@ export class Room {
 
         this.roomType = RoomType.EMPTY;
         this.backBlocks = [];
-        this.frontBlocks = [];
         this.floors = [];
         this.walls = [];
         this.doors = [];
@@ -41,13 +43,11 @@ export class Room {
         let blockType;
         for (let y = 0; y < GameVars.roomHeight; y++) {
             this.backBlocks.push([]);
-            this.frontBlocks.push([]);
             for (let x = 0; x < GameVars.roomWidth; x++) {
                 blockType = (y <= 1 || x <= 1 || y >= GameVars.roomHeight - 2 || x >= GameVars.roomWidth - 2) ? BlockType.WALL : BlockType.FLOOR;
                 obj = new Block(this, x, y, blockType);
                 this.backBlocks[y].push(obj);
                 blockType === BlockType.WALL ? this.walls.push(obj) : this.floors.push(obj);
-                this.frontBlocks[y].push(null);
             }
         }
     }
@@ -56,8 +56,8 @@ export class Room {
         let count = randomNumbOnRange(1, 3);
         while (this.enemies.length !== count) {
             let newEnemy = new Enemy(this.roomX, this.roomY,
-                randomNumbOnRange(GameVars.gameW / 4, (GameVars.gameW / 4) * 3),
-                randomNumbOnRange(GameVars.gameH / 4, (GameVars.gameH / 4) * 3),
+                randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),
+                randomNumbOnRange(GameVars.gameH / 3, (GameVars.gameH / 3) * 2),
                 EnemyType.BASIC, this.roomDiv);
             if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj))) this.enemies.push(newEnemy);
         }
@@ -66,8 +66,11 @@ export class Room {
     setSpecialRoomType(roomType) {
         this.roomType = roomType;
         switch (this.roomType) {
-            // case RoomType.KEY:
+            case RoomType.KEY:
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.KEY, null, this.roomDiv));
+                break;
             case RoomType.TREASURE:
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, 3), this.roomDiv));
                 this.cleanEnemies();
                 break;
             case RoomType.BOSS:
@@ -118,17 +121,39 @@ export class Room {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
         }
-        if (this.enemies.length === 0 && !this.isDoorsOpen) {
+        if (this.enemies.length === 0) {
             this.openDoors();
         }
     }
 
     openDoors() {
-        this.isDoorsOpen = true;
         this.doorCanv.getContext("2d").clearRect(0, 0, this.doorCanv.width, this.doorCanv.height);
+        const isKeyPressed = !!(GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B']);
+        const shouldOpenTreasureDoor = isKeyPressed && GameVars.player.hasKey && this.checkIfInRangeOfPlayer(DoorType.TREASURE);
+        const shouldOpenBossDoor = isKeyPressed && this.checkIfInRangeOfPlayer(DoorType.BOSS);
         this.doors.forEach(door => {
-            door.blockType = BlockType.DOOR_OPEN;
+            if (door.doorType === DoorType.TREASURE) {
+                if (shouldOpenTreasureDoor) {
+                    door.blockType = BlockType.DOOR_OPEN;
+                }
+            } else if (door.doorType === DoorType.BOSS) {
+                if (shouldOpenBossDoor) {
+                    door.blockType = BlockType.DOOR_OPEN;
+                }
+            } else {
+                door.blockType = BlockType.DOOR_OPEN;
+            }
             door.draw();
+        });
+    }
+
+    checkIfInRangeOfPlayer(doorType) {
+        let num, num2, dist;
+        return !!this.doors.find(door => {
+            num = GameVars.player.collisionObj.x - door.collisionObj.x;
+            num2 = GameVars.player.collisionObj.y - door.collisionObj.y;
+            dist = Math.sqrt(num * num + num2 * num2);
+            return door.doorType === doorType && dist < toPixelSize(32);
         });
     }
 
@@ -137,7 +162,6 @@ export class Room {
         this.drawRoomShadows();
         this.walls.forEach(block => block.draw());
         this.doors.forEach(block => block.draw());
-        // this.frontBlocks.forEach(row => row.forEach(block => block?.draw()));
     }
 
     drawRoomShadows() {
@@ -150,27 +174,5 @@ export class Room {
             this.backBlocks[this.backBlocks.length - 2][0].collisionObj.y - toPixelSize(2),
             this.backBlocks[this.backBlocks.length - 2][this.backBlocks[0].length - 4].collisionObj.x - toPixelSize(4),
             toPixelSize(34));
-    }
-
-    consoleLogRoom() {
-        let room = "";
-        for (let y = 0; y < GameVars.roomHeight; y++) {
-            let newLine = "";
-            for (let x = 0; x < GameVars.roomWidth; x++) {
-                if (this.backBlocks[y][x].blockType == BlockType.WALL) {
-                    newLine += "#";
-                } else if (this.frontBlocks[y][x]?.blockType == BlockType.KEY) {
-                    newLine += "K";
-                } else if (this.frontBlocks[y][x]?.blockType == BlockType.TREASURE) {
-                    newLine += "T";
-                } else if (this.frontBlocks[y][x]?.blockType == BlockType.BOSS) {
-                    newLine += "B";
-                } else {
-                    newLine += " ";
-                }
-            }
-            room += newLine + "\n";
-        }
-        console.log(room);
     }
 }

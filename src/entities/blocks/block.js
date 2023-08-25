@@ -2,7 +2,7 @@ import { SquareObject } from "../../collision-objects/square-object";
 import { BlockType } from "../../enums/block-type";
 import { DoorType, getDoorColors } from "../../enums/door-type";
 import { GameVars, toPixelSize } from "../../game-variables";
-import { generateBox } from "../../utilities/box-generator";
+import { genSmallBox, generateBox } from "../../utilities/box-generator";
 import { randomNumb } from "../../utilities/general-utilities";
 
 export class Block {
@@ -85,6 +85,17 @@ export class Block {
                     } else {
                         this.createDoorFrame(doorCtx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y, toPixelSize(8), toPixelSize(16));
                     }
+
+                    if (this.doorType === DoorType.TREASURE) {
+                        if ((this.blockRoomX === 1 && this.room.backBlocks[this.blockRoomY - 1][this.blockRoomX].blockType == BlockType.FLOOR && this.room.backBlocks[this.blockRoomY + 1][this.blockRoomX].blockType == BlockType.FLOOR) ||
+                            (this.blockRoomX === Math.round(GameVars.roomWidth) - 1 && this.room.backBlocks[this.blockRoomY - 2][this.blockRoomX].blockType == BlockType.FLOOR && this.room.backBlocks[this.blockRoomY + 2][this.blockRoomX].blockType == BlockType.FLOOR)) {
+                            this.createKeyHole(doorCtx, this.collisionObj.x, this.collisionObj.y + toPixelSize(4));
+                        }
+                        if ((this.blockRoomY === 0 && this.room.backBlocks[this.blockRoomY][this.blockRoomX - 2].blockType == BlockType.FLOOR && this.room.backBlocks[this.blockRoomY][this.blockRoomX + 2].blockType == BlockType.FLOOR) ||
+                            (this.blockRoomY === Math.round(GameVars.roomHeight) - 2 && this.room.backBlocks[this.blockRoomY][this.blockRoomX - 1].blockType == BlockType.FLOOR && this.room.backBlocks[this.blockRoomY][this.blockRoomX + 1].blockType == BlockType.FLOOR)) {
+                            this.createKeyHole(doorCtx, this.collisionObj.x + toPixelSize(6), this.collisionObj.y + toPixelSize(10));
+                        }
+                    }
                 });
                 break;
 
@@ -164,6 +175,19 @@ export class Block {
         ctx.fillRect(x + toPixelSize(w / toPixelSize(2)), y + toPixelSize((h / toPixelSize(2)) - 2), toPixelSize(2), toPixelSize(2));
         ctx.fillRect(x, y + h - toPixelSize(2), w, toPixelSize(2));
         ctx.fillRect(x, y, toPixelSize(2), h);
+    }
+
+    createKeyHole(ctx, x, y) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(x, y, toPixelSize(6), toPixelSize(6));
+
+        ctx.fillStyle = "#3e3846";
+        ctx.fillRect(x, y + toPixelSize(6), toPixelSize(6), toPixelSize(2));
+        ctx.fillRect(x - toPixelSize(2), y, toPixelSize(2), toPixelSize(6));
+
+        ctx.fillStyle = "#999a9e";
+        ctx.fillRect(x, y - toPixelSize(2), toPixelSize(6), toPixelSize(2));
+        ctx.fillRect(x + toPixelSize(6), y, toPixelSize(2), toPixelSize(6));
     }
 
     convertToMapPixel(value, amount = 2) {

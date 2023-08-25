@@ -4,7 +4,7 @@ import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { rectCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { knight, playerColors, shadow } from "./sprites";
+import { key, knight, playerColors, shadow } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
 import { createId } from "../utilities/general-utilities";
@@ -12,6 +12,7 @@ import { deadAnim } from "../utilities/animation-utilities";
 
 export class Player {
     constructor(roomX, roomY) {
+        this.hasKey = false;
         this.isAlive = true;
         this.id = createId();
         this.roomX = roomX;
@@ -32,6 +33,9 @@ export class Player {
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv);
 
+        this.keyCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
+        this.keyCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(32) + 'px)';
+
         this.update();
         this.draw();
 
@@ -43,6 +47,7 @@ export class Player {
 
     update() {
         if (this.lifeBar.life > 0) {
+            if (this.hasKey) this.keyCanv.classList.remove("hidden");
             this.handleInput();
             this.atk();
             this.lifeBar.update();
@@ -123,5 +128,8 @@ export class Player {
     draw() {
         genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(2), "#00000033", "#00000033");
         drawSprite(this.playerCanv, knight, toPixelSize(2), 0, 0, playerColors);
+
+        genSmallBox(this.keyCanv, 0, 0, 4, 8, toPixelSize(2), "#00000066", "#100f0f66");
+        drawSprite(this.keyCanv, key, toPixelSize(2), 1, 1);
     }
 }
