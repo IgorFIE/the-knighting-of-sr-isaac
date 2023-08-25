@@ -100,10 +100,10 @@ export class Player {
         this.playerRightWeapon.weaponCanv.style.animation = "";
     }
 
-    validateMovement(x, y) {
+    validateMovement(x, y, ignoreCollisions) {
         this.fakeMovCircle.x = x;
         this.fakeMovCircle.y = y;
-        checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, true, (circle) => this.move(circle));
+        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle));
     }
 
     move(circle) {

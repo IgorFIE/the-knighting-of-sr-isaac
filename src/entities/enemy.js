@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
-import { rectCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
+import { rectCircleCollision, checkForCollisions, distBetwenObjs } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { createId, randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { LifeBar } from "./life-bar";
@@ -22,6 +22,8 @@ export class Enemy {
         this.enemyType = enemyType;
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
         this.roomCanv = roomDiv;
+
+        this.enemyKeys = {};
 
         this.enemyChainColor = enemyChainMailColors[randomNumb(enemyChainMailColors.length)];
 
@@ -64,36 +66,43 @@ export class Enemy {
                 });
             }
         }
+        this.enemyKeys = {};
     }
 
     handleInput() {
         let newRectX = this.collisionObj.x;
         let newRectY = this.collisionObj.y;
 
-        // const movKeys = Object.keys(GameVars.keys).filter((key) => (
-        //     key === 'w' || key === 's' || key === 'a' || key === 'd' ||
-        //     key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
-        //     key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight'
-        // ) && GameVars.keys[key]);
+        const xDistance = GameVars.player.collisionObj.x - this.collisionObj.x;
+        const yDistance = GameVars.player.collisionObj.y - this.collisionObj.y;
 
-        // if (movKeys.length > 0) {
-        //     this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
-        //     this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
-        //     this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
-        // } else {
-        //     this.enemyCanv.style.animation = "";
-        //     this.enemyLeftWeapon.weaponCanv.style.animation = "";
-        //     this.enemyRightWeapon.weaponCanv.style.animation = "";
-        // }
+        if (xDistance < -toPixelSize(2) || xDistance > toPixelSize(2)) {
+            xDistance > 0 ? this.enemyKeys['d'] = true : this.enemyKeys['a'] = true;
+        }
+
+        if (yDistance < -toPixelSize(2) || yDistance > toPixelSize(2)) {
+            yDistance > 0 ? this.enemyKeys['s'] = true : this.enemyKeys['w'] = true;
+        }
+
+        const movKeys = Object.keys(this.enemyKeys).filter((key) => (key === 'w' || key === 's' || key === 'a' || key === 'd') && this.enemyKeys[key]);
+        if (movKeys.length > 0) {
+            this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
+            this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
+            this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
+        } else {
+            this.enemyCanv.style.animation = "";
+            this.enemyLeftWeapon.weaponCanv.style.animation = "";
+            this.enemyRightWeapon.weaponCanv.style.animation = "";
+        }
 
         // //todo momentarily solution
-        // const playerSpeed = toPixelSize(2);
-        // const distance = movKeys.length > 1 ? playerSpeed / 1.4142 : playerSpeed;
+        const enemySpeed = toPixelSize(1);
+        const distance = movKeys.length > 1 ? enemySpeed / 1.4142 : enemySpeed;
 
-        // if (GameVars.keys['d'] || GameVars.keys['D'] || GameVars.keys['ArrowRight']) { newRectX += distance; }
-        // if (GameVars.keys['a'] || GameVars.keys['A'] || GameVars.keys['ArrowLeft']) { newRectX -= distance; }
-        // if (GameVars.keys['w'] || GameVars.keys['W'] || GameVars.keys['ArrowUp']) { newRectY -= distance; }
-        // if (GameVars.keys['s'] || GameVars.keys['S'] || GameVars.keys['ArrowDown']) { newRectY += distance; }
+        if (this.enemyKeys['d']) { newRectX += distance; }
+        if (this.enemyKeys['a']) { newRectX -= distance; }
+        if (this.enemyKeys['w']) { newRectY -= distance; }
+        if (this.enemyKeys['s']) { newRectY += distance; }
 
         this.validateMovement(this.collisionObj.x, newRectY);
         this.validateMovement(newRectX, this.collisionObj.y);
@@ -102,7 +111,7 @@ export class Enemy {
     validateMovement(x, y, ignoreCollisions) {
         this.fakeMovCircle.x = x;
         this.fakeMovCircle.y = y;
-        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, false, (circle) => this.move(circle));
+        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle), this);
     }
 
     move(circle) {
@@ -114,15 +123,24 @@ export class Enemy {
     }
 
     atk() {
-        // if (GameVars.keys['v'] || GameVars.keys['V']) {
-        // }
-        // if (GameVars.keys['b'] || GameVars.keys['B']) {
-        // this.enemyLeftWeapon.action();
-        // }
+        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.getWeaponDistance(this.enemyRightWeapon)) {
+            this.enemyRightWeapon.action();
+        }
+        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.getWeaponDistance(this.enemyLeftWeapon)) {
+            this.enemyLeftWeapon.action();
+        }
 
-        this.enemyRightWeapon.action();
         this.enemyRightWeapon.update();
         this.enemyLeftWeapon.update();
+    }
+
+    getWeaponDistance(weapon) {
+        switch (weapon.weaponType) {
+            case WeaponType.FIST:
+                return toPixelSize(weapon.sprite.length * weapon.size) * 4;
+            default:
+                return toPixelSize(weapon.sprite.length * weapon.size) * 2;
+        }
     }
 
     draw() {

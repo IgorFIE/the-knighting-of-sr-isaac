@@ -17,7 +17,10 @@ export class Game {
         GameVars.isGameOver = false;
         GameVars.gameBoard = new GameBoard(5);
         GameVars.gameBoard.init();
-        GameVars.gameBoard.consoleLogBoard();
+
+        // TODO REMOVE ME LATER
+        // GameVars.gameBoard.consoleLogBoard();
+
         GameVars.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
         GameVars.currentRoom.cleanEnemies();
         this.nextRoom;
@@ -75,7 +78,7 @@ export class Game {
 
             GameVars.currentRoom.update(GameVars.currentRoom.x + xAmount, GameVars.currentRoom.y + yAmount);
             this.nextRoom.update(this.nextRoom.x + xAmount, this.nextRoom.y + yAmount);
-            GameVars.player.validateMovement(GameVars.player.collisionObj.x + (xAmount ? this.playerTransitionAmount : 0), GameVars.player.collisionObj.y + (yAmount ? this.playerTransitionAmount : 0));
+            GameVars.player.validateMovement(GameVars.player.collisionObj.x + (xAmount ? this.playerTransitionAmount : 0), GameVars.player.collisionObj.y + (yAmount ? this.playerTransitionAmount : 0), true);
 
             if (this.nextRoom.x === 0 && this.nextRoom.y === 0) {
                 GameVars.currentRoom.roomDiv.classList.add("hidden");

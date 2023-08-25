@@ -5,7 +5,7 @@ import { ItemType } from "../enums/item-type";
 import { RoomType } from "../enums/room-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
-import { circleToCircleCollision } from "../utilities/collision-utilities";
+import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
 import { createElem } from "../utilities/draw-utilities";
 import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
@@ -148,13 +148,7 @@ export class Room {
     }
 
     checkIfInRangeOfPlayer(doorType) {
-        let num, num2, dist;
-        return !!this.doors.find(door => {
-            num = GameVars.player.collisionObj.x - door.collisionObj.x;
-            num2 = GameVars.player.collisionObj.y - door.collisionObj.y;
-            dist = Math.sqrt(num * num + num2 * num2);
-            return door.doorType === doorType && dist < toPixelSize(32);
-        });
+        return !!this.doors.find(door => door.doorType === doorType && distBetwenObjs(GameVars.player.collisionObj, door.collisionObj) < toPixelSize(32));
     }
 
     draw() {

@@ -26,9 +26,16 @@ export const circleToCircleCollision = (circle1, circle2) => {
     return Math.sqrt(num * num + num2 * num2) <= circle1.r + circle2.r;
 }
 
-export const checkForCollisions = (fakeMovCircle, roomX, roomY, isPlayer, fn) => {
+export const distBetwenObjs = (obj1, obj2) => {
+    const num = obj1.x - obj2.x;
+    const num2 = obj1.y - obj2.y;
+    return Math.sqrt(num * num + num2 * num2);
+}
+
+export const checkForCollisions = (fakeMovCircle, roomX, roomY, fn, enemyBlock) => {
     if (!(GameVars.gameBoard.board[roomY][roomX].walls.find((wall) => rectCircleCollision(fakeMovCircle, wall.collisionObj)) ||
-        (isPlayer && GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => circleToCircleCollision(fakeMovCircle, enemy.collisionObj))) ||
+        (GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => enemy !== enemyBlock && circleToCircleCollision(fakeMovCircle, enemy.collisionObj))) ||
+        (enemyBlock && circleToCircleCollision(fakeMovCircle, GameVars.player.collisionObj)) ||
         (GameVars.gameBoard.board[roomY][roomX].doors.find((door) => door.blockType !== BlockType.DOOR_OPEN && rectCircleCollision(fakeMovCircle, door.collisionObj))))) {
         fn(fakeMovCircle);
     }
