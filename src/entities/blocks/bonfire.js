@@ -2,6 +2,7 @@ import { CircleObject } from "../../collision-objects/circle-object";
 import { GameVars, toPixelSize } from "../../game-variables";
 import { circleToCircleCollision, distBetwenObjs } from "../../utilities/collision-utilities";
 import { createElem, drawSprite } from "../../utilities/draw-utilities";
+import { moveLevel } from "../../utilities/level-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../../utilities/text";
 import { bonfire, shortSword } from "../sprites";
 
@@ -34,7 +35,7 @@ export class Bonfire {
                 if (this.timeElapsed / 1 >= 1) {
                     if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj) &&
                         (GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B'])) {
-                        console.log("Move to next level");
+                        moveLevel();
                     }
                 } else {
                     this.timeElapsed += GameVars.deltaTime;

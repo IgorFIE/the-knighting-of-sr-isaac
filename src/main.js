@@ -14,9 +14,6 @@ let mainMenuCtx;
 let gameOverCanv;
 let gameOverCtx
 
-
-let game;
-
 let fpsInterval = 1000 / GameVars.fps;
 let then = Date.now();
 
@@ -32,7 +29,7 @@ function init() {
     createMainMenu();
     createGameDiv();
     createGameOverMenu();
-    // game = new Game();
+    // GameVars.game = new Game();
 
     // createFpsElement(mainDiv);
     GameVars.initDebug();
@@ -89,13 +86,14 @@ function skipGameOver() {
     gameOverCanv.classList.add("hidden");
     mainMenuDiv.classList.remove("hidden");
     GameVars.gameDiv.innerHTML = "";
-    game = null;
+    GameVars.game = null;
 }
 
 function startGame() {
     mainMenuDiv.classList.add("hidden");
     GameVars.gameDiv.classList.remove("hidden");
-    game = new Game();
+    GameVars.resetGameVars();
+    GameVars.game = new Game();
 }
 
 function gameLoop() {
@@ -105,9 +103,9 @@ function gameLoop() {
         GameVars.deltaTime = elapsed / 1000;
 
         // updateFps(then);
-        if (game) {
+        if (GameVars.game) {
             if (!GameVars.isGameOver) {
-                game.update();
+                GameVars.game.update();
             } else {
                 drawGameOver();
                 gameOverCanv.classList.remove("hidden");

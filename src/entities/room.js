@@ -54,7 +54,8 @@ export class Room {
     }
 
     populateRandomEnemies() {
-        let count = randomNumbOnRange(1, 3);
+        let count = randomNumbOnRange(GameVars.gameLevel, GameVars.gameLevel + 1);
+        count = count > 6 ? 6 : count;
         while (this.enemies.length !== count) {
             let newEnemy = new Enemy(this.roomX, this.roomY,
                 randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),

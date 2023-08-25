@@ -12,19 +12,22 @@ import { WeaponIcons } from "./ui/weapon-icons";
 import { MovePad } from "./ui/movepad";
 import { createElem } from "./utilities/draw-utilities";
 import { Bonfire } from "./entities/blocks/bonfire";
+import { convertTextToPixelArt, drawPixelTextInCanvas } from "./utilities/text";
 
 export class Game {
     constructor() {
         GameVars.isGameOver = false;
-        GameVars.gameBoard = new GameBoard(5);
+        GameVars.gameBoard = new GameBoard(GameVars.gameBoardSize);
         GameVars.gameBoard.init();
 
         // TODO REMOVE ME LATER
-        // GameVars.gameBoard.consoleLogBoard();
+        GameVars.gameBoard.consoleLogBoard();
 
         GameVars.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
         GameVars.currentRoom.cleanEnemies();
         this.nextRoom;
+
+        drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), GameVars.currentRoom.roomCanv, toPixelSize(2), GameVars.gameW / toPixelSize(4), GameVars.gameH / toPixelSize(8), "#2f492c", 1);
 
         GameVars.player = new Player(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY);
         GameVars.gameBoard.board[GameVars.currentRoom.roomY][GameVars.currentRoom.roomX].roomDiv.classList.remove("hidden");
@@ -36,7 +39,7 @@ export class Game {
 
         // GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, ItemType.KEY, null, GameVars.currentRoom.roomDiv));
 
-        // GameVars.currentRoom.items.push(new Bonfire((GameVars.gameW / 2), (GameVars.gameH / 2), GameVars.currentRoom));
+        // GameVars.currentRoom.items.push(new Bonfire((GameVars.gameW / 4), (GameVars.gameH / 4), GameVars.currentRoom));
 
         // GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4), (GameVars.gameH / 4) * 3, EnemyType.BASIC, GameVars.currentRoom.roomDiv));
         // GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, EnemyType.BOSS, GameVars.currentRoom.roomDiv));

@@ -14,7 +14,6 @@ export class Player {
     constructor(roomX, roomY) {
         this.hasKey = false;
         this.isAlive = true;
-        this.id = createId();
         this.roomX = roomX;
         this.roomY = roomY;
 
@@ -28,10 +27,10 @@ export class Player {
 
         this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, playerColors.hd);
-        this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, playerColors.hd);
+        this.playerRightWeapon = new Weapon(0, 0, GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, playerColors.hd);
+        this.playerLeftWeapon = new Weapon(0, 0, GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, playerColors.hd);
 
-        this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv);
+        this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
 
         this.keyCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
         this.keyCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(32) + 'px)';

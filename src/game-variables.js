@@ -18,6 +18,10 @@ let gameDiv;
 let gameCanv;
 let gameCtx;
 
+let game;
+let gameBoardSize;
+let gameLevel;
+
 let atkCanv;
 
 let weaponIcons;
@@ -36,6 +40,9 @@ let gameBoard;
 let currentRoom;
 
 let player;
+let lastPlayerLife;
+let lastPlayerRightWeaponType;
+let lastPlayerLeftWeaponType;
 
 let heartLifeVal = 6;
 
@@ -48,6 +55,14 @@ const resetGameVars = () => {
 
     GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
     GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
+
+    GameVars.gameBoardSize = 5;
+    GameVars.gameLevel = 1;
+
+    GameVars.player = null;
+    GameVars.lastPlayerLife = null;
+    GameVars.lastPlayerRightWeaponType = null;
+    GameVars.lastPlayerLeftWeaponType = null;
 }
 
 const initDebug = () => {
@@ -83,6 +98,10 @@ export const GameVars = {
     gameCanv,
     gameCtx,
 
+    game,
+    gameBoardSize,
+    gameLevel,
+
     atkCanv,
 
     weaponIcons,
@@ -99,7 +118,11 @@ export const GameVars = {
 
     gameBoard,
     currentRoom,
+
     player,
+    lastPlayerLife,
+    lastPlayerRightWeaponType,
+    lastPlayerLeftWeaponType,
 
     heartLifeVal,
 

@@ -41,10 +41,9 @@ export class Enemy {
             knight[0].length * toPixelSize(this.enemySize),
             knight.length * toPixelSize(this.enemySize));
 
-        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
-        this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+        this.setEnemyWeapons();
 
-        this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * GameVars.heartLifeVal, false, this.div);
+        this.lifeBar = new LifeBar(this.getEnemyLife() * GameVars.heartLifeVal, false, this.div);
 
         this.draw();
 
@@ -52,6 +51,30 @@ export class Enemy {
         this.div.style.width = rect.width + "px";
         this.div.style.height = rect.height + "px";
         this.div.style.transformOrigin = "70% 95%";
+    }
+
+    setEnemyWeapons() {
+        if (GameVars.gameLevel === 1) {
+            this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+        } else if (GameVars.gameLevel === 2) {
+            const isLeftWeapon = randomNumb(2) === 0;
+            this.enemyRightWeapon = new Weapon(0, 0, isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(1, 3), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(0, 0, isLeftWeapon ? randomNumbOnRange(1, 3) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+        } else {
+            this.enemyRightWeapon = new Weapon(0, 0, randomNumbOnRange(1, 3), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(0, 0, randomNumbOnRange(1, 3), 1, this, "#686b7a", this.enemySize);
+        }
+    }
+
+    getEnemyLife() {
+        if (GameVars.gameLevel === 1) {
+            return this.enemyType === EnemyType.BASIC ? 1 : 6;
+        } else if (GameVars.gameLevel === 2) {
+            return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8);
+        } else {
+            return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(2, 3) : randomNumbOnRange(8, 10);
+        }
     }
 
     update() {

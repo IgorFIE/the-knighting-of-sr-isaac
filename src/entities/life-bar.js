@@ -4,11 +4,11 @@ import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { emptyHeartColors, fullHeartColors, heart } from "./sprites";
 
 export class LifeBar {
-    constructor(life, isPlayer, parentCanv) {
+    constructor(totalLife, isPlayer, parentCanv, currentLife) {
         this.tookDmg = false;
         this.isPlayer = isPlayer;
-        this.totalLife = life;
-        this.life = life;
+        this.totalLife = totalLife;
+        this.life = currentLife || totalLife;
         this.parentCanv = parentCanv;
         this.parentRect;
 
