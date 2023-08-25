@@ -18,7 +18,7 @@ export class Player {
         this.roomX = roomX;
         this.roomY = roomY;
 
-        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
+        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(6));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.div = createElem(GameVars.gameDiv, "div", null, ["player"]);
@@ -28,7 +28,7 @@ export class Player {
 
         this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this, playerColors.hd);
+        this.playerRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, playerColors.hd);
         this.playerLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, playerColors.hd);
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv);

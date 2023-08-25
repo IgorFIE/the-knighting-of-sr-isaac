@@ -29,9 +29,9 @@ export class Game {
         GameVars.gameBoard.board[GameVars.currentRoom.roomY][GameVars.currentRoom.roomX].roomDiv.classList.remove("hidden");
 
         //TODO REMOVE ME AFTERWARDS OR LET PLAYER PICK SOME RANDOM WEAPONS?
-        GameVars.currentRoom.items.push(new Item(GameVars.gameW / 4, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SWORD, GameVars.currentRoom.roomDiv));
-        GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 2, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SHIELD, GameVars.currentRoom.roomDiv));
-        GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
+        // GameVars.currentRoom.items.push(new Item(GameVars.gameW / 4, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SWORD, GameVars.currentRoom.roomDiv));
+        // GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 2, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.SHIELD, GameVars.currentRoom.roomDiv));
+        // GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, GameVars.gameH / 4, ItemType.WEAPON, WeaponType.GREATSWORD, GameVars.currentRoom.roomDiv));
 
         // GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, ItemType.KEY, null, GameVars.currentRoom.roomDiv));
 

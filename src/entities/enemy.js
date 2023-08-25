@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
-import { rectCircleCollision, checkForCollisions, distBetwenObjs } from "../utilities/collision-utilities";
+import { rectCircleCollision, checkForCollisions, distBetwenObjs, circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { createId, randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { LifeBar } from "./life-bar";
@@ -23,12 +23,14 @@ export class Enemy {
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
         this.roomCanv = roomDiv;
 
-        this.enemyKeys = {};
-
         this.enemyChainColor = enemyChainMailColors[randomNumb(enemyChainMailColors.length)];
 
-        this.collisionObj = new CircleObject(x, y, toPixelSize(enemyType === EnemyType.BASIC ? 4 : 8));
+        this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 3));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
+
+        this.enemyKeys = {};
+        this.targetPos = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
+        this.movTimeElapsed = 0;
 
         this.div = createElem(roomDiv, "div", null, ["enemy"]);
 
@@ -39,7 +41,7 @@ export class Enemy {
             knight[0].length * toPixelSize(this.enemySize),
             knight.length * toPixelSize(this.enemySize));
 
-        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.SWORD, -1, this, "#686b7a", this.enemySize);
+        this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
         this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
 
         this.lifeBar = new LifeBar((enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8)) * GameVars.heartLifeVal, false, this.div);
@@ -73,14 +75,28 @@ export class Enemy {
         let newRectX = this.collisionObj.x;
         let newRectY = this.collisionObj.y;
 
-        const xDistance = GameVars.player.collisionObj.x - this.collisionObj.x;
-        const yDistance = GameVars.player.collisionObj.y - this.collisionObj.y;
+        if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(32)) {
+            if (circleToCircleCollision(this.collisionObj, this.targetPos) || this.movTimeElapsed / 0.6 >= 1) {
+                this.targetPos.x = (GameVars.player.collisionObj.x + toPixelSize(randomNumbOnRange(-32, 32)));
+                this.targetPos.y = (GameVars.player.collisionObj.y + toPixelSize(randomNumbOnRange(-32, 32)));
+                this.movTimeElapsed = 0;
+            } else {
+                this.movTimeElapsed += GameVars.deltaTime;
+            }
+        } else {
+            this.targetPos.x = GameVars.player.collisionObj.x;
+            this.targetPos.y = GameVars.player.collisionObj.y;
+        }
 
-        if (xDistance < -toPixelSize(2) || xDistance > toPixelSize(2)) {
+
+        const xDistance = this.targetPos.x - this.collisionObj.x;
+        const yDistance = this.targetPos.y - this.collisionObj.y;
+
+        if (xDistance < -toPixelSize(4) || xDistance > toPixelSize(4)) {
             xDistance > 0 ? this.enemyKeys['d'] = true : this.enemyKeys['a'] = true;
         }
 
-        if (yDistance < -toPixelSize(2) || yDistance > toPixelSize(2)) {
+        if (yDistance < -toPixelSize(4) || yDistance > toPixelSize(4)) {
             yDistance > 0 ? this.enemyKeys['s'] = true : this.enemyKeys['w'] = true;
         }
 

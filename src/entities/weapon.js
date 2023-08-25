@@ -128,8 +128,8 @@ export class Weapon {
         switch (this.weaponType) {
             case WeaponType.FIST:
                 return [
-                    { x: box.x + this.atkLine[0].x, y: box.y + this.atkLine[0].y + transform.f },
-                    { x: box.x + this.atkLine[1].x, y: box.y + this.atkLine[1].y + transform.f }
+                    { x: box.x + this.atkLine[0].x, y: box.y + this.atkLine[0].y + (transform.f * 1.5) },
+                    { x: box.x + this.atkLine[1].x, y: box.y + this.atkLine[1].y + (transform.f * 1.5) }
                 ];
             case WeaponType.SHIELD:
                 return [
@@ -170,12 +170,12 @@ export class Weapon {
 
     update() {
         if (GameVars.atkCanv) {
-            // const ctx = GameVars.atkCanv.getContext("2d");
             if (this.isPerformingAction) {
                 let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
                 let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
                 // just for debug
+                // const ctx = GameVars.atkCanv.getContext("2d");
                 // ctx.beginPath();
                 // ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
                 // ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
