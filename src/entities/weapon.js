@@ -183,16 +183,17 @@ export class Weapon {
                 // ctx.lineWidth = toPixelSize(1);
                 // ctx.stroke();
 
-                let enemies = GameVars.currentRoom.enemies.filter(enemy => enemy !== this.parent && lineCircleCollision(newAtkLine, enemy.collisionObj))
-                if (!this.isPlayer && lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) {
-                    enemies.push(GameVars.player);
+                let enemies = [];
+                if (this.isPlayer) {
+                    enemies = GameVars.currentRoom.enemies.filter(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj));
+                } else {
+                    if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) enemies.push(GameVars.player);
                 }
                 enemies.forEach((e) => {
                     if (!this.damagedObjs.has(e)) {
                         this.damagedObjs.set(e, true);
                         e.lifeBar.takeDmg(this.dmg);
                         // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
-                        console.log("deals damage!!! " + e.lifeBar.life);
                     }
                 });
             }
