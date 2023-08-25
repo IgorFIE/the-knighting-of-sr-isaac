@@ -76,9 +76,8 @@ export class Enemy {
         let newRectY = this.collisionObj.y;
 
         if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(32)) {
-            if (circleToCircleCollision(this.collisionObj, this.targetPos) || this.movTimeElapsed / 0.6 >= 1) {
-                this.targetPos.x = (GameVars.player.collisionObj.x + toPixelSize(randomNumbOnRange(-32, 32)));
-                this.targetPos.y = (GameVars.player.collisionObj.y + toPixelSize(randomNumbOnRange(-32, 32)));
+            if (circleToCircleCollision(this.collisionObj, this.targetPos) || this.movTimeElapsed / 0.4 >= 1) {
+                this.setTargetPosWeaponBased();
                 this.movTimeElapsed = 0;
             } else {
                 this.movTimeElapsed += GameVars.deltaTime;
@@ -111,7 +110,6 @@ export class Enemy {
             this.enemyRightWeapon.weaponCanv.style.animation = "";
         }
 
-        // //todo momentarily solution
         const enemySpeed = toPixelSize(1);
         const distance = movKeys.length > 1 ? enemySpeed / 1.4142 : enemySpeed;
 
@@ -122,6 +120,28 @@ export class Enemy {
 
         this.validateMovement(this.collisionObj.x, newRectY);
         this.validateMovement(newRectX, this.collisionObj.y);
+    }
+
+    setTargetPosWeaponBased() {
+        this.targetPos.x = GameVars.player.collisionObj.x;
+        this.targetPos.y = GameVars.player.collisionObj.y;
+
+        let weaponToUse = randomNumb(2) === 0 ? this.enemyLeftWeapon : this.enemyRightWeapon;
+        switch (weaponToUse.weaponType) {
+            case WeaponType.FIST:
+            case WeaponType.SHIELD:
+                this.targetPos.x += toPixelSize(randomNumbOnRange(-32, 32));
+                this.targetPos.y += toPixelSize(randomNumbOnRange(-32, -2));
+                break;
+            case WeaponType.SWORD:
+                this.targetPos.x += toPixelSize(weaponToUse.handDir > 0 ? randomNumbOnRange(-32, -2) : randomNumbOnRange(2, 32));
+                this.targetPos.y += toPixelSize(randomNumbOnRange(-32, 32));
+                break;
+            case WeaponType.GREATSWORD:
+                this.targetPos.x += toPixelSize(randomNumbOnRange(-32, 32));
+                this.targetPos.y += toPixelSize(randomNumbOnRange(-32, 32));
+                break;
+        }
     }
 
     validateMovement(x, y, ignoreCollisions) {

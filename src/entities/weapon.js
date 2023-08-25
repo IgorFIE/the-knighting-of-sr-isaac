@@ -203,13 +203,13 @@ export class Weapon {
     getDamage() {
         switch (this.weaponType) {
             case WeaponType.FIST:
-                return 1;
+                return 1 * (this.size - 1);
             case WeaponType.SHIELD:
-                return 2;
+                return 2 * (this.size - 1);
             case WeaponType.SWORD:
-                return 3;
+                return 3 * (this.size - 1);
             case WeaponType.GREATSWORD:
-                return 9;
+                return 9 * (this.size - 1);
         }
     }
 
