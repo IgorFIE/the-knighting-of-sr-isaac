@@ -4,16 +4,13 @@ import { Player } from "./entities/player";
 import { rectCircleCollision } from "./utilities/collision-utilities";
 import { isSpecialRoom } from "./enums/room-type";
 import { randomNumb } from "./utilities/general-utilities";
-import { Minimap } from "./entities/minimap";
+import { Minimap } from "./ui/minimap";
 import { Item } from "./entities/item";
 import { ItemType } from "./enums/item-type";
 import { WeaponType } from "./enums/weapon-type";
-import { WeaponIcons } from "./entities/weapon-icons";
-import { MovePad } from "./entities/movepad";
-import { Enemy } from "./entities/enemy";
-import { EnemyType } from "./enums/enemy-type";
+import { WeaponIcons } from "./ui/weapon-icons";
+import { MovePad } from "./ui/movepad";
 import { createElem } from "./utilities/draw-utilities";
-import { BlockType } from "./enums/block-type";
 
 export class Game {
     constructor() {
