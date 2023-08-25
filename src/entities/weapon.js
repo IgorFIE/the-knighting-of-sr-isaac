@@ -183,20 +183,20 @@ export class Weapon {
                 // ctx.lineWidth = toPixelSize(1);
                 // ctx.stroke();
 
-                let enemies = [];
                 if (this.isPlayer) {
-                    enemies = GameVars.currentRoom.enemies.filter(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj));
+                    GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
                 } else {
-                    if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) enemies.push(GameVars.player);
+                    if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
                 }
-                enemies.forEach((e) => {
-                    if (!this.damagedObjs.has(e)) {
-                        this.damagedObjs.set(e, true);
-                        e.lifeBar.takeDmg(this.dmg);
-                        // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
-                    }
-                });
             }
+        }
+    }
+
+    dealDmgToBlock(obj) {
+        if (!this.damagedObjs.has(obj)) {
+            this.damagedObjs.set(obj, true);
+            obj.lifeBar.takeDmg(this.dmg);
+            // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
         }
     }
 
