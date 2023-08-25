@@ -196,6 +196,9 @@ export class Weapon {
         if (!this.damagedObjs.has(obj)) {
             this.damagedObjs.set(obj, true);
             obj.lifeBar.takeDmg(this.dmg);
+            if (this.weaponType === WeaponType.SHIELD) obj.validateMovement(
+                obj.collisionObj.x + toPixelSize(8 * this.handDir),
+                obj.collisionObj.y + toPixelSize(16));
             // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
         }
     }
