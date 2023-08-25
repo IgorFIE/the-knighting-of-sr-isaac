@@ -25,6 +25,10 @@ const wc = "wc" // weapon color id
 const ho = "ho" // heart outside
 const hi = "hi" // heart inside
 
+const bf = "#38252e" // ash
+const bt = "bt" // bonfire light
+const bm = "bm" // bonfire middle
+
 export const enemyChainMailColors = ["#3c4f68", "#431313", "#2f492c", "#641f14"];
 
 export const playerColors = { "hd": ym, "hl": yl, "cm": yd };
@@ -51,6 +55,17 @@ export const heart = [
     [nu, ho, hi, hi, hi, ho, nu],
     [nu, nu, ho, hi, ho, nu, nu],
     [nu, nu, nu, ho, nu, nu, nu]
+];
+
+export const bonfire = [
+    [nu, nu, nu, nu, bm, nu, nu],
+    [nu, nu, nu, bm, nu, nu, nu],
+    [nu, bf, bm, bm, bm, bf, nu],
+    [bf, bm, bm, bm, bm, bm, bf],
+    [bf, bm, bm, bt, bm, bm, bf],
+    [bf, bm, bt, bt, bt, bm, bf],
+    [bf, bf, bt, bt, bt, bf, bf],
+    [nu, bf, bf, bf, bf, bf, nu],
 ];
 
 // WEAPONS

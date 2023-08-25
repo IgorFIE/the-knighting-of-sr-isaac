@@ -25,7 +25,7 @@ export class Enemy {
 
         this.enemyChainColor = enemyChainMailColors[randomNumb(enemyChainMailColors.length)];
 
-        this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 3));
+        this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.enemyKeys = {};

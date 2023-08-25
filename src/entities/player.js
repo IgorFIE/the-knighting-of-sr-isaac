@@ -18,7 +18,7 @@ export class Player {
         this.roomX = roomX;
         this.roomY = roomY;
 
-        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(6));
+        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.div = createElem(GameVars.gameDiv, "div", null, ["player"]);

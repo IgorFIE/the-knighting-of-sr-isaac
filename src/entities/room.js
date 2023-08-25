@@ -9,6 +9,7 @@ import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-
 import { createElem } from "../utilities/draw-utilities";
 import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
+import { Bonfire } from "./blocks/bonfire";
 import { DoorTrigger } from "./blocks/door-trigger";
 import { Enemy } from "./enemy";
 import { Item } from "./item";
@@ -75,6 +76,7 @@ export class Room {
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();
+                this.items.push(new Bonfire((GameVars.gameW / 2), (GameVars.gameH / 2), this));
                 this.enemies.push(new Enemy(this.roomX, this.roomY, GameVars.gameW / 2, GameVars.gameH / 2, EnemyType.BOSS, this.roomDiv));
                 break;
         }
