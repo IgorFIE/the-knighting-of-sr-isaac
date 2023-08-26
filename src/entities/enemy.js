@@ -207,12 +207,19 @@ export class Enemy {
         switch (weaponToUse.weaponType) {
             case WeaponType.FIST:
             case WeaponType.SHIELD:
+            case WeaponType.SPEAR:
                 this.targetPos.x += toPixelSize(randomNumbOnRange(-distance, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, -distance / 8));
                 break;
             case WeaponType.SWORD:
+            case WeaponType.AXE:
+            case WeaponType.MORNING_STAR:
                 this.targetPos.x += toPixelSize(weaponToUse.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, distance));
+                break;
+            case WeaponType.HAMMER:
+                this.targetPos.x += toPixelSize(weaponToUse.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
+                this.targetPos.y -= toPixelSize(randomNumbOnRange(-distance, distance));
                 break;
             case WeaponType.GREATSWORD:
                 this.targetPos.x += toPixelSize(randomNumbOnRange(-distance, distance));
@@ -259,7 +266,7 @@ export class Enemy {
     shouldAtk() {
         switch (this.enemySubType) {
             case EnemySubType.AGRESSIVE:
-                return true;
+                return randomNumb(100) < 75;
             case EnemySubType.DEFENSIVE:
                 return randomNumb(100) < 50;
             case EnemySubType.AFRAID:

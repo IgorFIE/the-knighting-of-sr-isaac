@@ -98,7 +98,7 @@ export class Weapon {
             case WeaponType.SPEAR:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: this.y + -toPixelSize(this.size) };
             case WeaponType.HAMMER:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 3) : this.size * 8), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
+                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
             case WeaponType.AXE:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
             case WeaponType.MORNING_STAR:
@@ -247,8 +247,8 @@ export class Weapon {
             this.damagedObjs.set(obj, true);
             obj.lifeBar.takeDmg(this.dmg);
             if (this.weaponType === WeaponType.SHIELD) obj.validateMovement(
-                obj.collisionObj.x + toPixelSize(8 * this.handDir),
-                obj.collisionObj.y + toPixelSize(16));
+                obj.collisionObj.x + toPixelSize(6 * this.handDir),
+                obj.collisionObj.y + toPixelSize(12));
             // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
         }
     }
@@ -262,7 +262,7 @@ export class Weapon {
             case WeaponType.SWORD:
                 return 3 * (this.size - 1);
             case WeaponType.SPEAR:
-                return 4 * (this.size - 1);
+                return 6 * (this.size - 1);
             case WeaponType.AXE:
                 return 5 * (this.size - 1);
             case WeaponType.MORNING_STAR:

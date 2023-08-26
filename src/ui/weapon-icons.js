@@ -43,10 +43,20 @@ export class WeaponIcons {
                 pixelSize = 5; x = 1; y = 1;
                 break;
             case WeaponType.SWORD:
-                pixelSize = 5; x = 1; y = 0;
+                pixelSize = 5; x = 1; y = -2;
                 break;
             case WeaponType.GREATSWORD:
                 pixelSize = 4; x = 0; y = -2;
+                break;
+            case WeaponType.SPEAR:
+                pixelSize = 5; x = 2; y = -8;
+                break;
+            case WeaponType.AXE:
+                pixelSize = 5; x = 1; y = 1;
+                break;
+            case WeaponType.HAMMER:
+            case WeaponType.MORNING_STAR:
+                pixelSize = 5; x = 1; y = 2;
                 break;
         }
         drawSprite(canvas, getWeaponSprite(weaponType), toPixelSize(pixelSize), x, y, { "wc": playerColors.hd });
