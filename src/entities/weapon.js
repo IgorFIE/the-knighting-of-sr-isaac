@@ -65,6 +65,13 @@ export class Weapon {
                     easing: ["ease-in", "ease-out", "ease-out"],
                     offset: [0, 0.5, 1]
                 }, 500);
+            case WeaponType.HAMMER:
+                this.weaponCanv.style.animation = "greatswordAtk 1s ease-in-out";
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0)", "rotate(" + -270 * this.handDir + "deg)", "rotate(0)"],
+                    easing: ["ease-in", "ease-out", "ease-in"],
+                    offset: [0, 0.35, 1]
+                }, 750);
         }
     }
 
@@ -80,6 +87,8 @@ export class Weapon {
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: this.y - toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
             case WeaponType.SPEAR:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: this.y + -toPixelSize(this.size) };
+            case WeaponType.HAMMER:
+                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
         }
     }
 
@@ -90,6 +99,7 @@ export class Weapon {
                 this.weaponCanv.style.transformOrigin = "50% 90%";
                 break;
             case WeaponType.GREATSWORD:
+            case WeaponType.HAMMER:
                 this.weaponDiv.style.transform += ' rotate(' + this.relativePos.r + 'deg)';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
@@ -109,6 +119,7 @@ export class Weapon {
                     { x: this.relativePos.x + (this.sprite[0].length / 2 * toPixelSize(this.size)), y: this.relativePos.y + this.getPecentageValue(90, this.sprite.length * toPixelSize(this.size)) }
                 ];
             case WeaponType.GREATSWORD:
+            case WeaponType.HAMMER:
                 let anglePoint1 = this.retrieveAnglePoint(
                     this.relativePos.x,
                     this.relativePos.y,
@@ -161,6 +172,7 @@ export class Weapon {
                     { x: anglePoint.x, y: anglePoint.y }
                 ];
             case WeaponType.GREATSWORD:
+            case WeaponType.HAMMER:
                 let anglePoint2 = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
@@ -231,6 +243,8 @@ export class Weapon {
                 return 3 * (this.size - 1);
             case WeaponType.SPEAR:
                 return 4 * (this.size - 1);
+            case WeaponType.HAMMER:
+                return 7 * (this.size - 1);
             case WeaponType.GREATSWORD:
                 return 9 * (this.size - 1);
         }
