@@ -279,11 +279,11 @@ const r = [
 ];
 
 const s = [
-    [true, true, true],
+    [false, true, true],
     [true, false, false],
     [true, true, true],
     [false, false, true],
-    [true, true, true]
+    [true, true, false]
 ];
 
 const t = [
@@ -303,11 +303,11 @@ const u = [
 ];
 
 const v = [
-    [true, false, false, false, true],
-    [true, false, false, false, true],
-    [false, true, false, true, false],
-    [false, true, false, true, false],
-    [false, false, true, false, false]
+    [true, false, true],
+    [true, false, true],
+    [true, false, true],
+    [true, false, true],
+    [false, true, false]
 ];
 
 const w = [

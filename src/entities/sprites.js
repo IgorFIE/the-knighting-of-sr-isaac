@@ -20,14 +20,14 @@ const hL = "hl"; // helmet light id
 const hD = "hd"; // helmet dark id
 const cM = "cm"; // chain mail id
 
-const wc = "wc" // weapon color id
+const wc = "wc"; // weapon color id
 
-const ho = "ho" // heart outside
-const hi = "hi" // heart inside
+const ho = "ho"; // heart outside
+const hi = "hi"; // heart inside
 
-const bf = "#38252e" // ash
-const bt = "bt" // bonfire light
-const bm = "bm" // bonfire middle
+const bf = "#38252e"; // ash
+const bt = "bt"; // bonfire light
+const bm = "bm"; // bonfire middle
 
 export const enemyChainMailColors = ["#3c4f68", "#431313", "#2f492c", "#641f14"];
 
