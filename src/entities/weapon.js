@@ -52,13 +52,12 @@ export class Weapon {
                     easing: ["ease-in", "ease-out", "ease-in"],
                     offset: [0, 0.25, 1]
                 }, 250);
-            case WeaponType.GREATSWORD:
-                this.weaponCanv.style.animation = "greatswordAtk 1s ease-in-out";
+            case WeaponType.AXE:
                 return this.weaponCanv.animate({
-                    transform: ["rotate(0)", "rotate(" + 360 * this.handDir + "deg)"],
-                    easing: ["ease-in", "ease-out"],
-                    offset: [0, 1]
-                }, 1000);
+                    transform: ["rotate(0)", "rotate(" + 225 * this.handDir + "deg)", "rotate(0)"],
+                    easing: ["ease-in", "ease-out", "ease-in"],
+                    offset: [0, 0.35, 1]
+                }, 300);
             case WeaponType.SPEAR:
                 return this.weaponCanv.animate({
                     transform: ["translateY(0)", "translateY( " + toPixelSize(this.size * 12) + "px)", "translateY(0)"],
@@ -66,12 +65,17 @@ export class Weapon {
                     offset: [0, 0.5, 1]
                 }, 500);
             case WeaponType.HAMMER:
-                this.weaponCanv.style.animation = "greatswordAtk 1s ease-in-out";
                 return this.weaponCanv.animate({
                     transform: ["rotate(0)", "rotate(" + -270 * this.handDir + "deg)", "rotate(0)"],
                     easing: ["ease-in", "ease-out", "ease-in"],
-                    offset: [0, 0.35, 1]
+                    offset: [0, 0.40, 1]
                 }, 750);
+            case WeaponType.GREATSWORD:
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0)", "rotate(" + 360 * this.handDir + "deg)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 1]
+                }, 1000);
         }
     }
 
@@ -89,6 +93,8 @@ export class Weapon {
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: this.y + -toPixelSize(this.size) };
             case WeaponType.HAMMER:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
+            case WeaponType.AXE:
+                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 3 : -this.size * 1), r: 45 * this.handDir };
         }
     }
 
@@ -100,6 +106,7 @@ export class Weapon {
                 break;
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
+            case WeaponType.AXE:
                 this.weaponDiv.style.transform += ' rotate(' + this.relativePos.r + 'deg)';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
@@ -120,6 +127,7 @@ export class Weapon {
                 ];
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
+            case WeaponType.AXE:
                 let anglePoint1 = this.retrieveAnglePoint(
                     this.relativePos.x,
                     this.relativePos.y,
@@ -173,6 +181,7 @@ export class Weapon {
                 ];
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
+            case WeaponType.AXE:
                 let anglePoint2 = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
@@ -243,6 +252,8 @@ export class Weapon {
                 return 3 * (this.size - 1);
             case WeaponType.SPEAR:
                 return 4 * (this.size - 1);
+            case WeaponType.AXE:
+                return 5 * (this.size - 1);
             case WeaponType.HAMMER:
                 return 7 * (this.size - 1);
             case WeaponType.GREATSWORD:
