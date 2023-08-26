@@ -7,12 +7,12 @@ import { getWeaponSprite, playerColors } from "../entities/sprites";
 
 export class WeaponIcons {
     constructor() {
-        this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
-            (e) => GameVars.keys['b'] = true,
-            (e) => GameVars.keys['b'] = false);
         this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
-            (e) => GameVars.keys['v'] = true,
-            (e) => GameVars.keys['v'] = false);
+            (e) => GameVars.keys['h'] = true,
+            (e) => GameVars.keys['h'] = false);
+        this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
+            (e) => GameVars.keys['j'] = true,
+            (e) => GameVars.keys['j'] = false);
 
         this.leftCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
         this.rightCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
