@@ -78,6 +78,7 @@ export const shortSword = [
     [nu, wt, nu],
     [nu, wt, nu],
     [nu, wt, nu],
+    [nu, wt, nu],
     [gl, gl, gl],
     [nu, wc, nu],
     [nu, wc, nu]
@@ -87,7 +88,6 @@ export const morningStar = [
     [nu, wt, nu],
     [wt, wt, wt],
     [nu, wt, nu],
-    [nu, wc, nu],
     [nu, wc, nu]
 ];
 
@@ -103,6 +103,7 @@ export const axe = [
     [nu, wt, wt],
     [wt, gl, wt],
     [nu, gl, wt],
+    [nu, wc, nu],
     [nu, wc, nu],
     [nu, wc, nu]
 ];

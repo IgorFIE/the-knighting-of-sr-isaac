@@ -40,6 +40,12 @@ export class Weapon {
                     easing: ["ease-in", "ease-out", "ease-out"],
                     offset: [0, 0.5, 1]
                 }, 100);
+            case WeaponType.MORNING_STAR:
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0)", "rotate(" + 360 * this.handDir + "deg)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 1]
+                }, 175);
             case WeaponType.SHIELD:
                 return this.weaponCanv.animate({
                     transform: ["translateY(0) scale(1)", "translateY( " + toPixelSize(this.size * 3) + "px)  scale(2)", "translateY(0) scale(1)"],
@@ -86,7 +92,7 @@ export class Weapon {
             case WeaponType.SHIELD:
                 return { x: this.x + toPixelSize(this.size * 2 * this.handDir), y: this.y + toPixelSize(this.size * 3) };
             case WeaponType.SWORD:
-                return { x: this.x + toPixelSize(this.size * 3 * this.handDir), y: this.y, r: -90 };
+                return { x: this.x + toPixelSize(this.size * 3 * this.handDir), y: this.y - toPixelSize(2), r: -90 };
             case WeaponType.GREATSWORD:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: this.y - toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
             case WeaponType.SPEAR:
@@ -95,6 +101,8 @@ export class Weapon {
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
             case WeaponType.AXE:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 3 : -this.size * 1), r: 45 * this.handDir };
+            case WeaponType.MORNING_STAR:
+                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
         }
     }
 
@@ -107,6 +115,7 @@ export class Weapon {
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
             case WeaponType.AXE:
+            case WeaponType.MORNING_STAR:
                 this.weaponDiv.style.transform += ' rotate(' + this.relativePos.r + 'deg)';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
@@ -128,6 +137,7 @@ export class Weapon {
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
             case WeaponType.AXE:
+            case WeaponType.MORNING_STAR:
                 let anglePoint1 = this.retrieveAnglePoint(
                     this.relativePos.x,
                     this.relativePos.y,
@@ -182,6 +192,7 @@ export class Weapon {
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
             case WeaponType.AXE:
+            case WeaponType.MORNING_STAR:
                 let anglePoint2 = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
@@ -209,25 +220,25 @@ export class Weapon {
 
     update() {
         if (GameVars.atkCanv) {
-            // if (this.isPerformingAction) {
-            let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
-            let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
+            if (this.isPerformingAction) {
+                let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
+                let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
-            // just for debug
-            const ctx = GameVars.atkCanv.getContext("2d");
-            ctx.beginPath();
-            ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
-            ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
-            ctx.strokeStyle = 'red';
-            ctx.lineWidth = toPixelSize(1);
-            ctx.stroke();
+                // just for debug
+                // const ctx = GameVars.atkCanv.getContext("2d");
+                // ctx.beginPath();
+                // ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
+                // ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
+                // ctx.strokeStyle = 'red';
+                // ctx.lineWidth = toPixelSize(1);
+                // ctx.stroke();
 
-            if (this.isPlayer) {
-                GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
-            } else {
-                if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
+                if (this.isPlayer) {
+                    GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
+                } else {
+                    if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
+                }
             }
-            // }
         }
     }
 
@@ -254,6 +265,8 @@ export class Weapon {
                 return 4 * (this.size - 1);
             case WeaponType.AXE:
                 return 5 * (this.size - 1);
+            case WeaponType.MORNING_STAR:
+                return 3 * (this.size - 1);
             case WeaponType.HAMMER:
                 return 7 * (this.size - 1);
             case WeaponType.GREATSWORD:
