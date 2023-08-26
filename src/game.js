@@ -39,6 +39,8 @@ export class Game {
 
         // GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, ItemType.KEY, null, GameVars.currentRoom.roomDiv));
 
+        // GameVars.currentRoom.items.push(new Item((GameVars.gameW / 4) * 3, (GameVars.gameH / 4) * 3, ItemType.HEART, null, GameVars.currentRoom.roomDiv));
+
         // GameVars.currentRoom.items.push(new Bonfire((GameVars.gameW / 4), (GameVars.gameH / 4), GameVars.currentRoom));
 
         // GameVars.currentRoom.enemies.push(new Enemy(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (GameVars.gameW / 4), (GameVars.gameH / 4) * 3, EnemyType.BASIC, GameVars.currentRoom.roomDiv));

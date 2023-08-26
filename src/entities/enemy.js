@@ -1,5 +1,6 @@
 import { CircleObject } from "../collision-objects/circle-object";
 import { EnemySubType, EnemyType, enemyChainMailColors } from "../enums/enemy-type";
+import { ItemType } from "../enums/item-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim } from "../utilities/animation-utilities";
@@ -7,6 +8,7 @@ import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions, distBetwenObjs, circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { createId, randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
+import { Item } from "./item";
 import { LifeBar } from "./life-bar";
 import { knight } from "./sprites";
 import { Weapon } from "./weapon";
@@ -89,6 +91,14 @@ export class Enemy {
                 this.lifeBar.update();
                 this.isAlive = false;
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
+                    if (this.enemyType === EnemyType.BOSS) {
+                        for (let i = randomNumbOnRange(1, 2); i > 0; i--) {
+                            GameVars.currentRoom.items.push(new Item(
+                                (GameVars.gameW / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
+                                (GameVars.gameH / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
+                                ItemType.HEART, null, GameVars.currentRoom.roomDiv));
+                        }
+                    }
                     this.destroy();
                 });
             }

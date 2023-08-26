@@ -5,7 +5,6 @@ import { emptyHeartColors, fullHeartColors, heart } from "./sprites";
 
 export class LifeBar {
     constructor(totalLife, isPlayer, parentCanv, currentLife) {
-        this.tookDmg = false;
         this.isPlayer = isPlayer;
         this.totalLife = totalLife;
         this.life = currentLife || totalLife;
@@ -23,10 +22,15 @@ export class LifeBar {
         this.draw();
     }
 
+    addLife() {
+        this.life += GameVars.heartLifeVal;
+        this.life = this.life > this.totalLife ? this.totalLife : this.life;
+        this.draw();
+    }
+
     takeDmg(amount) {
         this.life -= amount;
         this.life = this.life < 0 ? 0 : this.life;
-        this.tookDmg = true;
     }
 
     update() {
@@ -40,7 +44,6 @@ export class LifeBar {
                 -toPixelSize(13) + 'px)';
         }
         this.lifeCanv.getContext("2d").clearRect((this.life * this.lifeCanv.width) / this.totalLife, 0, this.lifeCanv.width, this.lifeCanv.height);
-        this.tookDmg = false;
     }
 
     draw() {

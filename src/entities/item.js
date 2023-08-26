@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { getItemSprite, getWeaponSprite, key, playerColors } from "./sprites";
+import { fullHeartColors, getItemSprite, getWeaponSprite, heart, key, playerColors } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Item {
@@ -15,14 +15,15 @@ export class Item {
         this.itemType = itemType;
         this.subType = subType;
         this.sprite = this.getSprite(itemType, subType);
+        this.size = toPixelSize(itemType === ItemType.HEART ? 1 : 2);
 
         this.timeElapsed = 0;
 
-        this.collisionObj = new CircleObject(x, y, toPixelSize(this.sprite[0].length * 6));
+        this.collisionObj = new CircleObject(x, y, toPixelSize(this.sprite[0].length * 2));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.itemDiv = createElem(parentDiv, "div", null, ["item"]);
-        this.itemCanv = createElem(this.itemDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(2), this.sprite.length * toPixelSize(2));
+        this.itemCanv = createElem(this.itemDiv, "canvas", null, null, this.sprite[0].length * this.size, this.sprite.length * this.size);
 
         this.itemDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
 
@@ -33,8 +34,8 @@ export class Item {
         switch (itemType) {
             case ItemType.KEY:
                 return key;
-            case ItemType.POWER_UP:
-                return getItemSprite(subType);
+            case ItemType.HEART:
+                return heart;
             case ItemType.WEAPON:
                 return getWeaponSprite(subType);
         }
@@ -48,7 +49,11 @@ export class Item {
                         GameVars.player.hasKey = true;
                         this.destroy();
                         break;
-                    case ItemType.POWER_UP:
+                    case ItemType.HEART:
+                        if (GameVars.player.lifeBar.life !== GameVars.player.lifeBar.totalLife) {
+                            GameVars.player.lifeBar.addLife();
+                            this.destroy();
+                        }
                         break;
                     case ItemType.WEAPON:
                         if (!this.wasPicked && (GameVars.keys['v'] || GameVars.keys['B'])) {
@@ -79,8 +84,8 @@ export class Item {
         this.collisionObj.x = x;
         this.collisionObj.y = y;
         this.itemDiv.style.transform = 'translate(' +
-            (this.collisionObj.x - (this.sprite[0].length * toPixelSize(2)) / 2) + 'px, ' +
-            (this.collisionObj.y - (this.sprite.length * toPixelSize(2)) / 2) + 'px)';
+            (this.collisionObj.x - (this.sprite[0].length * this.size) / 2) + 'px, ' +
+            (this.collisionObj.y - (this.sprite.length * this.size) / 2) + 'px)';
     }
 
     dropCurrentWeapon(weapon) {
@@ -97,6 +102,6 @@ export class Item {
     }
 
     draw() {
-        drawSprite(this.itemCanv, this.sprite, toPixelSize(2), null, null, { "wc": "#686b7a" });
+        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? fullHeartColors : { "wc": "#686b7a" });
     }
 }
