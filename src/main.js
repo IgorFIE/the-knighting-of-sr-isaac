@@ -26,10 +26,10 @@ function init() {
 
     addKeyListenerEvents();
 
-    // createMainMenu();
+    createMainMenu();
     createGameDiv();
     createGameOverMenu();
-    GameVars.game = new Game();
+    // GameVars.game = new Game();
 
     // createFpsElement(mainDiv);
     GameVars.initDebug();
@@ -66,8 +66,8 @@ function drawMainMenu() {
 
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
 
-    drawPixelTextInCanvas(convertTextToPixelArt("the 13th"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 4);
-    drawPixelTextInCanvas(convertTextToPixelArt("century Knight"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 24, "black", 4);
+    drawPixelTextInCanvas(convertTextToPixelArt("the Knighting of"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 4);
+    drawPixelTextInCanvas(convertTextToPixelArt("isaac"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 24, "black", 4);
 
     genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 11, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 12, toPixelSize(2), "#000000aa", "#100f0f66");
     drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels - 12, "#edeef7", 1);
