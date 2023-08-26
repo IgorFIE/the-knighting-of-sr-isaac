@@ -180,7 +180,7 @@ export class Enemy {
             case EnemySubType.AGRESSIVE:
                 return 16;
             case EnemySubType.DEFENSIVE:
-                return 32;
+                return 48;
             case EnemySubType.AFRAID:
                 return 64;
         }
