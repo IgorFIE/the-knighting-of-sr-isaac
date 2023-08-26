@@ -51,7 +51,7 @@ export class Item {
                     case ItemType.POWER_UP:
                         break;
                     case ItemType.WEAPON:
-                        if (!this.wasPicked && (GameVars.keys['h'] || GameVars.keys['H'])) {
+                        if (!this.wasPicked && (GameVars.keys['v'] || GameVars.keys['B'])) {
                             this.wasPicked = true;
                             this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
                             GameVars.player.playerRightWeapon.destroy();
@@ -59,7 +59,7 @@ export class Item {
                             this.destroy();
                             GameVars.weaponIcons.update();
                         }
-                        if (!this.wasPicked && (GameVars.keys['j'] || GameVars.keys['J'])) {
+                        if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
                             this.wasPicked = true;
                             this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
                             GameVars.player.playerLeftWeapon.destroy();

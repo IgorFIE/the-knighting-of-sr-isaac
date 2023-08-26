@@ -130,12 +130,12 @@ export class Game {
 
         drawPixelTextInCanvas(convertTextToPixelArt("r atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 20, "#2f492c", 1);
-        drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "a" : "h"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "a" : "v"), GameVars.currentRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 28, "#2f492c", 1);
 
         drawPixelTextInCanvas(convertTextToPixelArt("l atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 20, "#2f492c", 1);
-        drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "b" : "j"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("b"), GameVars.currentRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 28, "#2f492c", 1);
     }
 }

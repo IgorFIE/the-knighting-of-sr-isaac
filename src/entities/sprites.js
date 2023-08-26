@@ -29,8 +29,6 @@ const bf = "#38252e"; // ash
 const bt = "bt"; // bonfire light
 const bm = "bm"; // bonfire middle
 
-export const enemyChainMailColors = ["#3c4f68", "#431313", "#2f492c", "#641f14"];
-
 export const playerColors = { "hd": ym, "hl": yl, "cm": yd };
 
 export const fullHeartColors = { "ho": wt, "hi": "#a80000" };

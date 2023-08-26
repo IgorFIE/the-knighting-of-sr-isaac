@@ -8,11 +8,11 @@ import { getWeaponSprite, playerColors } from "../entities/sprites";
 export class WeaponIcons {
     constructor() {
         this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
-            (e) => GameVars.keys['h'] = true,
-            (e) => GameVars.keys['h'] = false);
+            (e) => GameVars.keys['v'] = true,
+            (e) => GameVars.keys['v'] = false);
         this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
-            (e) => GameVars.keys['j'] = true,
-            (e) => GameVars.keys['j'] = false);
+            (e) => GameVars.keys['b'] = true,
+            (e) => GameVars.keys['b'] = false);
 
         this.leftCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
         this.rightCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
@@ -21,8 +21,8 @@ export class WeaponIcons {
     }
 
     update() {
-        this.drawIcon(this.rightCanv, GameVars.isMobile ? "A" : "H", GameVars.player.playerRightWeapon.weaponType, GameVars.keys['h'] || GameVars.keys['H']);
-        this.drawIcon(this.leftCanv, GameVars.isMobile ? "B" : "J", GameVars.player.playerLeftWeapon.weaponType, GameVars.keys['j'] || GameVars.keys['J']);
+        this.drawIcon(this.rightCanv, GameVars.isMobile ? "A" : "V", GameVars.player.playerRightWeapon.weaponType, GameVars.keys['v'] || GameVars.keys['V']);
+        this.drawIcon(this.leftCanv, GameVars.isMobile ? "B" : "B", GameVars.player.playerLeftWeapon.weaponType, GameVars.keys['b'] || GameVars.keys['B']);
     }
 
     drawIcon(canvas, letter, weaponType, isTouch) {

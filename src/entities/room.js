@@ -131,7 +131,7 @@ export class Room {
 
     openDoors() {
         this.doorCanv.getContext("2d").clearRect(0, 0, this.doorCanv.width, this.doorCanv.height);
-        const isKeyPressed = !!(GameVars.keys['h'] || GameVars.keys['H'] || GameVars.keys['j'] || GameVars.keys['J']);
+        const isKeyPressed = !!(GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B']);
         const shouldOpenTreasureDoor = isKeyPressed && GameVars.player.hasKey && this.checkIfInRangeOfPlayer(DoorType.TREASURE);
         const shouldOpenBossDoor = isKeyPressed && this.checkIfInRangeOfPlayer(DoorType.BOSS);
         this.doors.forEach(door => {
