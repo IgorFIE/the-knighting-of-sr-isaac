@@ -59,6 +59,12 @@ export class Weapon {
                     easing: ["ease-in", "ease-out"],
                     offset: [0, 1]
                 }, 1000);
+            case WeaponType.SPEAR:
+                return this.weaponCanv.animate({
+                    transform: ["translateY(0)", "translateY( " + toPixelSize(this.size * 12) + "px)", "translateY(0)"],
+                    easing: ["ease-in", "ease-out", "ease-out"],
+                    offset: [0, 0.5, 1]
+                }, 500);
         }
     }
 
@@ -72,6 +78,8 @@ export class Weapon {
                 return { x: this.x + toPixelSize(this.size * 3 * this.handDir), y: this.y, r: -90 };
             case WeaponType.GREATSWORD:
                 return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: this.y - toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
+            case WeaponType.SPEAR:
+                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: this.y + -toPixelSize(this.size) };
         }
     }
 
@@ -117,6 +125,11 @@ export class Weapon {
                     { x: anglePoint1.x, y: anglePoint1.y },
                     { x: anglePoint2.x, y: anglePoint2.y },
                 ];
+            case WeaponType.SPEAR:
+                return [
+                    { x: this.relativePos.x + toPixelSize(this.size / 2), y: this.relativePos.y + (this.sprite.length * toPixelSize(this.size) / 2) },
+                    { x: this.relativePos.x + toPixelSize(this.size / 2), y: this.relativePos.y + (this.sprite.length * toPixelSize(this.size)) },
+                ];
         }
     }
 
@@ -158,6 +171,11 @@ export class Weapon {
                     { x: box.x + this.atkLine[0].x, y: box.y + this.atkLine[0].y },
                     { x: anglePoint2.x, y: anglePoint2.y }
                 ];
+            case WeaponType.SPEAR:
+                return [
+                    { x: box.x + this.atkLine[0].x, y: box.y + this.atkLine[0].y + (transform.f * 1.1) },
+                    { x: box.x + this.atkLine[1].x, y: box.y + this.atkLine[1].y + (transform.f * 1.1) }
+                ];
         }
     }
 
@@ -170,25 +188,25 @@ export class Weapon {
 
     update() {
         if (GameVars.atkCanv) {
-            if (this.isPerformingAction) {
-                let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
-                let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
+            // if (this.isPerformingAction) {
+            let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
+            let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
-                // just for debug
-                // const ctx = GameVars.atkCanv.getContext("2d");
-                // ctx.beginPath();
-                // ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
-                // ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
-                // ctx.strokeStyle = 'red';
-                // ctx.lineWidth = toPixelSize(1);
-                // ctx.stroke();
+            // just for debug
+            const ctx = GameVars.atkCanv.getContext("2d");
+            ctx.beginPath();
+            ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
+            ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = toPixelSize(1);
+            ctx.stroke();
 
-                if (this.isPlayer) {
-                    GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
-                } else {
-                    if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
-                }
+            if (this.isPlayer) {
+                GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
+            } else {
+                if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
             }
+            // }
         }
     }
 
@@ -211,6 +229,8 @@ export class Weapon {
                 return 2 * (this.size - 1);
             case WeaponType.SWORD:
                 return 3 * (this.size - 1);
+            case WeaponType.SPEAR:
+                return 4 * (this.size - 1);
             case WeaponType.GREATSWORD:
                 return 9 * (this.size - 1);
         }

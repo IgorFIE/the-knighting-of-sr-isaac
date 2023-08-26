@@ -65,9 +65,12 @@ export class Enemy {
             const isLeftWeapon = randomNumb(2) === 0;
             this.enemyRightWeapon = new Weapon(0, 0, isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, 2), -1, this, "#686b7a", this.enemySize);
             this.enemyLeftWeapon = new Weapon(0, 0, isLeftWeapon ? randomNumbOnRange(0, 2) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+        } else if (GameVars.gameLevel === 3) {
+            this.enemyRightWeapon = new Weapon(0, 0, randomNumbOnRange(1, 3), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(0, 0, randomNumbOnRange(1, 3), 1, this, "#686b7a", this.enemySize);
         } else {
-            this.enemyRightWeapon = new Weapon(0, 0, randomNumbOnRange(0, 3), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(0, 0, randomNumbOnRange(0, 3), 1, this, "#686b7a", this.enemySize);
+            this.enemyRightWeapon = new Weapon(0, 0, randomNumbOnRange(1, 7), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(0, 0, randomNumbOnRange(1, 7), 1, this, "#686b7a", this.enemySize);
         }
     }
 

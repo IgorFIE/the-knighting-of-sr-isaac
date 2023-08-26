@@ -87,24 +87,24 @@ export const morningStar = [
     [nu, wt, nu],
     [wt, wt, wt],
     [nu, wt, nu],
-    [nu, gd, nu],
-    [nu, gd, nu]
+    [nu, wc, nu],
+    [nu, wc, nu]
 ];
 
 export const hammer = [
     [wt, wt, wt],
     [gl, gl, wt],
     [gl, gl, wt],
-    [nu, gd, nu],
-    [nu, gd, nu]
+    [nu, wc, nu],
+    [nu, wc, nu]
 ];
 
 export const axe = [
     [nu, wt, wt],
     [wt, gl, wt],
     [nu, gl, wt],
-    [nu, gd, nu],
-    [nu, gd, nu]
+    [nu, wc, nu],
+    [nu, wc, nu]
 ];
 
 export const shield = [
@@ -115,20 +115,20 @@ export const shield = [
 ];
 
 export const spear = [
-    [wt],
-    [wt],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
     [gm],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd],
-    [gd]
+    [wt],
+    [wt]
 ];
 
 export const greatsword = [
@@ -154,6 +154,14 @@ export const getWeaponSprite = (weaponType) => {
             return shortSword;
         case WeaponType.GREATSWORD:
             return greatsword;
+        case WeaponType.SPEAR:
+            return spear;
+        case WeaponType.HAMMER:
+            return hammer;
+        case WeaponType.AXE:
+            return axe;
+        case WeaponType.MORNING_STAR:
+            return morningStar;
         default:
             return fist;
     }
