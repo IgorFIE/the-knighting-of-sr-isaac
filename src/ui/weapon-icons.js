@@ -21,8 +21,8 @@ export class WeaponIcons {
     }
 
     update() {
-        this.drawIcon(this.leftCanv, "B", GameVars.player.playerLeftWeapon.weaponType, GameVars.keys['b'] || GameVars.keys['B']);
-        this.drawIcon(this.rightCanv, GameVars.isMobile ? "A" : "V", GameVars.player.playerRightWeapon.weaponType, GameVars.keys['v'] || GameVars.keys['V']);
+        this.drawIcon(this.rightCanv, GameVars.isMobile ? "A" : "H", GameVars.player.playerRightWeapon.weaponType, GameVars.keys['h'] || GameVars.keys['H']);
+        this.drawIcon(this.leftCanv, GameVars.isMobile ? "B" : "J", GameVars.player.playerLeftWeapon.weaponType, GameVars.keys['j'] || GameVars.keys['J']);
     }
 
     drawIcon(canvas, letter, weaponType, isTouch) {

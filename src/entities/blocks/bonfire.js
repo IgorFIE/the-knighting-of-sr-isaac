@@ -34,7 +34,7 @@ export class Bonfire {
             } else {
                 if (this.timeElapsed / 1 >= 1) {
                     if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj) &&
-                        (GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B'])) {
+                        (GameVars.keys['h'] || GameVars.keys['H'] || GameVars.keys['j'] || GameVars.keys['J'])) {
                         moveLevel();
                     }
                 } else {
