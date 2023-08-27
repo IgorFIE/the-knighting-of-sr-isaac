@@ -21,7 +21,7 @@ export class Game {
         GameVars.gameBoard.init();
 
         // TODO REMOVE ME LATER
-        GameVars.gameBoard.consoleLogBoard();
+        // GameVars.gameBoard.consoleLogBoard();
 
         GameVars.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
         GameVars.currentRoom.cleanEnemies();
