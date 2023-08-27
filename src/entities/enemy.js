@@ -25,6 +25,8 @@ export class Enemy {
         this.enemyType = enemyType;
         this.enemySubType = this.getEnemySubType();
 
+        this.enemySpeed = toPixelSize(1 + (randomNumbOnRange(-5, 0) / 10));
+
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
         this.roomDiv = roomDiv;
 
@@ -142,8 +144,7 @@ export class Enemy {
             this.enemyRightWeapon.weaponCanv.style.animation = "";
         }
 
-        const enemySpeed = toPixelSize(1);
-        const distance = movKeys.length > 1 ? enemySpeed / 1.4142 : enemySpeed;
+        const distance = movKeys.length > 1 ? this.enemySpeed / 1.4142 : this.enemySpeed;
 
         if (this.enemyKeys['d']) { newRectX += distance; }
         if (this.enemyKeys['a']) { newRectX -= distance; }
