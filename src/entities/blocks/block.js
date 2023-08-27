@@ -1,5 +1,5 @@
 import { SquareObject } from "../../collision-objects/square-object";
-import { BlockType } from "../../enums/block-type";
+import { BlockType, getBlockColors, getFloorColors } from "../../enums/block-type";
 import { DoorType, getDoorColors } from "../../enums/door-type";
 import { GameVars, toPixelSize } from "../../game-variables";
 import { genSmallBox, generateBox } from "../../utilities/box-generator";
@@ -20,12 +20,13 @@ export class Block {
         const doorCtx = this.room.doorCanv.getContext("2d");
         switch (this.blockType) {
             case BlockType.WALL:
-                roomCtx.fillStyle = "#686b7a";
+                const blockColors = getBlockColors();
+                roomCtx.fillStyle = blockColors.md;
                 roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                 generateBox(this.room.roomCanv,
                     this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                     this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
-                    toPixelSize(2), "#3e3846", (x, y, endX, endY) => {
+                    toPixelSize(2), blockColors.dk, (x, y, endX, endY) => {
                         return randomNumb(100) < 3 || this.validateBlock(x, y, endX, endY,
                             (x, y, endX, endY) => x === 0 || y === endY,
                             (x, y, endX, endY) => x === 0,
@@ -39,7 +40,7 @@ export class Block {
                 generateBox(this.room.roomCanv,
                     this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                     this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
-                    toPixelSize(2), "#999a9e", (x, y, endX, endY) => {
+                    toPixelSize(2), blockColors.lt, (x, y, endX, endY) => {
                         return this.validateBlock(x, y, endX, endY,
                             (x, y, endX, endY) => y === 0 || x === endX,
                             (x, y, endX, endY) => y === 0,
@@ -104,23 +105,25 @@ export class Block {
                 break;
 
             case BlockType.FLOOR:
-                roomCtx.fillStyle = "#41663d";
+                const floorColors = getFloorColors();
+                roomCtx.fillStyle = floorColors.md;
                 roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                 generateBox(this.room.roomCanv,
                     this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
                     this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
-                    toPixelSize(2), "#52804d", () => randomNumb(100) < 5);
+                    toPixelSize(2), floorColors.lt, () => randomNumb(100) < 5);
                 break;
         }
     }
 
     createWallBlock(ctx, x, y) {
-        ctx.fillStyle = "#686b7a";
+        const blockColors = getBlockColors();
+        ctx.fillStyle = blockColors.md;
         ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
-        ctx.fillStyle = "#3e3846";
+        ctx.fillStyle = blockColors.dk;
         ctx.fillRect(x, y + toPixelSize(14), toPixelSize(16), toPixelSize(2));
         ctx.fillRect(x, y, toPixelSize(2), toPixelSize(16));
-        ctx.fillStyle = "#999a9e";
+        ctx.fillStyle = blockColors.lt;
         ctx.fillRect(x, y, toPixelSize(16), toPixelSize(2));
         ctx.fillRect(x + toPixelSize(14), y, toPixelSize(2), toPixelSize(16));
     }

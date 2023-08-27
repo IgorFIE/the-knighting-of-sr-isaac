@@ -105,39 +105,50 @@ export class Game {
     }
 
     drawMainRoomText() {
+        const textColor = this.getTutorColor();
         drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 28, "#2f492c", 1);
+            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 28, textColor, 1);
 
         drawPixelTextInCanvas(convertTextToPixelArt("^"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 6, "#2f492c", 1);
+            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 6, textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt("~"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) + 6, "#2f492c", 1);
+            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) + 6, textColor, 1);
 
         drawPixelTextInCanvas(convertTextToPixelArt("<"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) - 6, (GameVars.gameH / toPixelSize(4)), "#2f492c", 1);
+            (GameVars.gameW / toPixelSize(4)) - 6, (GameVars.gameH / toPixelSize(4)), textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt(">"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) + 6, (GameVars.gameH / toPixelSize(4)), "#2f492c", 1);
+            (GameVars.gameW / toPixelSize(4)) + 6, (GameVars.gameH / toPixelSize(4)), textColor, 1);
 
         if (!GameVars.isMobile) {
             drawPixelTextInCanvas(convertTextToPixelArt("w"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-                GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 12, "#2f492c", 1);
+                GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 12, textColor, 1);
             drawPixelTextInCanvas(convertTextToPixelArt("s"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-                GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) + 12, "#2f492c", 1);
+                GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) + 12, textColor, 1);
 
             drawPixelTextInCanvas(convertTextToPixelArt("a"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-                (GameVars.gameW / toPixelSize(4)) - 12, (GameVars.gameH / toPixelSize(4)), "#2f492c", 1);
+                (GameVars.gameW / toPixelSize(4)) - 12, (GameVars.gameH / toPixelSize(4)), textColor, 1);
             drawPixelTextInCanvas(convertTextToPixelArt("d"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-                (GameVars.gameW / toPixelSize(4)) + 12, (GameVars.gameH / toPixelSize(4)), "#2f492c", 1);
+                (GameVars.gameW / toPixelSize(4)) + 12, (GameVars.gameH / toPixelSize(4)), textColor, 1);
         }
 
         drawPixelTextInCanvas(convertTextToPixelArt("r atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 20, "#2f492c", 1);
+            (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "a" : "v"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 28, "#2f492c", 1);
+            (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
 
         drawPixelTextInCanvas(convertTextToPixelArt("l atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 20, "#2f492c", 1);
+            (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt("b"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 28, "#2f492c", 1);
+            (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
+    }
+
+    getTutorColor() {
+        if (GameVars.gameLevel < 3) {
+            return "#2f492c";
+        } else if (GameVars.gameLevel < 6) {
+            return "#38252e";
+        } else {
+            return "#1b1116";
+        }
     }
 }
