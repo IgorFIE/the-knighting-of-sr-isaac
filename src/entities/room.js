@@ -72,8 +72,8 @@ export class Room {
                 this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.KEY, null, this.roomDiv));
                 break;
             case RoomType.TREASURE:
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, 7), this.roomDiv));
                 this.cleanEnemies();
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, 7), this.roomDiv));
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();
@@ -87,6 +87,7 @@ export class Room {
         while (this.enemies.length > 0) {
             this.enemies[0].destroy();
         }
+        console.log(this.enemies);
     }
 
     setDoor(startX, finishX, startY, finishY, xDir, yDir, doorType) {

@@ -4,9 +4,9 @@ export const EnemyType = {
 };
 
 export const EnemySubType = {
+    AFRAID: "#2f492c", // green
     AGRESSIVE: "#431313", // red
-    DEFENSIVE: "#3c4f68", // blue
-    AFRAID: "#2f492c" // green
+    DEFENSIVE: "#3c4f68" // blue
 };
 
-export const enemyChainMailColors = [EnemySubType.AGRESSIVE, EnemySubType.DEFENSIVE, EnemySubType.AFRAID];
+export const enemyChainMailColors = [EnemySubType.AFRAID, EnemySubType.AGRESSIVE, EnemySubType.DEFENSIVE];

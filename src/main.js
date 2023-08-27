@@ -93,6 +93,7 @@ function startGame() {
     mainMenuDiv.classList.add("hidden");
     GameVars.gameDiv.classList.remove("hidden");
     GameVars.resetGameVars();
+    skipElapsedTime = 0;
     GameVars.game = new Game();
 }
 
@@ -114,7 +115,7 @@ function gameLoop() {
                 }
             }
         } else {
-            if (skipElapsedTime / 1 >= 1 && GameVars.keys['Enter']) {
+            if (skipElapsedTime / 0.5 >= 1 && GameVars.keys['Enter']) {
                 startGame();
                 skipElapsedTime = 0;
             } else {
