@@ -285,7 +285,7 @@ export class Enemy {
     }
 
     destroy() {
-        this.roomDiv.removeChild(this.div);
+        this.div.remove();
         GameVars.gameBoard.board[this.roomY][this.roomX].enemies.splice(
             GameVars.gameBoard.board[this.roomY][this.roomX].enemies.indexOf(this), 1);
     }

@@ -61,7 +61,11 @@ export class Room {
                 randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),
                 randomNumbOnRange(GameVars.gameH / 3, (GameVars.gameH / 3) * 2),
                 EnemyType.BASIC, this.roomDiv);
-            if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj))) this.enemies.push(newEnemy);
+            if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj))) {
+                this.enemies.push(newEnemy);
+            } else {
+                newEnemy.div.remove();
+            }
         }
     }
 
@@ -87,7 +91,6 @@ export class Room {
         while (this.enemies.length > 0) {
             this.enemies[0].destroy();
         }
-        console.log(this.enemies);
     }
 
     setDoor(startX, finishX, startY, finishY, xDir, yDir, doorType) {
