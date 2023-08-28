@@ -133,26 +133,4 @@ export class GameBoard {
     hideRooms() {
         this.rooms.forEach(room => room.roomDiv.classList.add("hidden"));
     }
-
-    consoleLogBoard() {
-        let room = "";
-        for (let y = 0; y < this.board.length; y++) {
-            let newLine = "";
-            for (let x = 0; x < this.board.length; x++) {
-                if (this.board[y][x]?.roomType == RoomType.EMPTY) {
-                    newLine += "  ";
-                } else if (this.board[y][x]?.roomType == RoomType.KEY) {
-                    newLine += "K ";
-                } else if (this.board[y][x]?.roomType == RoomType.TREASURE) {
-                    newLine += "T ";
-                } else if (this.board[y][x]?.roomType == RoomType.BOSS) {
-                    newLine += "B ";
-                } else {
-                    newLine += "# ";
-                }
-            }
-            room += newLine + "\n";
-        }
-        console.log(room);
-    }
 }
