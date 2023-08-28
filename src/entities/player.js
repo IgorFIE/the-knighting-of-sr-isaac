@@ -2,12 +2,11 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { rectCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
+import { checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { key, knight, playerColors, shadow } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
-import { createId } from "../utilities/general-utilities";
 import { deadAnim } from "../utilities/animation-utilities";
 
 export class Player {

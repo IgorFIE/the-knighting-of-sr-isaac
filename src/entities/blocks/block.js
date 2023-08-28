@@ -2,7 +2,7 @@ import { SquareObject } from "../../collision-objects/square-object";
 import { BlockType, getBlockColors, getFloorColors } from "../../enums/block-type";
 import { DoorType, getDoorColors } from "../../enums/door-type";
 import { GameVars, toPixelSize } from "../../game-variables";
-import { genSmallBox, generateBox } from "../../utilities/box-generator";
+import { generateBox } from "../../utilities/box-generator";
 import { randomNumb } from "../../utilities/general-utilities";
 
 export class Block {

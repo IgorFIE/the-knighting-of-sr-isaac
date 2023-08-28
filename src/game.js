@@ -5,13 +5,9 @@ import { rectCircleCollision } from "./utilities/collision-utilities";
 import { isSpecialRoom } from "./enums/room-type";
 import { randomNumb } from "./utilities/general-utilities";
 import { Minimap } from "./ui/minimap";
-import { Item } from "./entities/item";
-import { ItemType } from "./enums/item-type";
-import { WeaponType } from "./enums/weapon-type";
 import { WeaponIcons } from "./ui/weapon-icons";
 import { MovePad } from "./ui/movepad";
 import { createElem } from "./utilities/draw-utilities";
-import { Bonfire } from "./entities/blocks/bonfire";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "./utilities/text";
 
 export class Game {

@@ -2,7 +2,6 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { lineCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text";
 import { getWeaponSprite } from "./sprites";
 
 export class Weapon {

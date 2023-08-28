@@ -3,8 +3,7 @@ const { Game } = require("./game");
 const { createElem, drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
-const { updateFps, createFpsElement } = require("./utilities/fps-utilities");
-const { playSong, Sound } = require("./sound/sound");
+const { Sound } = require("./sound/sound");
 const { speaker, audio } = require("./entities/sprites");
 
 let mainDiv;

@@ -1,6 +1,6 @@
 import { CircleObject } from "../../collision-objects/circle-object";
 import { GameVars, toPixelSize } from "../../game-variables";
-import { circleToCircleCollision, distBetwenObjs } from "../../utilities/collision-utilities";
+import { circleToCircleCollision } from "../../utilities/collision-utilities";
 import { createElem, drawSprite } from "../../utilities/draw-utilities";
 import { moveLevel } from "../../utilities/level-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../../utilities/text";
