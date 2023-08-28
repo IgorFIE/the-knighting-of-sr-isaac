@@ -19,7 +19,10 @@ export class Item {
 
         this.timeElapsed = 0;
 
-        this.collisionObj = new CircleObject(x, y, toPixelSize(this.sprite[0].length * 2));
+        this.collisionObj = new CircleObject(
+            x + (this.sprite[0].length * this.size / 2),
+            y + (this.sprite.length * this.size / 2),
+            (this.sprite[0].length > this.sprite.length ? this.sprite[0].length : this.sprite.length) * this.size / 2);
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.itemDiv = createElem(parentDiv, "div", null, ["item"]);
