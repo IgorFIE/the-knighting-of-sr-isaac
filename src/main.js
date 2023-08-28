@@ -93,7 +93,7 @@ function createGameOverMenu() {
 }
 
 function createMuteBtn() {
-    soundBtnCanv = createElem(mainDiv, "canvas", "soundbtn", null, toPixelSize(23), toPixelSize(25), null,
+    soundBtnCanv = createElem(mainDiv, "canvas", "soundbtn", null, toPixelSize(23), toPixelSize(12), null,
         () => {
             if (GameVars.sound) {
                 GameVars.sound.muteMusic();
