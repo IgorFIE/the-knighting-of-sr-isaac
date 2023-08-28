@@ -4,6 +4,7 @@ const { createElem } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
 const { updateFps, createFpsElement } = require("./utilities/fps-utilities");
+const { playSong, Sound } = require("./sound/sound");
 
 let mainDiv;
 
@@ -83,6 +84,7 @@ function createGameOverMenu() {
 }
 
 function skipGameOver() {
+    GameVars.sound.clickSound();
     gameOverCanv.classList.add("hidden");
     mainMenuDiv.classList.remove("hidden");
     GameVars.gameDiv.innerHTML = "";
@@ -90,11 +92,20 @@ function skipGameOver() {
 }
 
 function startGame() {
+    initAudio();
+    GameVars.sound.clickSound();
     mainMenuDiv.classList.add("hidden");
     GameVars.gameDiv.classList.remove("hidden");
     GameVars.resetGameVars();
     skipElapsedTime = 0;
     GameVars.game = new Game();
+}
+
+function initAudio() {
+    if (!GameVars.sound) {
+        GameVars.sound = new Sound();
+        GameVars.sound.initSound();
+    }
 }
 
 function gameLoop() {
@@ -121,6 +132,9 @@ function gameLoop() {
             } else {
                 skipElapsedTime += GameVars.deltaTime;
             }
+        }
+        if (GameVars.sound) {
+            GameVars.sound.playMusic();
         }
     }
     window.requestAnimationFrame(() => gameLoop());

@@ -244,6 +244,11 @@ export class Weapon {
 
     dealDmgToBlock(obj) {
         if (!this.damagedObjs.has(obj)) {
+            if (this.isPlayer) {
+                GameVars.sound.enemyTakeDmgSound();
+            } else {
+                GameVars.sound.playerTakeDmgSound();
+            }
             this.damagedObjs.set(obj, true);
             obj.lifeBar.takeDmg(this.dmg);
             if (this.weaponType === WeaponType.SHIELD) obj.validateMovement(
@@ -276,6 +281,7 @@ export class Weapon {
 
     action() {
         if (!this.isPerformingAction) {
+            GameVars.sound.atkSound();
             this.isPerformingAction = true;
             this.atkAnimation = this.getWeaponAnimation();
             this.atkAnimation.finished.then(() => {

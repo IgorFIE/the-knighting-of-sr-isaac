@@ -98,6 +98,7 @@ export class Enemy {
             this.lifeBar.update();
         } else {
             if (this.isAlive) {
+                GameVars.sound.deadSound();
                 this.lifeBar.update();
                 this.isAlive = false;
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
@@ -138,6 +139,7 @@ export class Enemy {
             this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
             this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
             this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
+            GameVars.sound.walkSound();
         } else {
             this.enemyCanv.style.animation = "";
             this.enemyLeftWeapon.weaponCanv.style.animation = "";

@@ -139,16 +139,21 @@ export class Room {
         const shouldOpenTreasureDoor = isKeyPressed && GameVars.player.hasKey && this.checkIfInRangeOfPlayer(DoorType.TREASURE);
         const shouldOpenBossDoor = isKeyPressed && this.checkIfInRangeOfPlayer(DoorType.BOSS);
         this.doors.forEach(door => {
-            if (door.doorType === DoorType.TREASURE) {
-                if (shouldOpenTreasureDoor) {
+            if (door.blockType !== BlockType.DOOR_OPEN) {
+                if (door.doorType === DoorType.TREASURE) {
+                    if (shouldOpenTreasureDoor) {
+                        door.blockType = BlockType.DOOR_OPEN;
+                        GameVars.sound.openDoorSound();
+                    }
+                } else if (door.doorType === DoorType.BOSS) {
+                    if (shouldOpenBossDoor) {
+                        door.blockType = BlockType.DOOR_OPEN;
+                        GameVars.sound.openDoorSound();
+                    }
+                } else {
                     door.blockType = BlockType.DOOR_OPEN;
+                    GameVars.sound.openDoorSound();
                 }
-            } else if (door.doorType === DoorType.BOSS) {
-                if (shouldOpenBossDoor) {
-                    door.blockType = BlockType.DOOR_OPEN;
-                }
-            } else {
-                door.blockType = BlockType.DOOR_OPEN;
             }
             door.draw();
         });

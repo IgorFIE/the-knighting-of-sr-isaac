@@ -55,6 +55,7 @@ export class Player {
                 this.clearAnim();
                 this.lifeBar.update();
                 this.isAlive = false;
+                GameVars.sound.playOverSound();
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
                     GameVars.isGameOver = true;
                 });
@@ -76,6 +77,7 @@ export class Player {
             this.playerCanv.style.animation = "walk 0.16s infinite ease-in-out";
             this.playerLeftWeapon.weaponCanv.style.animation = this.playerLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
             this.playerRightWeapon.weaponCanv.style.animation = this.playerRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
+            GameVars.sound.walkSound();
         } else {
             this.clearAnim();
         }

@@ -9,6 +9,8 @@ const fps = 90;
 let deltaTime;
 let debug;
 
+let sound;
+
 let pixelSize;
 
 let gameWdAsPixels;
@@ -89,6 +91,8 @@ export const GameVars = {
     fps,
     deltaTime,
     debug,
+
+    sound,
 
     pixelSize,
     gameWdAsPixels,

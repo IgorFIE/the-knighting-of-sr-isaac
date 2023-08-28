@@ -35,6 +35,7 @@ export class Bonfire {
                 if (this.timeElapsed / 1 >= 1) {
                     if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj) &&
                         (GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B'])) {
+                        GameVars.sound.spawnSound();
                         moveLevel();
                     }
                 } else {

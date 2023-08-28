@@ -47,12 +47,12 @@ export class Item {
                 switch (this.itemType) {
                     case ItemType.KEY:
                         GameVars.player.hasKey = true;
-                        this.destroy();
+                        this.wasPicked = true;
                         break;
                     case ItemType.HEART:
                         if (GameVars.player.lifeBar.life !== GameVars.player.lifeBar.totalLife) {
                             GameVars.player.lifeBar.addLife();
-                            this.destroy();
+                            this.wasPicked = true;
                         }
                         break;
                     case ItemType.WEAPON:
@@ -61,7 +61,6 @@ export class Item {
                             this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
                             GameVars.player.playerRightWeapon.destroy();
                             GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player, playerColors.hd);
-                            this.destroy();
                             GameVars.weaponIcons.update();
                         }
                         if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
@@ -69,10 +68,13 @@ export class Item {
                             this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
                             GameVars.player.playerLeftWeapon.destroy();
                             GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player, playerColors.hd);
-                            this.destroy();
                             GameVars.weaponIcons.update();
                         }
                         break;
+                }
+                if (this.wasPicked) {
+                    GameVars.sound.pickItem();
+                    this.destroy();
                 }
             }
         } else {
