@@ -179,9 +179,25 @@ export const key = [
     [wt, wt, nu]
 ];
 
-export const getItemSprite = (itemType) => {
-    switch (itemType) {
-        default:
-            return [];
-    }
-}
+// AUDIO
+export const speaker = [
+    [nu, nu, nu, wt, nu],
+    [nu, wt, wt, wt, nu],
+    [wt, wt, wt, wt, wt],
+    [wt, wt, wt, wt, wt],
+    [nu, wt, wt, wt, nu],
+    [nu, nu, nu, wt, nu]
+];
+
+export const audio = [
+    [nu, nu, nu, nu],
+    [nu, nu, wt, nu],
+    [wt, nu, nu, wt],
+    [nu, wt, nu, wt],
+    [nu, wt, nu, wt],
+    [nu, wt, nu, wt],
+    [nu, wt, nu, wt],
+    [wt, nu, nu, wt],
+    [nu, nu, wt, nu],
+    [nu, nu, nu, nu]
+];

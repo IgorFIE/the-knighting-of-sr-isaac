@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { fullHeartColors, getItemSprite, getWeaponSprite, heart, key, playerColors } from "./sprites";
+import { fullHeartColors, getWeaponSprite, heart, key, playerColors } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Item {
