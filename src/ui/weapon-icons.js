@@ -57,6 +57,7 @@ export class WeaponIcons {
             case WeaponType.HAMMER:
             case WeaponType.MORNING_STAR:
                 pixelSize = 5; x = 1; y = 2;
+                break;
             case WeaponType.CROSSBOW:
                 pixelSize = 4; x = -1; y = 0;
                 break;
