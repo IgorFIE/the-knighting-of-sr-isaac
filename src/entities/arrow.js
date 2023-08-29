@@ -33,12 +33,14 @@ export class Arrow {
 
         GameVars.currentRoom.enemies.forEach(enemy => {
             if (!this.wasDestroyed && circleToCircleCollision(enemy.collisionObj, this.collisionObj)) {
+                GameVars.sound.enemyTakeDmgSound();
                 enemy.lifeBar.takeDmg(3);
                 this.destroy();
             }
         });
 
         if (!this.wasDestroyed && circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj)) {
+            GameVars.sound.playerTakeDmgSound();
             GameVars.player.lifeBar.takeDmg(3);
             this.destroy();
         }
