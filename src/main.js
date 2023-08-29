@@ -4,13 +4,13 @@ const { createElem, drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
-const { speaker, audio } = require("./entities/sprites");
+const { speaker, audio, knight, playerColors, shortSword } = require("./entities/sprites");
+const { EnemySubType } = require("./enums/enemy-type");
+const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
 
 let mainDiv;
 
 let mainMenuDiv;
-let mainMenuCanv;
-let mainMenuCtx;
 
 let gameOverCanv;
 let gameOverCtx;
@@ -34,7 +34,6 @@ function init() {
     createMainMenu();
     createGameOverMenu();
     createMuteBtn();
-    // GameVars.game = new Game();
 
     // createFpsElement(mainDiv);
     GameVars.initDebug();
@@ -53,33 +52,44 @@ function addKeyListenerEvents() {
 
 function createMainMenu() {
     mainMenuDiv = createElem(mainDiv, "div", null, null, GameVars.gameW, GameVars.gameH);
-    mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
+    let mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
 
     let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(70), toPixelSize(30), null, () => startGame());
-    mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + "px " +
-        ((GameVars.gameH / 2) - (mainMenuBtn.height / 2) + toPixelSize(50)) + "px";
+    mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2) - toPixelSize(4)) + "px " + ((GameVars.gameH / 4) * 3) + "px";
 
     genSmallBox(mainMenuBtn, 0, 0, 34, 14, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("enter/click/touch"), mainMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
     drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuBtn, toPixelSize(1), 35, 20, "#edeef7", 1);
 
-    mainMenuCtx = mainMenuCanv.getContext("2d");
-    drawMainMenu();
-}
+    let mainMenuCtx = mainMenuCanv.getContext("2d");
+    mainMenuCtx.fillStyle = "#ffffff44";
+    mainMenuCtx.fillRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
 
-function drawMainMenu() {
-    mainMenuCanv.getContext("2d").clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
+    for (let y = 0; y < GameVars.gameH; y += toPixelSize(16)) {
+        for (let x = 0; x < GameVars.gameW; x += toPixelSize(16)) {
+            if (y < GameVars.gameH / 2) {
+                createWallBlock(mainMenuCtx, x, y);
+            } else {
+                createFloorBlock(mainMenuCanv, x, y);
+            }
+        }
+    }
 
-    mainMenuCanv.getContext("2d").fillStyle = "#ffffff44";
-    mainMenuCanv.getContext("2d").fillRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
+    let wKnightCenter = Math.round(GameVars.gameW / 2 / toPixelSize(30));
+    let hKnightCenter = Math.round(GameVars.gameH / toPixelSize(30));
 
-    let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
+    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter - 5, hKnightCenter - 6, { "hd": "#999a9e", "hl": "#686b7a", "cm": EnemySubType.AGRESSIVE });
+    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter + 2, hKnightCenter - 6, playerColors);
 
-    drawPixelTextInCanvas(convertTextToPixelArt("13th century"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("knight"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 24, "black", 1);
+    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter - 3.5, hKnightCenter - 8, { "wc": "#686b7a" });
+    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8, { "wc": playerColors.hd });
+
+    genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 24, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(4), Math.round(GameVars.gameW / 2 / toPixelSize(4)), 4, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("sr Isaac"), mainMenuCanv, toPixelSize(2), Math.round(GameVars.gameW / 2 / toPixelSize(2)), 18, "#edeef7", 1);
 
     genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 11, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 12, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), halfScreenWidthAsPixels, GameVars.gameHgAsPixels - 12, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 12, "#edeef7", 1);
 }
 
 function createGameDiv() {
@@ -101,7 +111,7 @@ function createMuteBtn() {
                 GameVars.sound.initSound();
             }
         });
-    soundBtnCanv.style.translate = GameVars.gameW - soundBtnCanv.width + "px";
+    soundBtnCanv.style.translate = (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + "px";
     soundBtnCtx = soundBtnCanv.getContext("2d");
     drawSoundBtn();
 }

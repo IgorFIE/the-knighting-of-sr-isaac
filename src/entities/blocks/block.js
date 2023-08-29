@@ -24,8 +24,8 @@ export class Block {
                 roomCtx.fillStyle = blockColors.md;
                 roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                 generateBox(this.room.roomCanv,
-                    this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
-                    this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
+                    convertToMapPixel(this.collisionObj.x), convertToMapPixel(this.collisionObj.y),
+                    convertToMapPixel(this.collisionObj.w - toPixelSize(2)), convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
                     toPixelSize(2), blockColors.dk, (x, y, endX, endY) => {
                         return randomNumb(100) < 3 || this.validateBlock(x, y, endX, endY,
                             (x, y, endX, endY) => x === 0 || y === endY,
@@ -38,8 +38,8 @@ export class Block {
                         );
                     });
                 generateBox(this.room.roomCanv,
-                    this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
-                    this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
+                    convertToMapPixel(this.collisionObj.x), convertToMapPixel(this.collisionObj.y),
+                    convertToMapPixel(this.collisionObj.w - toPixelSize(2)), convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
                     toPixelSize(2), blockColors.lt, (x, y, endX, endY) => {
                         return this.validateBlock(x, y, endX, endY,
                             (x, y, endX, endY) => y === 0 || x === endX,
@@ -59,8 +59,8 @@ export class Block {
                     doorCtx.fillStyle = doorColors.md;
                     doorCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                     generateBox(this.room.doorCanv,
-                        this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
-                        this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
+                        convertToMapPixel(this.collisionObj.x), convertToMapPixel(this.collisionObj.y),
+                        convertToMapPixel(this.collisionObj.w - toPixelSize(2)), convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
                         toPixelSize(2), doorColors.lt, (x, y, endX, endY) => {
                             return (y === 0 && this.blockRoomY !== 1 && this.blockRoomY < Math.round(GameVars.roomHeight) - 1) || // Top lines
                                 (x === endX && this.blockRoomX > 0 && this.blockRoomX !== Math.round(GameVars.roomWidth) - 2) || // right Lines
@@ -69,8 +69,8 @@ export class Block {
                                 ;
                         });
                     generateBox(this.room.doorCanv,
-                        this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
-                        this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
+                        convertToMapPixel(this.collisionObj.x), convertToMapPixel(this.collisionObj.y),
+                        convertToMapPixel(this.collisionObj.w - toPixelSize(2)), convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
                         toPixelSize(2), doorColors.dk, (x, y, endX, endY) => {
                             return (y === endY && this.blockRoomY > 0 && this.blockRoomY !== Math.round(GameVars.roomHeight) - 2) || //Bottom lines
                                 (x === 0 && ((this.blockRoomX === 0 || this.blockRoomX === Math.round(GameVars.roomWidth) - 2) ||
@@ -105,27 +105,9 @@ export class Block {
                 break;
 
             case BlockType.FLOOR:
-                const floorColors = getFloorColors();
-                roomCtx.fillStyle = floorColors.md;
-                roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
-                generateBox(this.room.roomCanv,
-                    this.convertToMapPixel(this.collisionObj.x), this.convertToMapPixel(this.collisionObj.y),
-                    this.convertToMapPixel(this.collisionObj.w - toPixelSize(2)), this.convertToMapPixel(this.collisionObj.h - toPixelSize(2)),
-                    toPixelSize(2), floorColors.lt, () => randomNumb(100) < 5);
+                createFloorBlock(this.room.roomCanv, this.collisionObj.x, this.collisionObj.y);
                 break;
         }
-    }
-
-    createWallBlock(ctx, x, y) {
-        const blockColors = getBlockColors();
-        ctx.fillStyle = blockColors.md;
-        ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
-        ctx.fillStyle = blockColors.dk;
-        ctx.fillRect(x, y + toPixelSize(14), toPixelSize(16), toPixelSize(2));
-        ctx.fillRect(x, y, toPixelSize(2), toPixelSize(16));
-        ctx.fillStyle = blockColors.lt;
-        ctx.fillRect(x, y, toPixelSize(16), toPixelSize(2));
-        ctx.fillRect(x + toPixelSize(14), y, toPixelSize(2), toPixelSize(16));
     }
 
     validateBlock(x, y, endX, endY, insideFn, topLeftFn, bottomLeftFn, topRightFn, bottomRightFn, topBottomFn, leftRightFn) {
@@ -149,19 +131,19 @@ export class Block {
     createDoor(ctx, elseFn) {
         if ((this.blockRoomX === this.room.backBlocks[0].length - 1 || this.blockRoomX === 0) &&
             this.blockRoomY - 1 > 0 && this.room.backBlocks[this.blockRoomY - 1][this.blockRoomX].blockType == BlockType.WALL) {
-            this.createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y - toPixelSize(8));
+            createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y - toPixelSize(8));
             this.createDoorFrame(ctx, this.collisionObj.x, this.collisionObj.y + toPixelSize(8), toPixelSize(16), toPixelSize(8));
         } else if ((this.blockRoomX === this.room.backBlocks[0].length - 1 || this.blockRoomX === 0) &&
             this.blockRoomY + 1 < this.room.backBlocks.length && this.room.backBlocks[this.blockRoomY + 1][this.blockRoomX].blockType == BlockType.WALL) {
-            this.createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y + toPixelSize(8));
+            createWallBlock(ctx, this.collisionObj.x, this.collisionObj.y + toPixelSize(8));
             this.createDoorFrame(ctx, this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(8));
         } else if ((this.blockRoomY === this.room.backBlocks.length - 1 || this.blockRoomY === 0) &&
             this.blockRoomX - 1 > 0 && this.room.backBlocks[this.blockRoomY][this.blockRoomX - 1].blockType == BlockType.WALL) {
-            this.createWallBlock(ctx, this.collisionObj.x - toPixelSize(8), this.collisionObj.y);
+            createWallBlock(ctx, this.collisionObj.x - toPixelSize(8), this.collisionObj.y);
             this.createDoorFrame(ctx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y, toPixelSize(8), toPixelSize(16));
         } else if ((this.blockRoomY === this.room.backBlocks.length - 1 || this.blockRoomY === 0) &&
             this.blockRoomX + 1 < this.room.backBlocks[0].length && this.room.backBlocks[this.blockRoomY][this.blockRoomX + 1].blockType == BlockType.WALL) {
-            this.createWallBlock(ctx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y);
+            createWallBlock(ctx, this.collisionObj.x + toPixelSize(8), this.collisionObj.y);
             this.createDoorFrame(ctx, this.collisionObj.x, this.collisionObj.y, toPixelSize(8), toPixelSize(16));
         } else {
             if (elseFn) elseFn();
@@ -197,3 +179,30 @@ export class Block {
         return value / toPixelSize(amount);
     }
 }
+
+export const createWallBlock = (ctx, x, y) => {
+    const blockColors = getBlockColors();
+    ctx.fillStyle = blockColors.md;
+    ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
+    ctx.fillStyle = blockColors.dk;
+    ctx.fillRect(x, y + toPixelSize(14), toPixelSize(16), toPixelSize(2));
+    ctx.fillRect(x, y, toPixelSize(2), toPixelSize(16));
+    ctx.fillStyle = blockColors.lt;
+    ctx.fillRect(x, y, toPixelSize(16), toPixelSize(2));
+    ctx.fillRect(x + toPixelSize(14), y, toPixelSize(2), toPixelSize(16));
+};
+
+export const createFloorBlock = (canvas, x, y) => {
+    const floorColors = getFloorColors();
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = floorColors.md;
+    ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
+    generateBox(canvas,
+        convertToMapPixel(x), convertToMapPixel(y),
+        convertToMapPixel(toPixelSize(14)), convertToMapPixel(toPixelSize(14)),
+        toPixelSize(2), floorColors.lt, () => randomNumb(100) < 5);
+};
+
+export const convertToMapPixel = (value, amount = 2) => {
+    return value / toPixelSize(amount);
+};
