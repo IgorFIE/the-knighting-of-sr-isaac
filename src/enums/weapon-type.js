@@ -6,5 +6,6 @@ export const WeaponType = {
     SPEAR: 4,
     HAMMER: 5,
     SWORD: 6,
-    GREATSWORD: 7
+    GREATSWORD: 7,
+    CROSSBOW: 8
 };

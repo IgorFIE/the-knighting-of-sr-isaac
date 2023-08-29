@@ -147,6 +147,28 @@ export const greatsword = [
     [nu, nu, nu, gd, nu, nu, nu],
 ];
 
+export const crossbow = [
+    [nu, nu, nu, wt, nu, nu, nu],
+    [nu, nu, nu, wt, nu, nu, nu],
+    [nu, gl, gl, wc, gl, gl, nu],
+    [nu, gl, nu, wc, nu, gl, nu],
+    [gl, gl, nu, wc, nu, gl, gl],
+    [nu, nu, gd, wc, gd, nu, nu],
+    [nu, nu, nu, wc, nu, nu, nu],
+    [nu, nu, nu, wt, nu, nu, nu]
+];
+
+export const arrow = [
+    [wt],
+    [wt],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wc],
+    [wt]
+];
+
 export const getWeaponSprite = (weaponType) => {
     switch (weaponType) {
         case WeaponType.SHIELD:
@@ -163,6 +185,8 @@ export const getWeaponSprite = (weaponType) => {
             return axe;
         case WeaponType.MORNING_STAR:
             return morningStar;
+        case WeaponType.CROSSBOW:
+            return crossbow;
         default:
             return fist;
     }

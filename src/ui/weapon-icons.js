@@ -57,6 +57,8 @@ export class WeaponIcons {
             case WeaponType.HAMMER:
             case WeaponType.MORNING_STAR:
                 pixelSize = 5; x = 1; y = 2;
+            case WeaponType.CROSSBOW:
+                pixelSize = 4; x = -1; y = 0;
                 break;
         }
         drawSprite(canvas, getWeaponSprite(weaponType), toPixelSize(pixelSize), x, y, { "wc": playerColors.hd });

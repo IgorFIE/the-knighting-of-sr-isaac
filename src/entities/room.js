@@ -29,6 +29,7 @@ export class Room {
         this.doorTriggers = [];
         this.items = [];
         this.enemies = [];
+        this.arrows = [];
 
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
         this.roomCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
@@ -76,7 +77,7 @@ export class Room {
                 break;
             case RoomType.TREASURE:
                 this.cleanEnemies();
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, 7), this.roomDiv));
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, 8), this.roomDiv));
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();
@@ -126,6 +127,7 @@ export class Room {
         } else {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
+            this.arrows.forEach(arrow => arrow.update());
         }
         if (this.enemies.length === 0) {
             this.openDoors();

@@ -35,6 +35,9 @@ function init() {
     createGameOverMenu();
     createMuteBtn();
 
+    // initAudio();
+    // GameVars.game = new Game();
+
     // createFpsElement(mainDiv);
     GameVars.initDebug();
 

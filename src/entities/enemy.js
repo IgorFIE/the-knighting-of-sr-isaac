@@ -60,9 +60,9 @@ export class Enemy {
     }
 
     getEnemySubType() {
-        if (GameVars.gameLevel < 3) {
+        if (GameVars.gameLevel === 1) {
             return enemyChainMailColors[0];
-        } else if (GameVars.gameLevel < 5) {
+        } else if (GameVars.gameLevel < 4) {
             return enemyChainMailColors[randomNumb(2)];
         } else {
             return enemyChainMailColors[randomNumb(enemyChainMailColors.length)];
@@ -74,7 +74,7 @@ export class Enemy {
             this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
             this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
         } else {
-            const maxValue = GameVars.gameLevel >= 7 ? 7 : GameVars.gameLevel;
+            const maxValue = GameVars.gameLevel >= 8 ? 8 : GameVars.gameLevel;
             const isLeftWeapon = randomNumb(2) === 0;
             this.enemyRightWeapon = new Weapon(0, 0, isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
             this.enemyLeftWeapon = new Weapon(0, 0, isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
