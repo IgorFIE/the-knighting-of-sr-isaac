@@ -7,7 +7,7 @@ import { deadAnim } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions, distBetwenObjs, circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { createId, randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
+import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Item } from "./item";
 import { LifeBar } from "./life-bar";
 import { knight } from "./sprites";
@@ -16,11 +16,8 @@ import { Weapon } from "./weapon";
 export class Enemy {
     constructor(roomX, roomY, x, y, enemyType, roomDiv) {
         this.isAlive = true;
-        this.id = createId();
         this.roomX = roomX;
         this.roomY = roomY;
-        this.x = x;
-        this.y = y;
 
         this.enemyType = enemyType;
         this.enemySubType = this.getEnemySubType();
@@ -28,8 +25,6 @@ export class Enemy {
         this.enemySpeed = toPixelSize(1 + (randomNumbOnRange(-5, 0) / 10));
 
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
-        this.roomDiv = roomDiv;
-
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
@@ -53,9 +48,9 @@ export class Enemy {
 
         this.draw();
 
-        let rect = this.enemyCanv.getBoundingClientRect();
-        this.div.style.width = rect.width + "px";
-        this.div.style.height = rect.height + "px";
+        let enemyRect = this.enemyCanv.getBoundingClientRect();
+        this.div.style.width = enemyRect.width + "px";
+        this.div.style.height = enemyRect.height + "px";
         this.div.style.transformOrigin = "70% 95%";
     }
 

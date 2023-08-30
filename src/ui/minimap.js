@@ -14,8 +14,8 @@ export class Minimap {
     }
 
     update() {
-        if (!this.visited[GameVars.player.roomY + "|" + GameVars.player.roomX]) {
-            this.visited[GameVars.player.roomY + "|" + GameVars.player.roomX] = true;
+        if (!this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX]) {
+            this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] = true;
         }
 
         this.minimapCanv.getContext("2d").clearRect(0, 0, this.minimapCanv.width, this.minimapCanv.height);
@@ -26,11 +26,11 @@ export class Minimap {
                 if (x === 0 && y === 0) {
                     continue;
                 }
-                if (this.validatePos(GameVars.player.roomX + x, GameVars.player.roomY + y)) {
-                    if (this.visited[(GameVars.player.roomY + y) + "|" + (GameVars.player.roomX + x)]) {
+                if (this.validatePos(GameVars.currentRoom.roomX + x, GameVars.currentRoom.roomY + y)) {
+                    if (this.visited[(GameVars.currentRoom.roomY + y) + "|" + (GameVars.currentRoom.roomX + x)]) {
                         this.createMiniMapRoom(x, y, "#703a33", "#2f1519");
-                    } else if (GameVars.gameBoard.board[GameVars.player.roomY + y][GameVars.player.roomX + x] &&
-                        this.containsVisitedBlockArround(GameVars.player.roomX + x, GameVars.player.roomY + y)) {
+                    } else if (GameVars.gameBoard.board[GameVars.currentRoom.roomY + y][GameVars.currentRoom.roomX + x] &&
+                        this.containsVisitedBlockArround(GameVars.currentRoom.roomX + x, GameVars.currentRoom.roomY + y)) {
                         this.createMiniMapRoom(x, y, "#703a3366", "#2f151966");
                     }
                 }
@@ -45,11 +45,11 @@ export class Minimap {
     }
 
     createSpecialRoomIcon(x, y) {
-        let roomType = GameVars.gameBoard.board[GameVars.player.roomY + y][GameVars.player.roomX + x].roomType;
+        let roomType = GameVars.gameBoard.board[GameVars.currentRoom.roomY + y][GameVars.currentRoom.roomX + x].roomType;
         if (isSpecialRoom(roomType) && roomType !== RoomType.KEY) {
             const ctx = this.minimapCanv.getContext("2d");
             ctx.fillStyle = "";
-            switch (GameVars.gameBoard.board[GameVars.player.roomY + y][GameVars.player.roomX + x]?.roomType) {
+            switch (roomType) {
                 case RoomType.BOSS:
                     ctx.fillStyle = "#a80000";
                     break;

@@ -13,9 +13,6 @@ const yl = "#ffff57"; // yellow light
 const ym = "#cd9722"; // yellow middle
 const yd = "#9e6800"; // yellow dark
 
-const grassLight = "#52804d";
-const grass = "#41663d";
-
 const hL = "hl"; // helmet light id
 const hD = "hd"; // helmet dark id
 const cM = "cm"; // chain mail id

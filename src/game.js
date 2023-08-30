@@ -7,7 +7,6 @@ import { randomNumb } from "./utilities/general-utilities";
 import { Minimap } from "./ui/minimap";
 import { WeaponIcons } from "./ui/weapon-icons";
 import { MovePad } from "./ui/movepad";
-import { createElem } from "./utilities/draw-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "./utilities/text";
 
 export class Game {
@@ -22,10 +21,10 @@ export class Game {
 
         this.drawMainRoomText();
 
-        GameVars.player = new Player(GameVars.currentRoom.roomX, GameVars.currentRoom.roomY);
+        GameVars.player = new Player();
         GameVars.gameBoard.board[GameVars.currentRoom.roomY][GameVars.currentRoom.roomX].roomDiv.classList.remove("hidden");
 
-        GameVars.atkCanv = createElem(GameVars.gameDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH);
+        // GameVars.atkCanv = createElem(GameVars.gameDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH);
 
         this.minimap = new Minimap();
         GameVars.weaponIcons = new WeaponIcons();
@@ -45,7 +44,7 @@ export class Game {
     }
 
     update() {
-        GameVars.atkCanv.getContext("2d").clearRect(0, 0, GameVars.atkCanv.width, GameVars.atkCanv.height);
+        // GameVars.atkCanv.getContext("2d").clearRect(0, 0, GameVars.atkCanv.width, GameVars.atkCanv.height);
         if (!this.isChangingRoom) {
             this.triggerBlock = GameVars.currentRoom.doorTriggers.find(trigger => rectCircleCollision(GameVars.player.collisionObj, trigger.collisionObj));
             if (this.triggerBlock) {
@@ -70,8 +69,6 @@ export class Game {
             if (this.nextRoom.x === 0 && this.nextRoom.y === 0) {
                 GameVars.currentRoom.roomDiv.classList.add("hidden");
                 GameVars.currentRoom = this.nextRoom;
-                GameVars.player.roomX = this.nextRoom.roomX;
-                GameVars.player.roomY = this.nextRoom.roomY;
                 this.isChangingRoom = false;
                 this.minimap.update();
             }

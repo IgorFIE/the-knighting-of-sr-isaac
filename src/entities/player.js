@@ -10,11 +10,9 @@ import { Weapon } from "./weapon";
 import { deadAnim } from "../utilities/animation-utilities";
 
 export class Player {
-    constructor(roomX, roomY) {
+    constructor() {
         this.hasKey = false;
         this.isAlive = true;
-        this.roomX = roomX;
-        this.roomY = roomY;
 
         this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
@@ -26,8 +24,8 @@ export class Player {
 
         this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(0, 0, GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, playerColors.hd);
-        this.playerLeftWeapon = new Weapon(0, 0, GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, playerColors.hd);
+        this.playerRightWeapon = new Weapon(0, 0, GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, playerColors.hd, null, true);
+        this.playerLeftWeapon = new Weapon(0, 0, GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, playerColors.hd, null, true);
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
 
@@ -37,9 +35,9 @@ export class Player {
         this.update();
         this.draw();
 
-        let rect = this.playerCanv.getBoundingClientRect();
-        this.div.style.width = rect.width + "px";
-        this.div.style.height = rect.height + "px";
+        let playerRect = this.playerCanv.getBoundingClientRect();
+        this.div.style.width = playerRect.width + "px";
+        this.div.style.height = playerRect.height + "px";
         this.div.style.transformOrigin = "70% 95%";
     }
 
@@ -103,7 +101,7 @@ export class Player {
     validateMovement(x, y, ignoreCollisions) {
         this.fakeMovCircle.x = x;
         this.fakeMovCircle.y = y;
-        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle));
+        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, GameVars.currentRoom.roomX, GameVars.currentRoom.roomY, (circle) => this.move(circle));
     }
 
     move(circle) {

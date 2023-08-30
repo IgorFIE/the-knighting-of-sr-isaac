@@ -9,7 +9,7 @@ const gameH = window.innerHeight;
 
 const fps = 90;
 let deltaTime;
-let debug;
+// let debug;
 
 let sound;
 
@@ -19,13 +19,11 @@ let gameWdAsPixels;
 let gameHgAsPixels;
 
 let gameDiv;
-let gameCanv;
-let gameCtx;
 
 let game;
 let gameBoardSize;
 
-let atkCanv;
+// let atkCanv;
 
 let weaponIcons;
 let movePad;
@@ -76,12 +74,12 @@ const resetGameVars = () => {
     GameVars.lastPlayerLeftWeaponType = null;
 }
 
-const initDebug = () => {
-    GameVars.debug = document.createElement("div");
-    GameVars.debug.style.fontSize = "50px";
-    GameVars.debug.style.position = "absolute";
-    document.getElementById("main").appendChild(GameVars.debug);
-}
+// const initDebug = () => {
+//     GameVars.debug = document.createElement("div");
+//     GameVars.debug.style.fontSize = "50px";
+//     GameVars.debug.style.position = "absolute";
+//     document.getElementById("main").appendChild(GameVars.debug);
+// }
 
 const pixelCal = (min, max) => {
     let hgPixelSize = Math.round((gameH - 270) * ((max - min) / (1100 - 270)) + min);
@@ -100,7 +98,7 @@ export const GameVars = {
 
     fps,
     deltaTime,
-    debug,
+    // debug,
 
     sound,
 
@@ -109,14 +107,12 @@ export const GameVars = {
     gameHgAsPixels,
 
     gameDiv,
-    gameCanv,
-    gameCtx,
 
     game,
     gameBoardSize,
     gameLevel,
 
-    atkCanv,
+    // atkCanv,
 
     weaponIcons,
     movePad,
@@ -144,7 +140,7 @@ export const GameVars = {
     heartLifeVal,
 
     resetGameVars,
-    initDebug
+    // initDebug
 }
 
 export const toPixelSize = (value) => {

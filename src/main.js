@@ -2,24 +2,18 @@ const { GameVars, toPixelSize } = require("./game-variables");
 const { Game } = require("./game");
 const { createElem, drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
-const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
+const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
 const { speaker, audio, knight, playerColors, shortSword } = require("./entities/sprites");
 const { EnemySubType } = require("./enums/enemy-type");
 const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
 
 let mainDiv;
-
 let mainMenuDiv;
 
 let gameOverCanv;
-let gameOverCtx;
-
 let scoreCanv;
-let scoreCtx;
-
 let soundBtnCanv;
-let soundBtnCtx;
 
 let fpsInterval = 1000 / GameVars.fps;
 let then = Date.now();
@@ -39,11 +33,8 @@ function init() {
     createMuteBtn();
     createScoreCanv();
 
-    // initAudio();
-    // GameVars.game = new Game();
-
     // createFpsElement(mainDiv);
-    GameVars.initDebug();
+    // GameVars.initDebug();
 
     window.requestAnimationFrame(() => gameLoop());
 }
@@ -105,7 +96,6 @@ function createGameDiv() {
 
 function createGameOverMenu() {
     gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, "rgba(255,75,75,0.9)", () => skipGameOver());
-    gameOverCtx = gameOverCanv.getContext("2d");
 }
 
 function createMuteBtn() {
@@ -119,12 +109,11 @@ function createMuteBtn() {
             }
         });
     soundBtnCanv.style.transform = 'translate(' + (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px, ' + toPixelSize(10) + 'px)';
-    soundBtnCtx = soundBtnCanv.getContext("2d");
     drawSoundBtn();
 }
 
 function drawSoundBtn() {
-    soundBtnCtx.clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
+    soundBtnCanv.getContext("2d").clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
     let isSoundOn = GameVars.sound && GameVars.sound.isSoundOn;
     genSmallBox(soundBtnCanv, 0, 0, 22, 11, toPixelSize(1), isSoundOn ? "#00000066" : "#ffffffaa", isSoundOn ? "#100f0f66" : "#ffffff66");
     drawSprite(soundBtnCanv, speaker, toPixelSize(1), 10, 3);
@@ -137,7 +126,6 @@ function drawSoundBtn() {
 function createScoreCanv() {
     scoreCanv = createElem(mainDiv, "canvas", "score", null, toPixelSize(23), toPixelSize(12));
     scoreCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(10) + 'px)';
-    scoreCtx = scoreCanv.getContext("2d");
     drawScore();
 }
 
@@ -187,10 +175,6 @@ function gameLoop() {
     if (elapsed > fpsInterval) {
         then = Date.now() - (elapsed % fpsInterval);
         GameVars.deltaTime = elapsed / 1000;
-
-        //remove me
-        drawGameOver();
-
         // updateFps(then);
         if (GameVars.game) {
             updateScore();
@@ -241,7 +225,7 @@ function updateHighScore() {
 }
 
 function drawGameOver() {
-    gameOverCtx.clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
+    gameOverCanv.getContext("2d").clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
     genSmallBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
     drawPixelTextInCanvas(convertTextToPixelArt("Game over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 50, "black", 6);
     drawScoreCalc(gameOverCanv);

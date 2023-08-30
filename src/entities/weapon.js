@@ -6,25 +6,22 @@ import { Arrow } from "./arrow";
 import { getWeaponSprite } from "./sprites";
 
 export class Weapon {
-    constructor(x, y, weaponType, handDir, parent, color, size) {
-        this.x = x;
-        this.y = y;
+    constructor(x, y, weaponType, handDir, parent, color, size, isPlayer) {
         this.color = color;
         this.handDir = handDir;
         this.weaponType = weaponType;
-        this.parent = parent
         this.parentDiv = parent.div;
         this.size = size || 2;
         this.sprite = getWeaponSprite(this.weaponType);
         this.isPerformingAction = false;
-        this.isPlayer = this.parentDiv.classList.contains("player");
+        this.isPlayer = isPlayer;
 
         this.weaponDiv = createElem(this.parentDiv, "div", null, ["weapon"]);
         this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(this.size), this.sprite.length * toPixelSize(this.size));
 
         this.atkAnimation = this.getWeaponAnimation();
 
-        this.relativePos = this.getRelativePos();
+        this.relativePos = this.getRelativePos(x, y);
         this.setWeaponPos();
         this.atkLine = this.getWeaponAtkLine();
         this.damagedObjs = new Map();
@@ -92,26 +89,26 @@ export class Weapon {
         }
     }
 
-    getRelativePos() {
+    getRelativePos(x, y) {
         switch (this.weaponType) {
             case WeaponType.FIST:
-                return { x: this.x + toPixelSize(this.handDir === -1 ? -this.size : this.size * 2), y: this.y + toPixelSize(this.size * 4.5) };
+                return { x: x + toPixelSize(this.handDir === -1 ? -this.size : this.size * 2), y: y + toPixelSize(this.size * 4.5) };
             case WeaponType.SHIELD:
-                return { x: this.x + toPixelSize(this.size * 2 * this.handDir), y: this.y + toPixelSize(this.size * 3) };
+                return { x: x + toPixelSize(this.size * 2 * this.handDir), y: y + toPixelSize(this.size * 3) };
             case WeaponType.SWORD:
-                return { x: this.x + toPixelSize(this.size * 3 * this.handDir), y: this.y - toPixelSize(2), r: -90 };
+                return { x: x + toPixelSize(this.size * 3 * this.handDir), y: y - toPixelSize(2), r: -90 };
             case WeaponType.GREATSWORD:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: this.y - toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
+                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: y - toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
             case WeaponType.SPEAR:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: this.y + -toPixelSize(this.size) };
+                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: y + -toPixelSize(this.size) };
             case WeaponType.HAMMER:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
+                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
             case WeaponType.AXE:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
+                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: y - toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
             case WeaponType.MORNING_STAR:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: this.y - toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
+                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: y - toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
             case WeaponType.CROSSBOW:
-                return { x: this.x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: this.y + toPixelSize(this.handDir === - 1 ? this.size * 2 : -this.size * 3), r: 45 * this.handDir };
+                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: y + toPixelSize(this.handDir === - 1 ? this.size * 2 : -this.size * 3), r: 45 * this.handDir };
         }
     }
 
@@ -229,27 +226,27 @@ export class Weapon {
     }
 
     update() {
-        if (GameVars.atkCanv) {
-            if (this.isPerformingAction && this.weaponType !== WeaponType.CROSSBOW) {
-                let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
-                let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
+        // if (GameVars.atkCanv) {
+        if (this.isPerformingAction && this.weaponType !== WeaponType.CROSSBOW) {
+            let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
+            let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
-                // just for debug
-                // const ctx = GameVars.atkCanv.getContext("2d");
-                // ctx.beginPath();
-                // ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
-                // ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
-                // ctx.strokeStyle = 'red';
-                // ctx.lineWidth = toPixelSize(1);
-                // ctx.stroke();
+            // just for debug
+            // const ctx = GameVars.atkCanv.getContext("2d");
+            // ctx.beginPath();
+            // ctx.moveTo(newAtkLine[0].x, newAtkLine[0].y);
+            // ctx.lineTo(newAtkLine[1].x, newAtkLine[1].y);
+            // ctx.strokeStyle = 'red';
+            // ctx.lineWidth = toPixelSize(1);
+            // ctx.stroke();
 
-                if (this.isPlayer) {
-                    GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
-                } else {
-                    if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
-                }
+            if (this.isPlayer) {
+                GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
+            } else {
+                if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
             }
         }
+        // }
     }
 
     dealDmgToBlock(obj) {
@@ -264,7 +261,6 @@ export class Weapon {
             if (this.weaponType === WeaponType.SHIELD) obj.validateMovement(
                 obj.collisionObj.x + toPixelSize(6 * this.handDir),
                 obj.collisionObj.y + toPixelSize(12));
-            // drawPixelTextInCanvas(convertTextToPixelArt(this.dmg), GameVars.atkCanv, toPixelSize(1), newAtkLine[0].x / GameVars.pixelSize, newAtkLine[0].y / GameVars.pixelSize, "#edeef7", 2);
         }
     }
 
