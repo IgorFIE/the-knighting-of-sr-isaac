@@ -17,7 +17,7 @@ export class Bonfire {
         this.bonfireDiv = createElem(room.roomDiv, "div", null, ["bonfire"]);
         this.swordCanv = createElem(this.bonfireDiv, "canvas", null, null, shortSword.length * toPixelSize(2), shortSword.length * toPixelSize(2));
         this.bonfireCanv = createElem(this.bonfireDiv, "canvas", null, null, bonfire.length * toPixelSize(2), bonfire.length * toPixelSize(2));
-        this.bonfireTextCanv = createElem(this.bonfireDiv, "canvas", null, null, toPixelSize(80), toPixelSize(5));
+        this.bonfireTextCanv = createElem(this.bonfireDiv, "canvas", null, null, toPixelSize(80), toPixelSize(6));
 
         this.bonfireDiv.style.transform = 'translate(' + (x - (this.bonfireCanv.width / 2)) + 'px, ' + (y - (this.bonfireCanv.height / 2)) + 'px)';
         this.swordCanv.style.transform = 'translate(' + toPixelSize(0) + 'px, ' + toPixelSize(-8) + 'px) rotate(-160deg)';
@@ -59,7 +59,7 @@ export class Bonfire {
     }
 
     drawOn() {
-        drawPixelTextInCanvas(convertTextToPixelArt("ascend to next level"), this.bonfireTextCanv, toPixelSize(1), 40, 2, "#edeef7", 1);
+        drawPixelTextInCanvas(convertTextToPixelArt("ascend to next level"), this.bonfireTextCanv, toPixelSize(1), 40, 3, "#edeef7", 1);
         this.bonfireCanv.getContext("2d").clearRect(0, 0, this.bonfireCanv.width, this.bonfireCanv.height);
         drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { bt: "#edeef7", bm: "#cd9722" });
     }

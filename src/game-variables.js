@@ -1,6 +1,8 @@
-const storeId = 'igorfie-13th-century-knight';
+const storeId = 'igorfie-the-knighting-of-sr-isaac';
 
-const isMobile = navigator.maxTouchPoints > 0;
+let highScore = parseInt(localStorage.getItem(storeId)) || 0;
+
+const isMobile = navigator.maxTouchPoints > 1;
 
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
@@ -22,7 +24,6 @@ let gameCtx;
 
 let game;
 let gameBoardSize;
-let gameLevel;
 
 let atkCanv;
 
@@ -32,6 +33,10 @@ let movePad;
 let keys = {};
 
 let score;
+let gameLevel;
+let keyCaught;
+let enemyKills;
+let enemyBossKills;
 
 let isGameOver;
 
@@ -61,6 +66,10 @@ const resetGameVars = () => {
     GameVars.gameBoardSize = 5;
     GameVars.gameLevel = 1;
 
+    GameVars.keyCaught = 0;
+    GameVars.enemyKills = 0;
+    GameVars.enemyBossKills = 0;
+
     GameVars.player = null;
     GameVars.lastPlayerLife = null;
     GameVars.lastPlayerRightWeaponType = null;
@@ -82,6 +91,7 @@ const pixelCal = (min, max) => {
 
 export const GameVars = {
     storeId,
+    highScore,
 
     isMobile,
 
@@ -114,6 +124,9 @@ export const GameVars = {
     keys,
 
     score,
+    keyCaught,
+    enemyKills,
+    enemyBossKills,
 
     isGameOver,
 

@@ -11,23 +11,6 @@ export const genSmallBox = (canvas, startX, startY, endX, endY, pixelSize, color
     generateBox(canvas, startX, startY, endX, endY, pixelSize, color, conditionFn);
 };
 
-export const genLargeBox = (canvas, startX, startY, endX, endY, pixelSize, color, bgColor) => {
-    const conditionFn = (x, y, endX, endY) => {
-        return (y < 3 && (x > 0 && x < endX)) ||
-            (y > endY - 3 && (x > 0 && x < endX)) ||
-            (x < 3 > 0 && (y > 0 && y < endY)) ||
-            (x > endX - 3 && (y > 0 && y < endY)) ||
-            (y === 3 && x === 3) ||
-            (y === 3 && x === endX - 3) ||
-            (y === endY - 3 && x === 3) ||
-            (x === endX - 3 && y === endY - 3);
-    }
-    if (bgColor) {
-        genetateInsideBoxColor(canvas, startX, startY, endX, endY, pixelSize, bgColor);
-    }
-    generateBox(canvas, startX, startY, endX, endY, pixelSize, color, conditionFn);
-};
-
 export const generateBox = (canvas, startX, startY, endX, endY, pixelSize, color, conditionFn) => {
     const ctx = canvas.getContext("2d");
     for (let y = 0; y <= endY; y++) {

@@ -15,8 +15,8 @@ export class LifeBar {
         this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
 
         if (isPlayer) {
-            this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(12) + 'px)';
-            this.lifeCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(12) + 'px)';
+            this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
+            this.lifeCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
         }
         this.update();
         this.draw();

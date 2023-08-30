@@ -49,6 +49,7 @@ export class Item {
             if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj)) {
                 switch (this.itemType) {
                     case ItemType.KEY:
+                        GameVars.keyCaught++;
                         GameVars.player.hasKey = true;
                         this.wasPicked = true;
                         break;

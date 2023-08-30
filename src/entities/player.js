@@ -32,7 +32,7 @@ export class Player {
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
 
         this.keyCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
-        this.keyCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(32) + 'px)';
+        this.keyCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(37) + 'px)';
 
         this.update();
         this.draw();

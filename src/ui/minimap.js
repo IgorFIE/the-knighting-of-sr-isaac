@@ -6,7 +6,7 @@ import { createElem } from "../utilities/draw-utilities";
 export class Minimap {
     constructor() {
         this.minimapCanv = createElem(GameVars.gameDiv, "canvas", "minimap", null, toPixelSize(46), toPixelSize(46));
-        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(12) + 'px)';
+        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(24) + 'px)';
 
         this.visited = {};
 

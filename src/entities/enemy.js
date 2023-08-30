@@ -98,6 +98,7 @@ export class Enemy {
             this.lifeBar.update();
         } else {
             if (this.isAlive) {
+                this.enemyType === EnemyType.BOSS ? GameVars.enemyBossKills++ : GameVars.enemyKills++;
                 GameVars.sound.deadSound();
                 this.lifeBar.update();
                 this.isAlive = false;
