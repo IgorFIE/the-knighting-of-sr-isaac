@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack serve --open",
     "build": "npx webpack --config webpack.config.js",
-    "compress": "npx roadroller ./dist/main.js -o ./dist/rolled.js"
+    "compress": "npx roadroller ./dist/main.js -o ./dist/main.js"
   },
   "author": "Igor Estevao",
   "license": "ISC",

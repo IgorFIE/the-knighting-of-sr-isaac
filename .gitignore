@@ -6,3 +6,4 @@ dist/rolled.js
 dist/dist.zip
 dist/main_min.js
 dist/main_min_convertion.txt
+build/*
