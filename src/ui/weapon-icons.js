@@ -6,10 +6,10 @@ import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text"
 
 export class WeaponIcons {
     constructor() {
-        this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
+        this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), GameVars.isMobile, null,
             (e) => GameVars.keys['v'] = true,
             (e) => GameVars.keys['v'] = false);
-        this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), null,
+        this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), GameVars.isMobile, null,
             (e) => GameVars.keys['b'] = true,
             (e) => GameVars.keys['b'] = false);
 

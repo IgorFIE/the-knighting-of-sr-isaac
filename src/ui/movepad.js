@@ -5,7 +5,7 @@ import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text"
 
 export class MovePad {
     constructor() {
-        this.movePadCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(64), toPixelSize(64), null,
+        this.movePadCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(64), toPixelSize(64), GameVars.isMobile, null,
             (e) => {
                 const canvBox = this.movePadCanv.getBoundingClientRect();
                 const touch = e.changedTouches[0];
