@@ -1,10 +1,10 @@
 import { CircleObject } from "../../collision-objects/circle-object";
+import { shortSword } from "../../enums/weapon-type";
 import { GameVars, toPixelSize } from "../../game-variables";
 import { circleToCircleCollision } from "../../utilities/collision-utilities";
 import { createElem, drawSprite } from "../../utilities/draw-utilities";
 import { moveLevel } from "../../utilities/level-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../../utilities/text";
-import { shortSword } from "../sprites";
 
 export class Bonfire {
     constructor(x, y, room) {

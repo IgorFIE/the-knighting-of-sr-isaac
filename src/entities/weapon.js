@@ -1,9 +1,8 @@
-import { WeaponType } from "../enums/weapon-type";
+import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { lineCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { Arrow } from "./arrow";
-import { getWeaponSprite } from "./sprites";
 
 export class Weapon {
     constructor(x, y, weaponType, handDir, parent, color, size, isPlayer) {

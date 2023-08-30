@@ -4,9 +4,9 @@ const { createElem, drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
-const { speaker, audio, knight, playerColors, shortSword } = require("./entities/sprites");
-const { EnemySubType } = require("./enums/enemy-type");
+const { speaker, audio, knight, playerColors } = require("./entities/sprites");
 const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
+const { shortSword } = require("./enums/weapon-type");
 
 let mainDiv;
 let mainMenuDiv;

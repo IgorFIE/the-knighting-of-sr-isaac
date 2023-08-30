@@ -1,9 +1,8 @@
-import { WeaponType } from "../enums/weapon-type";
+import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text";
-import { getWeaponSprite } from "../entities/sprites";
 
 export class WeaponIcons {
     constructor() {
