@@ -4,9 +4,31 @@ const { createElem, drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
-const { speaker, audio, knight, playerColors } = require("./entities/sprites");
+const { knight, playerColors } = require("./entities/sprites");
 const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
 const { shortSword } = require("./enums/weapon-type");
+
+const speaker = [
+    [null, null, null, "#edeef7", null],
+    [null, "#edeef7", "#edeef7", "#edeef7", null],
+    ["#edeef7", "#edeef7", "#edeef7", "#edeef7", "#edeef7"],
+    ["#edeef7", "#edeef7", "#edeef7", "#edeef7", "#edeef7"],
+    [null, "#edeef7", "#edeef7", "#edeef7", null],
+    [null, null, null, "#edeef7", null]
+];
+
+const audio = [
+    [null, null, null, null],
+    [null, null, "#edeef7", null],
+    ["#edeef7", null, null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    ["#edeef7", null, null, "#edeef7"],
+    [null, null, "#edeef7", null],
+    [null, null, null, null]
+];
 
 let mainDiv;
 let mainMenuDiv;

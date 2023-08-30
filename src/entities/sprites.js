@@ -1,5 +1,3 @@
-import { WeaponType } from "../enums/weapon-type";
-
 export const playerColors = { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" };
 
 export const fullHeartColors = { "ho": "#edeef7", "hi": "#a80000" };
@@ -33,27 +31,4 @@ export const key = [
     ["#edeef7", "#edeef7", null],
     [null, "#edeef7", null],
     ["#edeef7", "#edeef7", null]
-];
-
-// AUDIO
-export const speaker = [
-    [null, null, null, "#edeef7", null],
-    [null, "#edeef7", "#edeef7", "#edeef7", null],
-    ["#edeef7", "#edeef7", "#edeef7", "#edeef7", "#edeef7"],
-    ["#edeef7", "#edeef7", "#edeef7", "#edeef7", "#edeef7"],
-    [null, "#edeef7", "#edeef7", "#edeef7", null],
-    [null, null, null, "#edeef7", null]
-];
-
-export const audio = [
-    [null, null, null, null],
-    [null, null, "#edeef7", null],
-    ["#edeef7", null, null, "#edeef7"],
-    [null, "#edeef7", null, "#edeef7"],
-    [null, "#edeef7", null, "#edeef7"],
-    [null, "#edeef7", null, "#edeef7"],
-    [null, "#edeef7", null, "#edeef7"],
-    ["#edeef7", null, null, "#edeef7"],
-    [null, null, "#edeef7", null],
-    [null, null, null, null]
 ];
