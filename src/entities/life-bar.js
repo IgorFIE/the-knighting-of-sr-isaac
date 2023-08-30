@@ -1,7 +1,7 @@
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { fullHeartColors, heart } from "./sprites";
+import { heart } from "./sprites";
 
 export class LifeBar {
     constructor(totalLife, isPlayer, parentCanv, currentLife) {
@@ -55,7 +55,7 @@ export class LifeBar {
 
         this.lifeCanv.getContext("2d").clearRect(0, 0, this.lifeCanv.width, this.lifeCanv.height);
         for (let i = 0; i < this.totalLife / GameVars.heartLifeVal; i++) {
-            drawSprite(this.lifeCanv, heart, toPixelSize(1), 2 + (8 * i), 2, fullHeartColors);
+            drawSprite(this.lifeCanv, heart, toPixelSize(1), 2 + (8 * i), 2, { "ho": "#edeef7", "hi": "#a80000" });
         }
     }
 }

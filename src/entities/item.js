@@ -4,7 +4,7 @@ import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { fullHeartColors, heart, key } from "./sprites";
+import { heart, key } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Item {
@@ -108,6 +108,6 @@ export class Item {
     }
 
     draw() {
-        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? fullHeartColors : { "wc": "#686b7a" });
+        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? { "ho": "#edeef7", "hi": "#a80000" } : { "wc": "#686b7a" });
     }
 }

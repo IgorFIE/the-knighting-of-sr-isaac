@@ -4,7 +4,7 @@ const { createElem, drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
-const { knight, playerColors } = require("./entities/sprites");
+const { knight } = require("./entities/sprites");
 const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
 const { shortSword } = require("./enums/weapon-type");
 
@@ -99,7 +99,7 @@ function createMainMenu() {
     let hKnightCenter = Math.round(GameVars.gameH / toPixelSize(30));
 
     drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter - 5, hKnightCenter - 6, { "hd": "#999a9e", "hl": "#686b7a", "cm": "#431313" });
-    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter + 2, hKnightCenter - 6, playerColors);
+    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter + 2, hKnightCenter - 6, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
 
     drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter - 3.5, hKnightCenter - 8, { "wc": "#686b7a" });
     drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8, { "wc": "#cd9722" });

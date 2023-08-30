@@ -1,6 +1,3 @@
-export const playerColors = { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" };
-
-export const fullHeartColors = { "ho": "#edeef7", "hi": "#a80000" };
 export const heart = [
     [null, "ho", "ho", null, "ho", "ho", null],
     ["ho", "hi", "hi", "ho", "hi", "hi", "ho"],
@@ -22,7 +19,6 @@ export const knight = [
     ["#000000", null, "#000000"]
 ];
 
-// ITEMS
 export const key = [
     ["#edeef7", "#edeef7", "#edeef7"],
     ["#edeef7", null, "#edeef7"],

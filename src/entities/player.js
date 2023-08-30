@@ -4,7 +4,7 @@ import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { key, knight, playerColors } from "./sprites";
+import { key, knight } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
 import { deadAnim } from "../utilities/animation-utilities";
@@ -125,7 +125,7 @@ export class Player {
 
     draw() {
         genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(2), "#00000033", "#00000033");
-        drawSprite(this.playerCanv, knight, toPixelSize(2), 0, 0, playerColors);
+        drawSprite(this.playerCanv, knight, toPixelSize(2), 0, 0, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
 
         genSmallBox(this.keyCanv, 0, 0, 4, 8, toPixelSize(2), "#00000066", "#100f0f66");
         drawSprite(this.keyCanv, key, toPixelSize(2), 1, 1);
