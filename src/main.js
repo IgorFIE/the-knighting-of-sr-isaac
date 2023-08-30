@@ -62,7 +62,7 @@ function createMainMenu() {
     let mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
 
     let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(70), toPixelSize(30), null, () => startGame());
-    mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2) - toPixelSize(4)) + "px " + ((GameVars.gameH / 4) * 3) + "px";
+    mainMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - (mainMenuBtn.width / 2) - toPixelSize(4)) + 'px, ' + ((GameVars.gameH / 4) * 3) + 'px)';
 
     genSmallBox(mainMenuBtn, 0, 0, 34, 14, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("enter/click/touch"), mainMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
@@ -143,7 +143,7 @@ function createScoreCanv() {
 
 function drawScore() {
     let text;
-    if (GameVars.game === undefined) {
+    if (!GameVars.game) {
         text = "top score - " + GameVars.highScore;
     } else {
         text = "Score - " + GameVars.score;
@@ -162,6 +162,7 @@ function skipGameOver() {
     GameVars.gameDiv.innerHTML = "";
     GameVars.game = null;
     updateHighScore();
+    drawScore();
 }
 
 function startGame() {
