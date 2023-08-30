@@ -1,169 +1,118 @@
 import { WeaponType } from "../enums/weapon-type";
 
-const nu = null;
-const sk = "#e7c688"; // skin
-const bl = "#000000"; // black
-const wt = "#edeef7"; // white
+export const playerColors = { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" };
 
-const gl = "#999a9e"; // gray light
-const gm = "#686b7a"; // gray middle
-const gd = "#3e3846"; // gray dark
-
-const yl = "#ffff57"; // yellow light
-const ym = "#cd9722"; // yellow middle
-const yd = "#9e6800"; // yellow dark
-
-const hL = "hl"; // helmet light id
-const hD = "hd"; // helmet dark id
-const cM = "cm"; // chain mail id
-
-const wc = "wc"; // weapon color id
-
-const ho = "ho"; // heart outside
-const hi = "hi"; // heart inside
-
-const bf = "#38252e"; // ash
-const bt = "bt"; // bonfire light
-const bm = "bm"; // bonfire middle
-
-export const playerColors = { "hd": ym, "hl": yl, "cm": yd };
-
-export const fullHeartColors = { "ho": wt, "hi": "#a80000" };
-export const emptyHeartColors = { "ho": "#2f1519", "hi": "#100f0f" };
+export const fullHeartColors = { "ho": "#edeef7", "hi": "#a80000" };
+export const heart = [
+    [null, "ho", "ho", null, "ho", "ho", null],
+    ["ho", "hi", "hi", "ho", "hi", "hi", "ho"],
+    ["ho", "hi", "hi", "hi", "hi", "hi", "ho"],
+    ["ho", "hi", "hi", "hi", "hi", "hi", "ho"],
+    [null, "ho", "hi", "hi", "hi", "ho", null],
+    [null, null, "ho", "hi", "ho", null, null],
+    [null, null, null, "ho", null, null, null]
+];
 
 export const knight = [
-    [hD, hL, hD],
-    [hL, hL, hL],
-    [bl, hL, bl],
-    [sk, sk, sk],
-    [cM, cM, cM],
-    [cM, cM, cM],
-    [cM, cM, cM],
-    [bl, nu, bl]
-];
-
-export const heart = [
-    [nu, ho, ho, nu, ho, ho, nu],
-    [ho, hi, hi, ho, hi, hi, ho],
-    [ho, hi, hi, hi, hi, hi, ho],
-    [ho, hi, hi, hi, hi, hi, ho],
-    [nu, ho, hi, hi, hi, ho, nu],
-    [nu, nu, ho, hi, ho, nu, nu],
-    [nu, nu, nu, ho, nu, nu, nu]
-];
-
-export const bonfire = [
-    [nu, nu, nu, nu, bm, nu, nu],
-    [nu, nu, nu, bm, nu, nu, nu],
-    [nu, bf, bm, bm, bm, bf, nu],
-    [bf, bm, bm, bm, bm, bm, bf],
-    [bf, bm, bm, bt, bm, bm, bf],
-    [bf, bm, bt, bt, bt, bm, bf],
-    [bf, bf, bt, bt, bt, bf, bf],
-    [nu, bf, bf, bf, bf, bf, nu],
+    ["hd", "hl", "hd"],
+    ["hl", "hl", "hl"],
+    ["#000000", "hl", "#000000"],
+    ["#e7c688", "#e7c688", "#e7c688"],
+    ["cm", "cm", "cm"],
+    ["cm", "cm", "cm"],
+    ["cm", "cm", "cm"],
+    ["#000000", null, "#000000"]
 ];
 
 // WEAPONS
-
 export const fist = [
-    [sk, sk],
-    [sk, sk]
+    ["#e7c688", "#e7c688"],
+    ["#e7c688", "#e7c688"]
 ];
 
 export const shortSword = [
-    [nu, wt, nu],
-    [nu, wt, nu],
-    [nu, wt, nu],
-    [nu, wt, nu],
-    [nu, wt, nu],
-    [gl, gl, gl],
-    [nu, wc, nu],
-    [nu, wc, nu]
+    [null, "#edeef7", null],
+    [null, "#edeef7", null],
+    [null, "#edeef7", null],
+    [null, "#edeef7", null],
+    [null, "#edeef7", null],
+    ["#999a9e", "#999a9e", "#999a9e"],
+    [null, "wc", null],
+    [null, "wc", null]
 ];
 
 export const morningStar = [
-    [nu, wt, nu],
-    [wt, wt, wt],
-    [nu, wt, nu],
-    [nu, wc, nu]
+    [null, "#edeef7", null],
+    ["#edeef7", "#edeef7", "#edeef7"],
+    [null, "#edeef7", null],
+    [null, "wc", null]
 ];
 
 export const hammer = [
-    [wt, wt, wt],
-    [gl, gl, wt],
-    [gl, gl, wt],
-    [nu, wc, nu],
-    [nu, wc, nu]
+    ["#edeef7", "#edeef7", "#edeef7"],
+    ["#999a9e", "#999a9e", "#edeef7"],
+    ["#999a9e", "#999a9e", "#edeef7"],
+    [null, "wc", null],
+    [null, "wc", null]
 ];
 
 export const axe = [
-    [nu, wt, wt],
-    [wt, gl, wt],
-    [nu, gl, wt],
-    [nu, wc, nu],
-    [nu, wc, nu],
-    [nu, wc, nu]
+    [null, "#edeef7", "#edeef7"],
+    ["#edeef7", "#999a9e", "#edeef7"],
+    [null, "#999a9e", "#edeef7"],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null]
 ];
 
 export const shield = [
-    [wc, wt, wc],
-    [wt, wt, wt],
-    [wc, wt, wc],
-    [wc, wt, wc]
+    ["wc", "#edeef7", "wc"],
+    ["#edeef7", "#edeef7", "#edeef7"],
+    ["wc", "#edeef7", "wc"],
+    ["wc", "#edeef7", "wc"]
 ];
 
 export const spear = [
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [gm],
-    [wt],
-    [wt]
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["#686b7a"],
+    ["#edeef7"],
+    ["#edeef7"]
 ];
 
 export const greatsword = [
-    [nu, nu, nu, wt, nu, nu, nu],
-    [nu, nu, gl, gl, wt, nu, nu],
-    [nu, nu, gl, gl, wt, nu, nu],
-    [nu, nu, gl, gl, wt, nu, nu],
-    [nu, nu, gl, gl, wt, nu, nu],
-    [nu, nu, gl, gl, wt, nu, nu],
-    [nu, nu, gl, gl, wt, nu, nu],
-    [gd, gd, gd, gd, gd, gd, gd],
-    [nu, nu, nu, wc, nu, nu, nu],
-    [nu, nu, nu, wc, nu, nu, nu],
-    [nu, nu, nu, wc, nu, nu, nu],
-    [nu, nu, nu, gd, nu, nu, nu],
+    [null, null, null, "#edeef7", null, null, null],
+    [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
+    [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
+    [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
+    [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
+    [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
+    [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
+    ["#3e3846", "#3e3846", "#3e3846", "#3e3846", "#3e3846", "#3e3846", "#3e3846"],
+    [null, null, null, "wc", null, null, null],
+    [null, null, null, "wc", null, null, null],
+    [null, null, null, "wc", null, null, null],
+    [null, null, null, "#3e3846", null, null, null],
 ];
 
 export const crossbow = [
-    [nu, nu, nu, wt, nu, nu, nu],
-    [nu, nu, nu, wt, nu, nu, nu],
-    [nu, gl, gl, wc, gl, gl, nu],
-    [nu, gl, nu, wc, nu, gl, nu],
-    [gl, gl, nu, wc, nu, gl, gl],
-    [nu, nu, gd, wc, gd, nu, nu],
-    [nu, nu, nu, wc, nu, nu, nu],
-    [nu, nu, nu, wt, nu, nu, nu]
-];
-
-export const arrow = [
-    [wt],
-    [wt],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wc],
-    [wt]
+    [null, null, null, "#edeef7", null, null, null],
+    [null, null, null, "#edeef7", null, null, null],
+    [null, "#999a9e", "#999a9e", "wc", "#999a9e", "#999a9e", null],
+    [null, "#999a9e", null, "wc", null, "#999a9e", null],
+    ["#999a9e", "#999a9e", null, "wc", null, "#999a9e", "#999a9e"],
+    [null, null, "#3e3846", "wc", "#3e3846", null, null],
+    [null, null, null, "wc", null, null, null],
+    [null, null, null, "#edeef7", null, null, null]
 ];
 
 export const getWeaponSprite = (weaponType) => {
@@ -191,34 +140,34 @@ export const getWeaponSprite = (weaponType) => {
 
 // ITEMS
 export const key = [
-    [wt, wt, wt],
-    [wt, nu, wt],
-    [wt, wt, wt],
-    [nu, wt, nu],
-    [wt, wt, nu],
-    [nu, wt, nu],
-    [wt, wt, nu]
+    ["#edeef7", "#edeef7", "#edeef7"],
+    ["#edeef7", null, "#edeef7"],
+    ["#edeef7", "#edeef7", "#edeef7"],
+    [null, "#edeef7", null],
+    ["#edeef7", "#edeef7", null],
+    [null, "#edeef7", null],
+    ["#edeef7", "#edeef7", null]
 ];
 
 // AUDIO
 export const speaker = [
-    [nu, nu, nu, wt, nu],
-    [nu, wt, wt, wt, nu],
-    [wt, wt, wt, wt, wt],
-    [wt, wt, wt, wt, wt],
-    [nu, wt, wt, wt, nu],
-    [nu, nu, nu, wt, nu]
+    [null, null, null, "#edeef7", null],
+    [null, "#edeef7", "#edeef7", "#edeef7", null],
+    ["#edeef7", "#edeef7", "#edeef7", "#edeef7", "#edeef7"],
+    ["#edeef7", "#edeef7", "#edeef7", "#edeef7", "#edeef7"],
+    [null, "#edeef7", "#edeef7", "#edeef7", null],
+    [null, null, null, "#edeef7", null]
 ];
 
 export const audio = [
-    [nu, nu, nu, nu],
-    [nu, nu, wt, nu],
-    [wt, nu, nu, wt],
-    [nu, wt, nu, wt],
-    [nu, wt, nu, wt],
-    [nu, wt, nu, wt],
-    [nu, wt, nu, wt],
-    [wt, nu, nu, wt],
-    [nu, nu, wt, nu],
-    [nu, nu, nu, nu]
+    [null, null, null, null],
+    [null, null, "#edeef7", null],
+    ["#edeef7", null, null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    [null, "#edeef7", null, "#edeef7"],
+    ["#edeef7", null, null, "#edeef7"],
+    [null, null, "#edeef7", null],
+    [null, null, null, null]
 ];

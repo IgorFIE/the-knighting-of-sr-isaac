@@ -4,7 +4,7 @@ import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { key, knight, playerColors, shadow } from "./sprites";
+import { key, knight, playerColors } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
 import { deadAnim } from "../utilities/animation-utilities";
@@ -24,8 +24,8 @@ export class Player {
 
         this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(0, 0, GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, playerColors.hd, null, true);
-        this.playerLeftWeapon = new Weapon(0, 0, GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, playerColors.hd, null, true);
+        this.playerRightWeapon = new Weapon(0, 0, GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, "#cd9722", null, true);
+        this.playerLeftWeapon = new Weapon(0, 0, GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, "#cd9722", null, true);
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
 

@@ -4,12 +4,11 @@ import { circleToCircleCollision } from "../../utilities/collision-utilities";
 import { createElem, drawSprite } from "../../utilities/draw-utilities";
 import { moveLevel } from "../../utilities/level-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../../utilities/text";
-import { bonfire, shortSword } from "../sprites";
+import { shortSword } from "../sprites";
 
 export class Bonfire {
     constructor(x, y, room) {
         this.room = room;
-        this.isActive = false;
         this.timeElapsed = 0;
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(16));
@@ -28,19 +27,15 @@ export class Bonfire {
 
     update() {
         if (this.room.enemies.length === 0) {
-            if (!this.isActive) {
-                this.isActive = true;
-                this.drawOn();
-            } else {
-                if (this.timeElapsed / 1 >= 1) {
-                    if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj) &&
-                        (GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B'])) {
-                        GameVars.sound.spawnSound();
-                        moveLevel();
-                    }
-                } else {
-                    this.timeElapsed += GameVars.deltaTime;
+            if (this.timeElapsed === 0) this.drawOn();
+            if (this.timeElapsed / 1 >= 1) {
+                if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj) &&
+                    (GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B'])) {
+                    GameVars.sound.spawnSound();
+                    moveLevel();
                 }
+            } else {
+                this.timeElapsed += GameVars.deltaTime;
             }
         }
     }
@@ -64,3 +59,14 @@ export class Bonfire {
         drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { bt: "#edeef7", bm: "#cd9722" });
     }
 }
+
+const bonfire = [
+    [null, null, null, null, "bm", null, null],
+    [null, null, null, "bm", null, null, null],
+    [null, "#38252e", "bm", "bm", "bm", "#38252e", null],
+    ["#38252e", "bm", "bm", "bm", "bm", "bm", "#38252e"],
+    ["#38252e", "bm", "bm", "bt", "bm", "bm", "#38252e"],
+    ["#38252e", "bm", "bt", "bt", "bt", "bm", "#38252e"],
+    ["#38252e", "#38252e", "bt", "bt", "bt", "#38252e", "#38252e"],
+    [null, "#38252e", "#38252e", "#38252e", "#38252e", "#38252e", null],
+];

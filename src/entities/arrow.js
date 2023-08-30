@@ -2,7 +2,6 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, rectCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { arrow } from "./sprites";
 
 export class Arrow {
     constructor(x, y, dir, color, size) {
@@ -56,3 +55,14 @@ export class Arrow {
         drawSprite(this.canv, arrow, toPixelSize(this.size), null, null, { "wc": this.color });
     }
 }
+
+const arrow = [
+    ["#edeef7"],
+    ["#edeef7"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["#edeef7"]
+];

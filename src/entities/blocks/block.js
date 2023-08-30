@@ -16,11 +16,11 @@ export class Block {
     }
 
     draw() {
-        const roomCtx = this.room.roomCanv.getContext("2d");
         const doorCtx = this.room.doorCanv.getContext("2d");
         switch (this.blockType) {
             case BlockType.WALL:
                 const blockColors = getBlockColors();
+                const roomCtx = this.room.roomCanv.getContext("2d");
                 roomCtx.fillStyle = blockColors.md;
                 roomCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
                 generateBox(this.room.roomCanv,
@@ -153,9 +153,11 @@ export class Block {
     createDoorFrame(ctx, x, y, w, h) {
         ctx.fillStyle = "#843d0d";
         ctx.fillRect(x, y, w, h);
+
         ctx.fillStyle = "#865433";
         ctx.fillRect(x, y, w, toPixelSize(2));
         ctx.fillRect(x + w - toPixelSize(2), y, toPixelSize(2), h);
+
         ctx.fillStyle = "#2f1519";
         ctx.fillRect(x + toPixelSize(w / toPixelSize(2)), y + toPixelSize((h / toPixelSize(2)) - 2), toPixelSize(2), toPixelSize(2));
         ctx.fillRect(x, y + h - toPixelSize(2), w, toPixelSize(2));
@@ -184,9 +186,11 @@ export const createWallBlock = (ctx, x, y) => {
     const blockColors = getBlockColors();
     ctx.fillStyle = blockColors.md;
     ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
+    
     ctx.fillStyle = blockColors.dk;
     ctx.fillRect(x, y + toPixelSize(14), toPixelSize(16), toPixelSize(2));
     ctx.fillRect(x, y, toPixelSize(2), toPixelSize(16));
+
     ctx.fillStyle = blockColors.lt;
     ctx.fillRect(x, y, toPixelSize(16), toPixelSize(2));
     ctx.fillRect(x + toPixelSize(14), y, toPixelSize(2), toPixelSize(16));

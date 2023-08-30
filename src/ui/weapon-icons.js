@@ -3,7 +3,7 @@ import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text";
-import { getWeaponSprite, playerColors } from "../entities/sprites";
+import { getWeaponSprite } from "../entities/sprites";
 
 export class WeaponIcons {
     constructor() {
@@ -62,6 +62,6 @@ export class WeaponIcons {
                 pixelSize = 4; x = -1; y = 0;
                 break;
         }
-        drawSprite(canvas, getWeaponSprite(weaponType), toPixelSize(pixelSize), x, y, { "wc": playerColors.hd });
+        drawSprite(canvas, getWeaponSprite(weaponType), toPixelSize(pixelSize), x, y, { "wc": "#cd9722" });
     }
 }

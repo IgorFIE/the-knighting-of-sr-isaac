@@ -76,11 +76,11 @@ function createMainMenu() {
     let wKnightCenter = Math.round(GameVars.gameW / 2 / toPixelSize(30));
     let hKnightCenter = Math.round(GameVars.gameH / toPixelSize(30));
 
-    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter - 5, hKnightCenter - 6, { "hd": "#999a9e", "hl": "#686b7a", "cm": EnemySubType.AGRESSIVE });
+    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter - 5, hKnightCenter - 6, { "hd": "#999a9e", "hl": "#686b7a", "cm": "#431313" });
     drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter + 2, hKnightCenter - 6, playerColors);
 
     drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter - 3.5, hKnightCenter - 8, { "wc": "#686b7a" });
-    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8, { "wc": playerColors.hd });
+    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8, { "wc": "#cd9722" });
 
     genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 24, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(4), Math.round(GameVars.gameW / 2 / toPixelSize(4)), 4, "#edeef7", 1);

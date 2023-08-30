@@ -4,7 +4,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
-import { fullHeartColors, getWeaponSprite, heart, key, playerColors } from "./sprites";
+import { fullHeartColors, getWeaponSprite, heart, key } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Item {
@@ -64,14 +64,14 @@ export class Item {
                             this.wasPicked = true;
                             this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
                             GameVars.player.playerRightWeapon.destroy();
-                            GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player, playerColors.hd);
+                            GameVars.player.playerRightWeapon = new Weapon(0, 0, this.subType, -1, GameVars.player, "#cd9722");
                             GameVars.weaponIcons.update();
                         }
                         if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
                             this.wasPicked = true;
                             this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
                             GameVars.player.playerLeftWeapon.destroy();
-                            GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player, playerColors.hd);
+                            GameVars.player.playerLeftWeapon = new Weapon(0, 0, this.subType, 1, GameVars.player, "#cd9722");
                             GameVars.weaponIcons.update();
                         }
                         break;
