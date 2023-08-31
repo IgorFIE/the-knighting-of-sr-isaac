@@ -26,44 +26,44 @@ export class Sound {
 
     clickSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 174.6, 0.14, 0, 0.2);
+            this.playSound("square", 174.6, 0.14, 0, 0.2);
         }
     }
 
     enemyTakeDmgSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
             this.playSound("square", 32.70, 0.12, 0, 0.1);
-            this.playSound(square, 36.71, 0.12, 0.1, 0.2);
-            this.playSound(square, 16.35, 0.14, 0.2, 0.2);
+            this.playSound("square", 36.71, 0.12, 0.1, 0.2);
+            this.playSound("square", 16.35, 0.14, 0.2, 0.2);
         }
     }
 
     playerTakeDmgSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 130.81, 0.14, 0, 0.1);
-            this.playSound(square, 146.83, 0.14, 0.1, 0.2);
-            this.playSound(square, 65.41, 0.16, 0.2, 0.2);
+            this.playSound("square", 130.81, 0.14, 0, 0.1);
+            this.playSound("square", 146.83, 0.14, 0.1, 0.2);
+            this.playSound("square", 65.41, 0.16, 0.2, 0.2);
         }
     }
 
     spawnSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 293.7, 0.1, 0, 0.2);
+            this.playSound("square", 293.7, 0.1, 0, 0.2);
         }
     }
 
     deadSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 18.35, 0.1, 0, 0.1);
-            this.playSound(square, 36.71, 0.1, 0.1, 0.2);
-            this.playSound(square, 73.42, 0.1, 0.2, 0.2);
+            this.playSound("square", 18.35, 0.1, 0, 0.1);
+            this.playSound("square", 36.71, 0.1, 0.1, 0.2);
+            this.playSound("square", 73.42, 0.1, 0.2, 0.2);
         }
     }
 
     pickItem() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 932.3, 0.1, 0, 0.1);
-            this.playSound(square, 1865, 0.1, 0.1, 0.2);
+            this.playSound("square", 932.3, 0.1, 0, 0.1);
+            this.playSound("square", 1865, 0.1, 0.1, 0.2);
         }
     }
 
@@ -90,9 +90,9 @@ export class Sound {
 
     playOverSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 32.70, 0.3, 0, 0.1);
-            this.playSound(square, 36.71, 0.2, 0.1, 0.2);
-            this.playSound(square, 16.35, 0.3, 0.2, 0.1);
+            this.playSound("square", 32.70, 0.3, 0, 0.1);
+            this.playSound("square", 36.71, 0.2, 0.1, 0.2);
+            this.playSound("square", 16.35, 0.3, 0.2, 0.1);
         }
     }
 
@@ -105,7 +105,7 @@ export class Sound {
                 if (this.musicBassNote >= mB.length) {
                     this.musicBassNote = 0;
                 }
-                this.playSound(square, mM[this.musicMelodyNote], 0.08, 0, 0.4);
+                this.playSound("square", mM[this.musicMelodyNote], 0.08, 0, 0.4);
                 this.musicMelodyNote++;
                 if (this.musicMelodyNote >= mM.length) {
                     this.musicMelodyNote = 0;
@@ -134,8 +134,6 @@ export class Sound {
     }
 }
 
-const square = "square";
-
 const mB = [
     null, null, null, null, 73.42, null, 65.41, null,
     73.42, null, null, null, null, null, null, null,
@@ -150,7 +148,6 @@ const mB = [
 ];
 
 // Saltarello in Dm - Medieval Italian Dance
-
 const mM = [
     329.63, null, null, null, 349.23, null, 392, null,
     440, null, 146.83, null, 440, null, 146.83, null,
