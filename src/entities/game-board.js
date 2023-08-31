@@ -28,11 +28,10 @@ export class GameBoard {
     }
 
     createBoardRooms() {
-        let amount = this.size;
         let x = Math.floor(this.board.length / 2);
         let y = Math.floor(this.board.length / 2);
 
-        while (this.rooms.length != amount) {
+        while (this.rooms.length != this.size) {
             if (this.board[y][x] == null) {
                 this.board[y][x] = new Room(x, y);
                 this.rooms.push(this.board[y][x]);
@@ -97,9 +96,7 @@ export class GameBoard {
     }
 
     createPaths() {
-        let w;
-        let h;
-        let doorType;
+        let w, h, doorType;
         this.rooms.forEach((room) => {
             w = room.backBlocks[0].length;
             h = room.backBlocks.length;
