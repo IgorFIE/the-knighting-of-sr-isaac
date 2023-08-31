@@ -13,6 +13,8 @@ export class Player {
     constructor() {
         this.hasKey = false;
         this.isAlive = true;
+        this.playerSpeed = toPixelSize(2);
+
 
         this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
@@ -52,8 +54,8 @@ export class Player {
                 this.clearAnim();
                 this.lifeBar.update();
                 this.isAlive = false;
-                GameVars.sound.playOverSound();
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
+                    GameVars.sound.playOverSound();
                     GameVars.isGameOver = true;
                 });
             }
@@ -79,10 +81,7 @@ export class Player {
             this.clearAnim();
         }
 
-        //todo momentarily solution
-        const playerSpeed = toPixelSize(2);
-        const distance = movKeys.length > 1 ? playerSpeed / 1.4142 : playerSpeed;
-
+        const distance = movKeys.length > 1 ? this.playerSpeed / 1.4142 : this.playerSpeed;
         if (GameVars.keys['d'] || GameVars.keys['D'] || GameVars.keys['ArrowRight']) { newRectX += distance; }
         if (GameVars.keys['a'] || GameVars.keys['A'] || GameVars.keys['ArrowLeft']) { newRectX -= distance; }
         if (GameVars.keys['w'] || GameVars.keys['W'] || GameVars.keys['ArrowUp']) { newRectY -= distance; }
