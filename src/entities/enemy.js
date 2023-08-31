@@ -70,11 +70,11 @@ export class Enemy {
         const maxValue = GameVars.gameLevel >= 8 ? 8 : GameVars.gameLevel;
         if (GameVars.gameLevel < 4) {
             const isLeftWeapon = randomNumb(2) === 0;
-            this.enemyRightWeapon = new Weapon(0, 0, isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(0, 0, isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+            this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
         } else {
-            this.enemyRightWeapon = new Weapon(0, 0, randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(0, 0, randomNumbOnRange(0, maxValue), 1, this, "#686b7a", this.enemySize);
+            this.enemyRightWeapon = new Weapon(randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(randomNumbOnRange(0, maxValue), 1, this, "#686b7a", this.enemySize);
         }
         this.rightWeaponActivationRange = this.getWeaponDistance(this.enemyRightWeapon);
         this.leftWeaponActivationRange = this.getWeaponDistance(this.enemyLeftWeapon);

@@ -5,7 +5,7 @@ import { createElem, drawSprite } from "../utilities/draw-utilities";
 import { Arrow } from "./arrow";
 
 export class Weapon {
-    constructor(x, y, weaponType, handDir, parent, color, size, isPlayer) {
+    constructor(weaponType, handDir, parent, color, size, isPlayer) {
         this.color = color;
         this.handDir = handDir;
         this.weaponType = weaponType;
@@ -20,7 +20,7 @@ export class Weapon {
 
         this.atkAnimation = this.getWeaponAnimation();
 
-        this.relativePos = this.getRelativePos(x, y);
+        this.relativePos = this.getRelativePos();
         this.setWeaponPos();
         this.atkLine = this.getWeaponAtkLine();
         this.damagedObjs = new Map();
@@ -88,26 +88,26 @@ export class Weapon {
         }
     }
 
-    getRelativePos(x, y) {
+    getRelativePos() {
         switch (this.weaponType) {
             case WeaponType.FIST:
-                return { x: x + toPixelSize(this.handDir === -1 ? -this.size : this.size * 2), y: y + toPixelSize(this.size * 4.5) };
+                return { x: toPixelSize(this.handDir === -1 ? -this.size : this.size * 2), y: toPixelSize(this.size * 4.5) };
             case WeaponType.SHIELD:
-                return { x: x + toPixelSize(this.size * 2 * this.handDir), y: y + toPixelSize(this.size * 3) };
+                return { x: toPixelSize(this.size * 2 * this.handDir), y: toPixelSize(this.size * 3) };
             case WeaponType.SWORD:
-                return { x: x + toPixelSize(this.size * 3 * this.handDir), y: y - toPixelSize(2), r: -90 };
+                return { x: toPixelSize(this.size * 3 * this.handDir), y: toPixelSize(2), r: -90 };
             case WeaponType.GREATSWORD:
-                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: y - toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
             case WeaponType.SPEAR:
-                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: y + -toPixelSize(this.size) };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: -toPixelSize(this.size) };
             case WeaponType.HAMMER:
-                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: y - toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
             case WeaponType.AXE:
-                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: y - toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
             case WeaponType.MORNING_STAR:
-                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: y - toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
             case WeaponType.CROSSBOW:
-                return { x: x + toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: y + toPixelSize(this.handDir === - 1 ? this.size * 2 : -this.size * 3), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: toPixelSize(this.handDir === - 1 ? this.size * 2 : -this.size * 3), r: 45 * this.handDir };
         }
     }
 
