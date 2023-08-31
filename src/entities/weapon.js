@@ -26,7 +26,7 @@ export class Weapon {
         this.damagedObjs = new Map();
         this.dmg = this.getDamage();
 
-        this.draw(color);
+        this.draw();
     }
 
     getWeaponAnimation() {
@@ -73,18 +73,18 @@ export class Weapon {
                     easing: ["ease-in", "ease-out", "ease-in"],
                     offset: [0, 0.40, 1]
                 }, 750);
-            case WeaponType.GREATSWORD:
-                return this.weaponCanv.animate({
-                    transform: ["rotate(0)", "rotate(" + 360 * this.handDir + "deg)"],
-                    easing: ["ease-in", "ease-out"],
-                    offset: [0, 1]
-                }, 1000);
             case WeaponType.CROSSBOW:
                 return this.weaponCanv.animate({
                     transform: ["translateY(0)", "translateY( " + toPixelSize(this.size * 4) + "px)", "translateY(0)"],
                     easing: ["ease-in", "ease-out", "ease-out"],
                     offset: [0, 0.1, 1]
                 }, 900);
+            case WeaponType.GREATSWORD:
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0)", "rotate(" + 360 * this.handDir + "deg)"],
+                    easing: ["ease-in", "ease-out"],
+                    offset: [0, 1]
+                }, 1000);
         }
     }
 
@@ -101,7 +101,7 @@ export class Weapon {
             case WeaponType.SPEAR:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: -toPixelSize(this.size) };
             case WeaponType.HAMMER:
-                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: -toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: -toPixelSize(this.handDir === - 1 ? -this.size * 8 : -this.size * 6), r: 135 * this.handDir };
             case WeaponType.AXE:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: -toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
             case WeaponType.MORNING_STAR:
@@ -300,8 +300,8 @@ export class Weapon {
         }
     }
 
-    draw(color) {
-        drawSprite(this.weaponCanv, this.sprite, toPixelSize(this.size), null, null, { "wc": color });
+    draw() {
+        drawSprite(this.weaponCanv, this.sprite, toPixelSize(this.size), null, null, { "wc": this.color });
     }
 
     destroy() {
