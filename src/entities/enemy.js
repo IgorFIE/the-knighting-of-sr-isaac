@@ -20,7 +20,8 @@ export class Enemy {
         this.roomY = roomY;
 
         this.enemyType = enemyType;
-        this.enemySubType = this.getEnemySubType();
+        this.enemySubType = enemyChainMailColors[GameVars.gameLevel < 3 ? randomNumb(2) : randomNumbOnRange(1, 2)];
+        this.activationDistance = this.getEnemyDistance();
 
         this.enemySpeed = toPixelSize(1 + (randomNumbOnRange(-5, 0) / 10));
 
@@ -54,25 +55,37 @@ export class Enemy {
         this.div.style.transformOrigin = "70% 95%";
     }
 
-    getEnemySubType() {
-        if (GameVars.gameLevel === 1) {
-            return enemyChainMailColors[0];
-        } else if (GameVars.gameLevel < 4) {
-            return enemyChainMailColors[randomNumb(2)];
-        } else {
-            return enemyChainMailColors[randomNumb(enemyChainMailColors.length)];
+    getEnemyDistance() {
+        switch (this.enemySubType) {
+            case EnemySubType.AGRESSIVE:
+                return 16;
+            case EnemySubType.DEFENSIVE:
+                return 48;
+            case EnemySubType.AFRAID:
+                return 64;
         }
     }
 
     setEnemyWeapons() {
-        if (GameVars.gameLevel === 1) {
-            this.enemyRightWeapon = new Weapon(0, 0, WeaponType.FIST, -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(0, 0, WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
-        } else {
-            const maxValue = GameVars.gameLevel >= 8 ? 8 : GameVars.gameLevel;
+        const maxValue = GameVars.gameLevel >= 8 ? 8 : GameVars.gameLevel;
+        if (GameVars.gameLevel < 4) {
             const isLeftWeapon = randomNumb(2) === 0;
             this.enemyRightWeapon = new Weapon(0, 0, isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
             this.enemyLeftWeapon = new Weapon(0, 0, isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+        } else {
+            this.enemyRightWeapon = new Weapon(0, 0, randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(0, 0, randomNumbOnRange(0, maxValue), 1, this, "#686b7a", this.enemySize);
+        }
+        this.rightWeaponActivationRange = this.getWeaponDistance(this.enemyRightWeapon);
+        this.leftWeaponActivationRange = this.getWeaponDistance(this.enemyLeftWeapon);
+    }
+
+    getWeaponDistance(weapon) {
+        switch (weapon.weaponType) {
+            case WeaponType.FIST:
+                return toPixelSize(weapon.sprite.length * weapon.size) * 4;
+            default:
+                return toPixelSize(weapon.sprite.length * weapon.size) * 2;
         }
     }
 
@@ -154,11 +167,10 @@ export class Enemy {
     }
 
     setTargetPosBasedOnEnemySubType() {
-        let distance = this.getEnemyDistance();
         if (this.enemySubType !== EnemySubType.AFRAID) {
-            if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(distance)) {
+            if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(this.activationDistance)) {
                 if (circleToCircleCollision(this.collisionObj, this.targetPos) || this.movTimeElapsed / 0.4 >= 1) {
-                    this.setTargetPosWeaponBased(distance);
+                    this.setTargetPosWeaponBased(this.activationDistance);
                     this.movTimeElapsed = 0;
                 } else {
                     this.movTimeElapsed += GameVars.deltaTime;
@@ -173,13 +185,13 @@ export class Enemy {
                 }
             }
         } else {
-            if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(distance)) {
+            if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(this.activationDistance)) {
                 if (this.movTimeElapsed / 0.4 >= 1) {
                     let xDiff = Math.round(this.collisionObj.x - GameVars.player.collisionObj.x);
                     let yDiff = Math.round(this.collisionObj.y - GameVars.player.collisionObj.y);
 
-                    this.targetPos.x = this.collisionObj.x + (Math.abs(xDiff) < toPixelSize(10) ? randomNumbOnRange(-distance, distance) : xDiff);
-                    this.targetPos.y = this.collisionObj.y + (Math.abs(yDiff) < toPixelSize(10) ? randomNumbOnRange(-distance, distance) : yDiff);
+                    this.targetPos.x = this.collisionObj.x + (Math.abs(xDiff) < toPixelSize(10) ? randomNumbOnRange(-this.activationDistance, this.activationDistance) : xDiff);
+                    this.targetPos.y = this.collisionObj.y + (Math.abs(yDiff) < toPixelSize(10) ? randomNumbOnRange(-this.activationDistance, this.activationDistance) : yDiff);
 
                     this.movTimeElapsed = 0;
                 } else {
@@ -189,17 +201,6 @@ export class Enemy {
                 this.targetPos.x = this.collisionObj.x;
                 this.targetPos.y = this.collisionObj.y;
             }
-        }
-    }
-
-    getEnemyDistance() {
-        switch (this.enemySubType) {
-            case EnemySubType.AGRESSIVE:
-                return 16;
-            case EnemySubType.DEFENSIVE:
-                return 48;
-            case EnemySubType.AFRAID:
-                return 64;
         }
     }
 
@@ -247,24 +248,15 @@ export class Enemy {
     }
 
     atk() {
-        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.getWeaponDistance(this.enemyRightWeapon) && this.shouldAtk()) {
+        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.rightWeaponActivationRange && this.shouldAtk()) {
             this.enemyRightWeapon.action();
         }
-        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.getWeaponDistance(this.enemyLeftWeapon) && this.shouldAtk()) {
+        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.leftWeaponActivationRange && this.shouldAtk()) {
             this.enemyLeftWeapon.action();
         }
 
         this.enemyRightWeapon.update();
         this.enemyLeftWeapon.update();
-    }
-
-    getWeaponDistance(weapon) {
-        switch (weapon.weaponType) {
-            case WeaponType.FIST:
-                return toPixelSize(weapon.sprite.length * weapon.size) * 4;
-            default:
-                return toPixelSize(weapon.sprite.length * weapon.size) * 2;
-        }
     }
 
     shouldAtk() {
