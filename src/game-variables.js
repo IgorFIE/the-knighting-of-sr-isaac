@@ -2,7 +2,7 @@ const storeId = 'igorfie-the-knighting-of-sr-isaac';
 
 let highScore = parseInt(localStorage.getItem(storeId)) || 0;
 
-const isMobile = navigator.maxTouchPoints > 1;
+const isMobile = navigator.maxTouchPoints >= 1;
 
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
@@ -54,7 +54,7 @@ let heartLifeVal = 6;
 const resetGameVars = () => {
     GameVars.score = 0;
 
-    GameVars.pixelSize = pixelCal(1.5, 4.5);
+    GameVars.pixelSize = (gameH < 500 || gameW < 500) ? 2 : pixelCal(1.5, 4.5);
     GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
     GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
 

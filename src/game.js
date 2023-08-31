@@ -83,7 +83,7 @@ export class Game {
     drawMainRoomText() {
         const textColor = this.getTutorColor();
         drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 28, textColor, 1);
+            GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 20, textColor, 1);
 
         drawPixelTextInCanvas(convertTextToPixelArt("^"), GameVars.currentRoom.roomCanv, toPixelSize(2),
             GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 6, textColor, 1);
@@ -108,14 +108,14 @@ export class Game {
         }
 
         drawPixelTextInCanvas(convertTextToPixelArt("r atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
+            (GameVars.gameW / toPixelSize(4)) - 18, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "a" : "v"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) - 24, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
+            (GameVars.gameW / toPixelSize(4)) - 18, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
 
         drawPixelTextInCanvas(convertTextToPixelArt("l atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
+            (GameVars.gameW / toPixelSize(4)) + 18, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt("b"), GameVars.currentRoom.roomCanv, toPixelSize(2),
-            (GameVars.gameW / toPixelSize(4)) + 24, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
+            (GameVars.gameW / toPixelSize(4)) + 18, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
     }
 
     getTutorColor() {

@@ -75,7 +75,7 @@ function createMainMenu() {
     let mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
 
     let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(70), toPixelSize(30), GameVars.isMobile, null, () => startGame());
-    mainMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - (mainMenuBtn.width / 2) - toPixelSize(4)) + 'px, ' + ((GameVars.gameH / 4) * 3) + 'px)';
+    mainMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + 'px, ' + (mainMenuCanv.height - toPixelSize(26) - mainMenuBtn.height) + 'px)';
 
     genSmallBox(mainMenuBtn, 0, 0, 34, 14, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("enter/click/touch"), mainMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
@@ -94,18 +94,18 @@ function createMainMenu() {
             }
         }
     }
-
-    let wKnightCenter = Math.round(GameVars.gameW / 2 / toPixelSize(30));
+    console.log(GameVars.gameW, GameVars.gameW / toPixelSize(30), Math.round(GameVars.gameW / toPixelSize(30)));
+    let wKnightCenter = Math.round((GameVars.gameW / toPixelSize(30)) / 4);
     let hKnightCenter = Math.round(GameVars.gameH / toPixelSize(30));
 
-    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter - 5, hKnightCenter - 6, { "hd": "#999a9e", "hl": "#686b7a", "cm": "#431313" });
-    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter + 2, hKnightCenter - 6, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
+    drawSprite(mainMenuCanv, knight, toPixelSize(30), (wKnightCenter) - 1.5, hKnightCenter - 6, { "hd": "#999a9e", "hl": "#686b7a", "cm": "#431313" });
+    drawSprite(mainMenuCanv, knight, toPixelSize(30), (wKnightCenter * 3) - 1.5, hKnightCenter - 6, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
 
-    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter - 3.5, hKnightCenter - 8, { "wc": "#686b7a" });
-    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8, { "wc": "#cd9722" });
+    // drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter - 3.5, hKnightCenter - 8, { "wc": "#686b7a" });
+    // drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8, { "wc": "#cd9722" });
 
     genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 24, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(4), Math.round(GameVars.gameW / 2 / toPixelSize(4)), 4, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(3), Math.round(GameVars.gameW / 2 / toPixelSize(3)), 5, "#edeef7", 1);
     drawPixelTextInCanvas(convertTextToPixelArt("sr Isaac"), mainMenuCanv, toPixelSize(2), Math.round(GameVars.gameW / 2 / toPixelSize(2)), 18, "#edeef7", 1);
 
     genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 11, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 12, toPixelSize(2), "#060606", "#060606");
