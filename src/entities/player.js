@@ -26,8 +26,8 @@ export class Player {
 
         this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
-        this.playerRightWeapon = new Weapon(GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, "#cd9722", null, true);
-        this.playerLeftWeapon = new Weapon(GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, "#cd9722", null, true);
+        this.playerRightWeapon = new Weapon(GameVars.lastPlayerRightWeaponType || WeaponType.MORNING_STAR, -1, this, "#cd9722", null, true);
+        this.playerLeftWeapon = new Weapon(GameVars.lastPlayerLeftWeaponType || WeaponType.MORNING_STAR, 1, this, "#cd9722", null, true);
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
 

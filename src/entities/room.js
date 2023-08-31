@@ -15,9 +15,11 @@ import { Item } from "./item";
 
 export class Room {
     constructor(roomX, roomY) {
+        // board position
         this.roomX = roomX;
         this.roomY = roomY;
 
+        // translation position
         this.x = 0;
         this.y = 0;
 
@@ -40,8 +42,7 @@ export class Room {
     }
 
     initRoomBlocks() {
-        let obj;
-        let blockType;
+        let obj, blockType;
         for (let y = 0; y < GameVars.roomHeight; y++) {
             this.backBlocks.push([]);
             for (let x = 0; x < GameVars.roomWidth; x++) {
@@ -124,6 +125,7 @@ export class Room {
             this.roomDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
             this.enemies.forEach(enemy => enemy.validateMovement(enemy.collisionObj.x + xAmount, enemy.collisionObj.y + yAmount, true));
             this.items.forEach(item => item.validateMovement(item.collisionObj.x + xAmount, item.collisionObj.y + yAmount));
+            this.arrows.forEach(arrow => arrow.destroy());
         } else {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
@@ -141,19 +143,23 @@ export class Room {
         const shouldOpenBossDoor = isKeyPressed && this.checkIfInRangeOfPlayer(DoorType.BOSS);
         this.doors.forEach(door => {
             if (door.blockType !== BlockType.DOOR_OPEN) {
-                if (door.doorType === DoorType.TREASURE) {
-                    if (shouldOpenTreasureDoor) {
+                switch (door.doorType) {
+                    case DoorType.TREASURE:
+                        if (shouldOpenTreasureDoor) {
+                            door.blockType = BlockType.DOOR_OPEN;
+                            GameVars.sound.openDoorSound();
+                        }
+                        break;
+                    case DoorType.BOSS:
+                        if (shouldOpenBossDoor) {
+                            door.blockType = BlockType.DOOR_OPEN;
+                            GameVars.sound.openDoorSound();
+                        }
+                        break;
+                    default:
                         door.blockType = BlockType.DOOR_OPEN;
                         GameVars.sound.openDoorSound();
-                    }
-                } else if (door.doorType === DoorType.BOSS) {
-                    if (shouldOpenBossDoor) {
-                        door.blockType = BlockType.DOOR_OPEN;
-                        GameVars.sound.openDoorSound();
-                    }
-                } else {
-                    door.blockType = BlockType.DOOR_OPEN;
-                    GameVars.sound.openDoorSound();
+                        break;
                 }
             }
             door.draw();
@@ -172,7 +178,7 @@ export class Room {
     }
 
     drawRoomShadows() {
-        let ctx = this.roomCanv.getContext("2d");
+        const ctx = this.roomCanv.getContext("2d");
         ctx.fillStyle = "#00000033";
         ctx.fillRect(0, 0, toPixelSize(34), toPixelSize(GameVars.gameHgAsPixels));
         ctx.fillRect(toPixelSize(34), 0, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(34));

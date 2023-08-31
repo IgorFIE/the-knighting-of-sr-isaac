@@ -95,17 +95,17 @@ export class Weapon {
             case WeaponType.SHIELD:
                 return { x: toPixelSize(this.size * 2 * this.handDir), y: toPixelSize(this.size * 3) };
             case WeaponType.SWORD:
-                return { x: toPixelSize(this.size * 3 * this.handDir), y: toPixelSize(2), r: -90 };
+                return { x: toPixelSize(this.size * 3 * this.handDir), y: -toPixelSize(2), r: -90 };
             case WeaponType.GREATSWORD:
-                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: -toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
             case WeaponType.SPEAR:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: -toPixelSize(this.size) };
             case WeaponType.HAMMER:
-                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: -toPixelSize(this.handDir === - 1 ? -this.size * 9 : -this.size * 7), r: 135 * this.handDir };
             case WeaponType.AXE:
-                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 7), y: -toPixelSize(this.handDir === - 1 ? -this.size * 2 : 0), r: 45 * this.handDir };
             case WeaponType.MORNING_STAR:
-                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: -toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
             case WeaponType.CROSSBOW:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: toPixelSize(this.handDir === - 1 ? this.size * 2 : -this.size * 3), r: 45 * this.handDir };
         }
