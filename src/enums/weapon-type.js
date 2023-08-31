@@ -4,10 +4,11 @@ export const WeaponType = {
     AXE: 2,
     MORNING_STAR: 3,
     SPEAR: 4,
-    HAMMER: 5,
-    SWORD: 6,
-    GREATSWORD: 7,
-    CROSSBOW: 8
+    HALBERD: 5,
+    HAMMER: 6,
+    SWORD: 7,
+    GREATSWORD: 8,
+    CROSSBOW: 9
 };
 
 export const getWeaponSprite = (weaponType) => {
@@ -28,12 +29,14 @@ export const getWeaponSprite = (weaponType) => {
             return morningStar;
         case WeaponType.CROSSBOW:
             return crossbow;
+        case WeaponType.HALBERD:
+            return halberd;
         default:
             return fist;
     }
 }
 
-export const fist = [
+const fist = [
     ["#e7c688", "#e7c688"],
     ["#e7c688", "#e7c688"]
 ];
@@ -49,14 +52,14 @@ export const shortSword = [
     [null, "wc", null]
 ];
 
-export const morningStar = [
+const morningStar = [
     [null, "#edeef7", null],
     ["#edeef7", "#edeef7", "#edeef7"],
     [null, "#edeef7", null],
     [null, "wc", null]
 ];
 
-export const hammer = [
+const hammer = [
     ["#edeef7", "#edeef7", "#edeef7"],
     ["#999a9e", "#999a9e", "#edeef7"],
     ["#999a9e", "#999a9e", "#edeef7"],
@@ -64,7 +67,7 @@ export const hammer = [
     [null, "wc", null]
 ];
 
-export const axe = [
+const axe = [
     [null, "#edeef7", "#edeef7"],
     ["#edeef7", "#999a9e", "#edeef7"],
     [null, "#999a9e", "#edeef7"],
@@ -73,14 +76,14 @@ export const axe = [
     [null, "wc", null]
 ];
 
-export const shield = [
+const shield = [
     ["wc", "#edeef7", "wc"],
     ["#edeef7", "#edeef7", "#edeef7"],
     ["wc", "#edeef7", "wc"],
     ["wc", "#edeef7", "wc"]
 ];
 
-export const spear = [
+const spear = [
     ["wc"],
     ["wc"],
     ["wc"],
@@ -97,7 +100,7 @@ export const spear = [
     ["#edeef7"]
 ];
 
-export const greatsword = [
+const greatsword = [
     [null, null, null, "#edeef7", null, null, null],
     [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
     [null, null, "#999a9e", "#999a9e", "#edeef7", null, null],
@@ -112,7 +115,7 @@ export const greatsword = [
     [null, null, null, "#3e3846", null, null, null],
 ];
 
-export const crossbow = [
+const crossbow = [
     [null, null, null, "#edeef7", null, null, null],
     [null, null, null, "#edeef7", null, null, null],
     [null, "#999a9e", "#999a9e", "wc", "#999a9e", "#999a9e", null],
@@ -121,4 +124,21 @@ export const crossbow = [
     [null, null, "#3e3846", "wc", "#3e3846", null, null],
     [null, null, null, "wc", null, null, null],
     [null, null, null, "#edeef7", null, null, null]
+];
+
+const halberd = [
+    [null, "#edeef7", null],
+    [null, "#edeef7", null],
+    [null, "#edeef7", "#edeef7"],
+    ["#edeef7", "#999a9e", "#edeef7"],
+    [null, "#999a9e", "#edeef7"],
+    [null, "#686b7a", null],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null],
+    [null, "wc", null]
 ];

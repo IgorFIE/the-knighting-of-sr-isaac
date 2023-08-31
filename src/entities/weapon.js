@@ -67,6 +67,12 @@ export class Weapon {
                     easing: ["ease-in", "ease-out", "ease-out"],
                     offset: [0, 0.5, 1]
                 }, 500);
+            case WeaponType.HALBERD:
+                return this.weaponCanv.animate({
+                    transform: ["rotate(0) translateY(0)", "rotate(" + -20 * this.handDir + "deg) translateY( " + -toPixelSize(this.size * 6) + "px)", "rotate(0) translateY(0)"],
+                    easing: ["ease-in", "ease-out", "ease-out"],
+                    offset: [0, 0.45, 1]
+                }, 500);
             case WeaponType.HAMMER:
                 return this.weaponCanv.animate({
                     transform: ["rotate(0)", "rotate(" + -270 * this.handDir + "deg)", "rotate(0)"],
@@ -100,6 +106,8 @@ export class Weapon {
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: -toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
             case WeaponType.SPEAR:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: -toPixelSize(this.size) };
+            case WeaponType.HALBERD:
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 4), y: -toPixelSize(this.size * 8), r: 0 };
             case WeaponType.HAMMER:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 4) : this.size * 9), y: -toPixelSize(this.handDir === - 1 ? -this.size * 8 : -this.size * 6), r: 135 * this.handDir };
             case WeaponType.AXE:
@@ -122,6 +130,7 @@ export class Weapon {
             case WeaponType.AXE:
             case WeaponType.MORNING_STAR:
             case WeaponType.CROSSBOW:
+            case WeaponType.HALBERD:
                 this.weaponDiv.style.transform += ' rotate(' + this.relativePos.r + 'deg)';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
@@ -160,6 +169,11 @@ export class Weapon {
                     { x: anglePoint1.x, y: anglePoint1.y },
                     { x: anglePoint2.x, y: anglePoint2.y },
                 ];
+            case WeaponType.HALBERD:
+                return [
+                    { x: this.relativePos.x + (this.sprite[0].length / 2) * toPixelSize(this.size), y: this.relativePos.y + (this.sprite.length * toPixelSize(this.size) / 2) },
+                    { x: this.relativePos.x + (this.sprite[0].length / 2) * toPixelSize(this.size), y: this.relativePos.y },
+                ];
             case WeaponType.SPEAR:
                 return [
                     { x: this.relativePos.x + toPixelSize(this.size / 2), y: this.relativePos.y + (this.sprite.length * toPixelSize(this.size) / 2) },
@@ -185,7 +199,7 @@ export class Weapon {
                     { x: box.x + this.atkLine[1].x + (toPixelSize(this.size) * (transform.m11 - 1)), y: box.y + this.atkLine[1].y + transform.f * transform.m11 }
                 ];
             case WeaponType.SWORD:
-                let anglePoint = this.retrieveAnglePoint(
+                let swordAnglePoint = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
                     this.sprite.length * toPixelSize(this.size),
@@ -193,13 +207,13 @@ export class Weapon {
                 );
                 return [
                     { x: box.x + this.atkLine[0].x, y: box.y + this.atkLine[0].y },
-                    { x: anglePoint.x, y: anglePoint.y }
+                    { x: swordAnglePoint.x, y: swordAnglePoint.y }
                 ];
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
             case WeaponType.AXE:
             case WeaponType.MORNING_STAR:
-                let anglePoint2 = this.retrieveAnglePoint(
+                let rotationAnglePoint = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
                     this.sprite.length * toPixelSize(this.size),
@@ -207,7 +221,24 @@ export class Weapon {
                 );
                 return [
                     { x: box.x + this.atkLine[0].x, y: box.y + this.atkLine[0].y },
-                    { x: anglePoint2.x, y: anglePoint2.y }
+                    { x: rotationAnglePoint.x, y: rotationAnglePoint.y }
+                ];
+            case WeaponType.HALBERD:
+                let topPoint = this.retrieveAnglePoint(
+                    box.x + this.atkLine[1].x,
+                    box.y + this.atkLine[1].y + (this.sprite.length * toPixelSize(this.size)) + (transform.f * 1.1),
+                    this.sprite.length * toPixelSize(this.size),
+                    (Math.atan2(transform.b, transform.a) * 180 / Math.PI) + this.relativePos.r - 90
+                );
+                let bottomPoint = this.retrieveAnglePoint(
+                    box.x + this.atkLine[1].x,
+                    box.y + this.atkLine[1].y + (this.sprite.length * toPixelSize(this.size)) + (transform.f * 1.1),
+                    (this.sprite.length * toPixelSize(this.size) / 2),
+                    (Math.atan2(transform.b, transform.a) * 180 / Math.PI) + this.relativePos.r - 90
+                );
+                return [
+                    { x: bottomPoint.x, y: bottomPoint.y },
+                    { x: topPoint.x, y: topPoint.y }
                 ];
             case WeaponType.SPEAR:
                 return [
@@ -279,6 +310,8 @@ export class Weapon {
                 return 3 * (this.size - 1);
             case WeaponType.HAMMER:
                 return 7 * (this.size - 1);
+            case WeaponType.HALBERD:
+                return 8 * (this.size - 1);
             case WeaponType.GREATSWORD:
                 return 9 * (this.size - 1);
         }
