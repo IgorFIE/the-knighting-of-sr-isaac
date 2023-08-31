@@ -3,6 +3,7 @@ import { DoorType } from "../enums/door-type";
 import { EnemyType } from "../enums/enemy-type";
 import { ItemType } from "../enums/item-type";
 import { RoomType } from "../enums/room-type";
+import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
 import { createElem } from "../utilities/draw-utilities";
@@ -78,7 +79,7 @@ export class Room {
                 break;
             case RoomType.TREASURE:
                 this.cleanEnemies();
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, 8), this.roomDiv));
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, Object.keys(WeaponType).length - 1), this.roomDiv));
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();

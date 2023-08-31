@@ -67,7 +67,7 @@ export class Enemy {
     }
 
     setEnemyWeapons() {
-        const maxValue = GameVars.gameLevel >= 8 ? 8 : GameVars.gameLevel;
+        const maxValue = GameVars.gameLevel + 2 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 2;
         if (GameVars.gameLevel < 4) {
             const isLeftWeapon = randomNumb(2) === 0;
             this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
@@ -223,8 +223,9 @@ export class Enemy {
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, distance));
                 break;
             case WeaponType.HAMMER:
+            case WeaponType.HALBERD:
                 this.targetPos.x += toPixelSize(weaponToUse.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
-                this.targetPos.y -= toPixelSize(randomNumbOnRange(-distance, distance));
+                this.targetPos.y += toPixelSize(randomNumbOnRange(distance / 8, distance));
                 break;
             case WeaponType.GREATSWORD:
                 this.targetPos.x += toPixelSize(randomNumbOnRange(-distance, distance));
