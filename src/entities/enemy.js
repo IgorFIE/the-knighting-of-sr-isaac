@@ -21,11 +21,9 @@ export class Enemy {
 
         this.enemyType = enemyType;
         this.enemySubType = enemyChainMailColors[randomNumb(3)];
-        this.activationDistance = this.getEnemyDistance();
-
         this.enemySpeed = toPixelSize(1 + (randomNumbOnRange(-5, 0) / 10));
-
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
+        this.activationDistance = this.getEnemyDistance();
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
@@ -58,11 +56,11 @@ export class Enemy {
     getEnemyDistance() {
         switch (this.enemySubType) {
             case EnemySubType.AGRESSIVE:
-                return 16;
+                return this.enemySize * 8;
             case EnemySubType.DEFENSIVE:
-                return 32;
+                return this.enemySize * 16;
             case EnemySubType.AFRAID:
-                return 38;
+                return this.enemySize * 19;
         }
     }
 
