@@ -20,7 +20,7 @@ export class Enemy {
         this.roomY = roomY;
 
         this.enemyType = enemyType;
-        this.enemySubType = enemyChainMailColors[GameVars.gameLevel < 3 ? randomNumb(2) : randomNumbOnRange(1, 2)];
+        this.enemySubType = enemyChainMailColors[randomNumb(3)];
         this.activationDistance = this.getEnemyDistance();
 
         this.enemySpeed = toPixelSize(1 + (randomNumbOnRange(-5, 0) / 10));
@@ -60,9 +60,9 @@ export class Enemy {
             case EnemySubType.AGRESSIVE:
                 return 16;
             case EnemySubType.DEFENSIVE:
-                return 48;
+                return 32;
             case EnemySubType.AFRAID:
-                return 64;
+                return 38;
         }
     }
 
@@ -74,11 +74,14 @@ export class Enemy {
             this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
         } else {
             const isLeftWeapon = randomNumb(2) === 0;
-            this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(1, maxValue), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(1, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
+            this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(2, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
         }
+
         this.rightWeaponActivationRange = this.getWeaponDistance(this.enemyRightWeapon);
         this.leftWeaponActivationRange = this.getWeaponDistance(this.enemyLeftWeapon);
+
+        this.priorityWeapon = (this.enemyRightWeapon.weaponType === WeaponType.FIST || this.enemyRightWeapon.weaponType === WeaponType.SHIELD) ? this.enemyLeftWeapon : this.enemyRightWeapon;
     }
 
     getWeaponDistance(weapon) {
@@ -168,49 +171,65 @@ export class Enemy {
     }
 
     setTargetPosBasedOnEnemySubType() {
-        if (this.enemySubType !== EnemySubType.AFRAID) {
-            if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(this.activationDistance)) {
-                if (circleToCircleCollision(this.collisionObj, this.targetPos) || this.movTimeElapsed / 0.4 >= 1) {
-                    this.setTargetPosWeaponBased(this.activationDistance);
-                    this.movTimeElapsed = 0;
+        switch (this.enemySubType) {
+            case EnemySubType.AGRESSIVE:
+                if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(this.activationDistance)) {
+                    if (circleToCircleCollision(this.collisionObj, this.targetPos) || this.movTimeElapsed / 0.4 >= 1) {
+                        this.setTargetPosWeaponBased(this.activationDistance);
+                        this.movTimeElapsed = 0;
+                    } else {
+                        this.movTimeElapsed += GameVars.deltaTime;
+                    }
                 } else {
-                    this.movTimeElapsed += GameVars.deltaTime;
-                }
-            } else {
-                if (this.enemySubType !== EnemySubType.DEFENSIVE) {
                     this.targetPos.x = GameVars.player.collisionObj.x;
                     this.targetPos.y = GameVars.player.collisionObj.y;
-                } else {
-                    this.targetPos.x = this.collisionObj.x;
-                    this.targetPos.y = this.collisionObj.y;
                 }
-            }
-        } else {
-            if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) < toPixelSize(this.activationDistance)) {
-                if (this.movTimeElapsed / 0.4 >= 1) {
-                    let xDiff = Math.round(this.collisionObj.x - GameVars.player.collisionObj.x);
-                    let yDiff = Math.round(this.collisionObj.y - GameVars.player.collisionObj.y);
+                break;
 
-                    this.targetPos.x = this.collisionObj.x + (Math.abs(xDiff) < toPixelSize(10) ? randomNumbOnRange(-this.activationDistance, this.activationDistance) : xDiff);
-                    this.targetPos.y = this.collisionObj.y + (Math.abs(yDiff) < toPixelSize(10) ? randomNumbOnRange(-this.activationDistance, this.activationDistance) : yDiff);
-
+            case EnemySubType.DEFENSIVE:
+                if (this.movTimeElapsed / 0.2 >= 1) {
+                    if (circleToCircleCollision(this.collisionObj, this.targetPos) || randomNumb(100) < 66) {
+                        this.setTargetPosWeaponBased(this.activationDistance);
+                    } else {
+                        this.targetPos.x = this.collisionObj.x;
+                        this.targetPos.y = this.collisionObj.y;
+                    }
                     this.movTimeElapsed = 0;
                 } else {
                     this.movTimeElapsed += GameVars.deltaTime;
                 }
-            } else {
-                this.targetPos.x = this.collisionObj.x;
-                this.targetPos.y = this.collisionObj.y;
-            }
+                break;
+
+            case EnemySubType.AFRAID:
+                if (this.movTimeElapsed / 0.6 >= 1) {
+                    if (distBetwenObjs(this.collisionObj, GameVars.player.collisionObj) <= toPixelSize(this.activationDistance)) {
+                        let xDiff = Math.round(this.collisionObj.x - GameVars.player.collisionObj.x);
+                        let yDiff = Math.round(this.collisionObj.y - GameVars.player.collisionObj.y);
+
+                        this.targetPos.x = this.collisionObj.x + (Math.abs(xDiff) < toPixelSize(20) ? randomNumbOnRange(-this.activationDistance * 2, this.activationDistance * 2) : xDiff);
+                        this.targetPos.y = this.collisionObj.y + (Math.abs(yDiff) < toPixelSize(20) ? randomNumbOnRange(-this.activationDistance * 2, this.activationDistance * 2) : yDiff);
+
+                        this.movTimeElapsed = 0;
+                    } else {
+                        if (randomNumb(2) === 0) {
+                            this.setTargetPosWeaponBased(this.activationDistance);
+                        } else {
+                            this.targetPos.x = this.collisionObj.x;
+                            this.targetPos.y = this.collisionObj.y;
+                        }
+                        this.movTimeElapsed = 0;
+                    }
+                } else {
+                    this.movTimeElapsed += GameVars.deltaTime;
+                }
+                break;
         }
     }
 
     setTargetPosWeaponBased(distance) {
         this.targetPos.x = GameVars.player.collisionObj.x;
         this.targetPos.y = GameVars.player.collisionObj.y;
-
-        let weaponToUse = randomNumb(2) === 0 ? this.enemyLeftWeapon : this.enemyRightWeapon;
-        switch (weaponToUse.weaponType) {
+        switch (this.priorityWeapon.weaponType) {
             case WeaponType.FIST:
             case WeaponType.SHIELD:
             case WeaponType.SPEAR:
@@ -220,12 +239,12 @@ export class Enemy {
             case WeaponType.SWORD:
             case WeaponType.AXE:
             case WeaponType.MORNING_STAR:
-                this.targetPos.x += toPixelSize(weaponToUse.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
+                this.targetPos.x += toPixelSize(this.priorityWeapon.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, distance));
                 break;
             case WeaponType.HAMMER:
             case WeaponType.HALBERD:
-                this.targetPos.x += toPixelSize(weaponToUse.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
+                this.targetPos.x += toPixelSize(this.priorityWeapon.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(distance / 8, distance));
                 break;
             case WeaponType.GREATSWORD:
