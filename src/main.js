@@ -51,6 +51,8 @@ function init() {
     GameVars.resetGameVars();
 
     mainDiv = document.getElementById("main");
+    mainDiv.addEventListener("animationend", () => mainDiv.style.animation = "");
+
     leftWeapon = randomNumbOnRange(1, 3);
     rightWeapon = randomNumbOnRange(1, 3);
 

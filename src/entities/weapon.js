@@ -284,6 +284,7 @@ export class Weapon {
             if (this.isPlayer) {
                 GameVars.sound.enemyTakeDmgSound();
             } else {
+                GameVars.gameDiv.parentNode.style.animation = "takedmg 400ms ease-in-out";
                 GameVars.sound.playerTakeDmgSound();
             }
             this.damagedObjs.set(obj, true);
