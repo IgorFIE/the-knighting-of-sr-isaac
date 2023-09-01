@@ -75,7 +75,7 @@ export class Weapon {
                 }, 500);
             case WeaponType.HAMMER:
                 return this.weaponCanv.animate({
-                    transform: ["rotate(0)", "rotate(" + -270 * this.handDir + "deg)", "rotate(0)"],
+                    transform: ["rotate(0)", "rotate(" + -180 * this.handDir + "deg)", "rotate(0)"],
                     easing: ["ease-in", "ease-out", "ease-in"],
                     offset: [0, 0.40, 1]
                 }, 750);

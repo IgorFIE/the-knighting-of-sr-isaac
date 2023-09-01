@@ -6,7 +6,8 @@ const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
 const { knight } = require("./entities/sprites");
 const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
-const { shortSword } = require("./enums/weapon-type");
+const { fist, getWeaponSprite } = require("./enums/weapon-type");
+const { randomNumbOnRange } = require("./utilities/general-utilities");
 
 const speaker = [
     [null, null, null, "#edeef7", null],
@@ -32,10 +33,14 @@ const audio = [
 
 let mainDiv;
 let mainMenuDiv;
+let mainMenuCanv;
 
 let gameOverCanv;
 let scoreCanv;
 let soundBtnCanv;
+
+let leftWeapon;
+let rightWeapon;
 
 let fpsInterval = 1000 / GameVars.fps;
 let then = Date.now();
@@ -46,6 +51,8 @@ function init() {
     GameVars.resetGameVars();
 
     mainDiv = document.getElementById("main");
+    leftWeapon = randomNumbOnRange(1, 3);
+    rightWeapon = randomNumbOnRange(1, 3);
 
     addKeyListenerEvents();
 
@@ -72,18 +79,28 @@ function addKeyListenerEvents() {
 
 function createMainMenu() {
     mainMenuDiv = createElem(mainDiv, "div", null, null, GameVars.gameW, GameVars.gameH);
-    let mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
+    mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
 
-    let mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(70), toPixelSize(30), GameVars.isMobile, null, () => startGame());
-    mainMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + 'px, ' + (mainMenuCanv.height - toPixelSize(28) - mainMenuBtn.height) + 'px)';
+    drawMainMenu();
 
-    genSmallBox(mainMenuBtn, 0, 0, 34, 14, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt("enter/click/touch"), mainMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuBtn, toPixelSize(1), 35, 20, "#edeef7", 1);
+    let leftMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(66), toPixelSize(30), GameVars.isMobile, null, () => startGame(leftWeapon, -1));
+    leftMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px)';
 
+    genSmallBox(leftMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "v to ") + "start game"), leftMenuBtn, toPixelSize(1), 33, 10, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("with l weapon"), leftMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
+
+    let rightMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(66), toPixelSize(30), GameVars.isMobile, null, () => startGame(rightWeapon, 1));
+    rightMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px)';
+
+    genSmallBox(rightMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "b to ") + "start game"), rightMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("with r weapon"), rightMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
+}
+
+function drawMainMenu() {
     let mainMenuCtx = mainMenuCanv.getContext("2d");
-    mainMenuCtx.fillStyle = "#ffffff44";
-    mainMenuCtx.fillRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
+    mainMenuCtx.clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
 
     for (let y = 0; y < GameVars.gameH; y += toPixelSize(16)) {
         for (let x = 0; x < GameVars.gameW; x += toPixelSize(16)) {
@@ -94,21 +111,22 @@ function createMainMenu() {
             }
         }
     }
-    let wKnightCenter = ((GameVars.gameW % 2 === 0 ? GameVars.gameW : GameVars.gameW + 1) / toPixelSize(30)) / 2;
-    let hKnightCenter = (GameVars.gameH % 2 === 0 ? GameVars.gameH : GameVars.gameH + 1) / toPixelSize(30);
+    let wKnightCenter = ((GameVars.gameW % 2 === 0 ? GameVars.gameW : GameVars.gameW + 1) / toPixelSize(10)) / 2;
+    let hKnightCenter = ((GameVars.gameH % 2 === 0 ? GameVars.gameH : GameVars.gameH + 1) / toPixelSize(10)) / 2;
 
-    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter - 5, hKnightCenter - 6.3, { "hd": "#999a9e", "hl": "#686b7a", "cm": "#431313" });
-    drawSprite(mainMenuCanv, knight, toPixelSize(30), wKnightCenter + 2, hKnightCenter - 6.3, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
+    genSmallBox(mainMenuCanv, wKnightCenter - 3.5, hKnightCenter + 1, 6, 5, toPixelSize(10), "#00000033", "#00000033");
+    drawSprite(mainMenuCanv, knight, toPixelSize(10), wKnightCenter - 1.5, hKnightCenter - 3.5, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
 
-    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter - 3.5, hKnightCenter - 8.1, { "wc": "#686b7a" });
-    drawSprite(mainMenuCanv, shortSword, toPixelSize(30), wKnightCenter + 0.5, hKnightCenter - 8.1, { "wc": "#cd9722" });
+    drawSprite(mainMenuCanv, getWeaponSprite(leftWeapon), toPixelSize(10), wKnightCenter - 5.5, hKnightCenter - 1.5, { "wc": "#cd9722" });
+    drawSprite(mainMenuCanv, getWeaponSprite(rightWeapon), toPixelSize(10), wKnightCenter + 2.5, hKnightCenter - 1.5, { "wc": "#cd9722" });
 
     genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 32, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(3), Math.round(GameVars.gameW / 2 / toPixelSize(3)), 11, "#edeef7", 1);
     drawPixelTextInCanvas(convertTextToPixelArt("sr Isaac"), mainMenuCanv, toPixelSize(2), Math.round(GameVars.gameW / 2 / toPixelSize(2)), 25, "#edeef7", 1);
 
-    genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 11, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 12, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 12, "#edeef7", 1);
+    genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 16, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 17, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt("weapons give different atk directions"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 24, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 8, "#edeef7", 1);
 }
 
 function createGameDiv() {
@@ -172,15 +190,25 @@ function skipGameOver() {
     GameVars.game = null;
     updateHighScore();
     drawScore();
+    leftWeapon = randomNumbOnRange(1, 3);
+    rightWeapon = randomNumbOnRange(1, 3);
+    drawMainMenu();
 }
 
-function startGame() {
+function startGame(weaponType, handir) {
     initAudio();
     GameVars.sound.clickSound();
     mainMenuDiv.classList.add("hidden");
     GameVars.gameDiv.classList.remove("hidden");
     GameVars.resetGameVars();
     skipElapsedTime = 0;
+
+    if (handir < 0) {
+        GameVars.lastPlayerRightWeaponType = weaponType;
+    } else {
+        GameVars.lastPlayerLeftWeaponType = weaponType;
+    }
+
     GameVars.game = new Game();
 }
 
@@ -205,14 +233,26 @@ function gameLoop() {
             } else {
                 drawGameOver();
                 gameOverCanv.classList.remove("hidden");
-                if (GameVars.keys['Enter']) {
-                    skipGameOver();
+                if (skipElapsedTime / 1 >= 1) {
+                    if (GameVars.keys['Enter'] ||
+                        GameVars.keys['v'] || GameVars.keys['V'] ||
+                        GameVars.keys['b'] || GameVars.keys['B']) {
+                        skipGameOver();
+                        skipElapsedTime = 0;
+                    }
+                } else {
+                    skipElapsedTime += GameVars.deltaTime;
                 }
             }
         } else {
-            if (skipElapsedTime / 0.5 >= 1 && GameVars.keys['Enter']) {
-                startGame();
-                skipElapsedTime = 0;
+            if (skipElapsedTime / 1 >= 1) {
+                if (GameVars.keys['v'] || GameVars.keys['V']) {
+                    startGame(leftWeapon, -1);
+                    skipElapsedTime = 0;
+                } else if (GameVars.keys['b'] || GameVars.keys['B']) {
+                    startGame(rightWeapon, 1);
+                    skipElapsedTime = 0;
+                }
             } else {
                 skipElapsedTime += GameVars.deltaTime;
             }

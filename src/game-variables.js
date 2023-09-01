@@ -2,12 +2,12 @@ const storeId = 'igorfie-the-knighting-of-sr-isaac';
 
 let highScore = parseInt(localStorage.getItem(storeId)) || 0;
 
-const isMobile = navigator.maxTouchPoints >= 1;
+const isMobile = navigator.maxTouchPoints > 1;
 
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
 
-const fps = 90;
+const fps = 60;
 let deltaTime;
 // let debug;
 

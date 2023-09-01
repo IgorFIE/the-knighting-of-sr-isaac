@@ -1,11 +1,11 @@
 export const WeaponType = {
     FIST: 0, // down atk
     SHIELD: 1, // down/side atk
-    AXE: 2, // down/side atk
-    MORNING_STAR: 3, // side atk
-    SPEAR: 4, // range down atk
-    HALBERD: 5, // range top atk
-    HAMMER: 6, // top/side atk
+    MORNING_STAR: 2, // side atk
+    HAMMER: 3, // top/side atk
+    AXE: 4, // down/side atk
+    SPEAR: 5, // range down atk
+    HALBERD: 6, // range top atk
     SWORD: 7, // top/side/down atk
     GREATSWORD: 8, // rotation atk
     CROSSBOW: 9 // top/side atk
