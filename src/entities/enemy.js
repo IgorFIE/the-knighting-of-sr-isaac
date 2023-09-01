@@ -73,8 +73,9 @@ export class Enemy {
             this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
             this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
         } else {
-            this.enemyRightWeapon = new Weapon(randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(randomNumbOnRange(0, maxValue), 1, this, "#686b7a", this.enemySize);
+            const isLeftWeapon = randomNumb(2) === 0;
+            this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(1, maxValue), -1, this, "#686b7a", this.enemySize);
+            this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(1, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
         }
         this.rightWeaponActivationRange = this.getWeaponDistance(this.enemyRightWeapon);
         this.leftWeaponActivationRange = this.getWeaponDistance(this.enemyLeftWeapon);

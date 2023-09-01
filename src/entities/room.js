@@ -79,7 +79,8 @@ export class Room {
                 break;
             case RoomType.TREASURE:
                 this.cleanEnemies();
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, Object.keys(WeaponType).length - 1), this.roomDiv));
+                const maxValue = GameVars.gameLevel + 3 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 3;
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, maxValue), this.roomDiv));
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();

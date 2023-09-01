@@ -301,13 +301,12 @@ export class Weapon {
             case WeaponType.SHIELD:
                 return 2 * (this.size - 1);
             case WeaponType.SWORD:
+            case WeaponType.MORNING_STAR:
                 return 3 * (this.size - 1);
             case WeaponType.SPEAR:
                 return 6 * (this.size - 1);
             case WeaponType.AXE:
                 return 5 * (this.size - 1);
-            case WeaponType.MORNING_STAR:
-                return 3 * (this.size - 1);
             case WeaponType.HAMMER:
                 return 7 * (this.size - 1);
             case WeaponType.HALBERD:
