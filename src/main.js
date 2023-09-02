@@ -263,10 +263,8 @@ function gameLoop() {
             if (skipElapsedTime / 1 >= 1) {
                 if (GameVars.keys['v'] || GameVars.keys['V']) {
                     startGame(leftWeapon, -1);
-                    skipElapsedTime = 0;
                 } else if (GameVars.keys['b'] || GameVars.keys['B']) {
                     startGame(rightWeapon, 1);
-                    skipElapsedTime = 0;
                 }
             } else {
                 skipElapsedTime += GameVars.deltaTime;

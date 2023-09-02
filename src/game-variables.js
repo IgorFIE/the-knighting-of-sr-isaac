@@ -52,7 +52,7 @@ let lastPlayerLeftWeaponType;
 let heartLifeVal = 6;
 
 const resetGameVars = () => {
-    GameVars.score = 0;
+    GameVars.score = -1; // -1 so the score redraws
 
     GameVars.pixelSize = (gameH < 500 || gameW < 500) ? 2 : pixelCal(1.5, 4.5);
     GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
