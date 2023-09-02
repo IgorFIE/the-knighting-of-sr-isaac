@@ -13,11 +13,11 @@ export class LifeBar {
         this.updateLifeBar = true;
 
         this.lifeBackgroundCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heartB"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
-        this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
+        this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"], toPixelSize(8 * (this.totalLife / GameVars.heartLifeVal) - 1), toPixelSize(11));
 
         if (isPlayer) {
             this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
-            this.lifeCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
+            this.lifeCanv.style.transform = 'translate(' + toPixelSize(14) + 'px, ' + toPixelSize(24) + 'px)';
         }
         this.update();
         this.draw();
@@ -43,7 +43,7 @@ export class LifeBar {
                 ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
                 -toPixelSize(13) + 'px)';
             this.lifeCanv.style.transform = 'translate(' +
-                ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
+                ((this.parentRect.width / 2) - (this.lifeCanv.width / 2) + toPixelSize(2)) + 'px, ' +
                 -toPixelSize(13) + 'px)';
         }
         if (this.updateLifeBar) {
@@ -61,7 +61,7 @@ export class LifeBar {
 
         this.lifeCanv.getContext("2d").clearRect(0, 0, this.lifeCanv.width, this.lifeCanv.height);
         for (let i = 0; i < this.totalLife / GameVars.heartLifeVal; i++) {
-            drawSprite(this.lifeCanv, heart, toPixelSize(1), 2 + (8 * i), 2, { "ho": "#edeef7", "hi": "#a80000" });
+            drawSprite(this.lifeCanv, heart, toPixelSize(1), (8 * i), 2, { "ho": "#edeef7", "hi": "#a80000" });
         }
     }
 }
