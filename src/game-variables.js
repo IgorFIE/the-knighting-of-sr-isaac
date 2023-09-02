@@ -4,8 +4,8 @@ let highScore = parseInt(localStorage.getItem(storeId)) || 0;
 
 const isMobile = navigator.maxTouchPoints > 1;
 
-const gameW = window.innerWidth;
-const gameH = window.innerHeight;
+let gameW;
+let gameH;
 
 const fps = 60;
 let deltaTime;
@@ -54,13 +54,6 @@ let heartLifeVal = 6;
 const resetGameVars = () => {
     GameVars.score = -1; // -1 so the score redraws
 
-    GameVars.pixelSize = (gameH < 500 || gameW < 500) ? 2 : pixelCal(1.5, 4.5);
-    GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
-    GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
-
-    GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
-    GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
-
     GameVars.gameBoardSize = 5;
     GameVars.gameLevel = 1;
 
@@ -74,6 +67,16 @@ const resetGameVars = () => {
     GameVars.lastPlayerLeftWeaponType = null;
 }
 
+const updatePixelSize = (width, height) => {
+    GameVars.gameW = width;
+    GameVars.gameH = height;
+    GameVars.pixelSize = (height < 500 || width < 500) ? 2 : pixelCal(1.5, 4.5);
+    GameVars.gameWdAsPixels = width / GameVars.pixelSize;
+    GameVars.gameHgAsPixels = height / GameVars.pixelSize;
+    GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
+    GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
+}
+
 // const initDebug = () => {
 //     GameVars.debug = document.createElement("div");
 //     GameVars.debug.style.fontSize = "50px";
@@ -82,8 +85,8 @@ const resetGameVars = () => {
 // }
 
 const pixelCal = (min, max) => {
-    let hgPixelSize = Math.round((gameH - 270) * ((max - min) / (1100 - 270)) + min);
-    let wdPixelSize = Math.round((gameW - 480) * ((max - min) / (1000 - 480)) + min);
+    let hgPixelSize = Math.round((GameVars.gameH - 270) * ((max - min) / (1100 - 270)) + min);
+    let wdPixelSize = Math.round((GameVars.gameW - 480) * ((max - min) / (1000 - 480)) + min);
     return hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
 };
 
@@ -140,6 +143,7 @@ export const GameVars = {
     heartLifeVal,
 
     resetGameVars,
+    updatePixelSize
     // initDebug
 }
 

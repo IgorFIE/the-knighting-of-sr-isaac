@@ -35,6 +35,9 @@ let mainDiv;
 let mainMenuDiv;
 let mainMenuCanv;
 
+let leftMenuBtn;
+let rightMenuBtn;
+
 let gameOverCanv;
 let scoreCanv;
 let soundBtnCanv;
@@ -51,25 +54,20 @@ let then = Date.now();
 let skipElapsedTime = 0;
 
 function init() {
+    GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
     GameVars.resetGameVars();
-
-    mainDiv = document.getElementById("main");
-    mainDiv.addEventListener("animationend", () => mainDiv.style.animation = "");
 
     leftWeapon = randomNumbOnRange(1, 3);
     rightWeapon = randomNumbOnRange(1, 3);
 
     addKeyListenerEvents();
+    setResize();
 
-    createGameDiv();
-    createMainMenu();
-    createGameOverMenu();
-    createMuteBtn();
-    createScoreCanv();
+    createGameElements();
+    draw();
 
     // createFpsElement(mainDiv);
     // GameVars.initDebug();
-
     window.requestAnimationFrame(() => gameLoop());
 }
 
@@ -86,35 +84,79 @@ function addKeyListenerEvents() {
     window.addEventListener("click", (e) => initAudio());
 }
 
-function createMainMenu() {
-    mainMenuDiv = createElem(mainDiv, "div", null, null, GameVars.gameW, GameVars.gameH);
-    mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
+function setResize() {
+    window.addEventListener("resize", () => {
+        GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
+        draw(true);
+    });
+}
 
+function initAudio() {
+    if (!GameVars.sound) {
+        GameVars.sound = new Sound();
+        GameVars.sound.initSound();
+    }
+}
+
+function createGameElements() {
+    mainDiv = document.getElementById("main");
+    mainDiv.addEventListener("animationend", () => mainDiv.style.animation = "");
+
+    GameVars.gameDiv = createElem(mainDiv, "div", "game", ["hidden"]);
+
+    mainMenuDiv = createElem(mainDiv, "div");
+    mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu");
+    leftMenuBtn = createElem(mainMenuDiv, "canvas", null, null, null, null, GameVars.isMobile, null, () => startGame(leftWeapon, -1));
+    rightMenuBtn = createElem(mainMenuDiv, "canvas", null, null, null, null, GameVars.isMobile, null, () => startGame(rightWeapon, 1));
+
+    scoreCanv = createElem(mainDiv, "canvas", "score");
+    soundBtnCanv = createElem(mainDiv, "canvas", "soundbtn", null, null, null, GameVars.isMobile, null,
+        () => {
+            if (GameVars.sound) {
+                GameVars.sound.muteMusic();
+            } else {
+                GameVars.sound = new Sound();
+                GameVars.sound.initSound();
+            }
+        });
+
+    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => {
+        if (skipElapsedTime / 1 >= 1) {
+            skipGameOver();
+        }
+    });
+}
+
+function draw(isResize) {
+    setElemSize(mainMenuDiv, GameVars.gameW, GameVars.gameH);
+    setElemSize(mainMenuCanv, GameVars.gameW, GameVars.gameH);
     drawMainMenu();
 
-    let leftMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(66), toPixelSize(30), GameVars.isMobile, null, () => startGame(leftWeapon, -1));
-    leftMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px)';
+    setElemSize(leftMenuBtn, toPixelSize(66), toPixelSize(30));
+    drawLeftBtn();
 
-    genSmallBox(leftMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "v to ") + "start game"), leftMenuBtn, toPixelSize(1), 33, 10, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("with l weapon"), leftMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
+    setElemSize(rightMenuBtn, toPixelSize(66), toPixelSize(30));
+    drawRightBtn();
 
-    let rightMenuBtn = createElem(mainMenuDiv, "canvas", null, null, toPixelSize(66), toPixelSize(30), GameVars.isMobile, null, () => startGame(rightWeapon, 1));
-    rightMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px)';
+    setElemSize(scoreCanv, toPixelSize(23), toPixelSize(12));
+    drawScore(isResize);
 
-    genSmallBox(rightMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "b to ") + "start game"), rightMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("with r weapon"), rightMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
+    setElemSize(soundBtnCanv, toPixelSize(23), toPixelSize(12));
+    drawSoundBtn(isResize);
+
+    setElemSize(gameOverCanv, GameVars.gameW, GameVars.gameH);
+}
+
+function setElemSize(elem, width, height) {
+    elem.width = width;
+    elem.height = height;
 }
 
 function drawMainMenu() {
-    let mainMenuCtx = mainMenuCanv.getContext("2d");
-    mainMenuCtx.clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
-
     for (let y = 0; y < GameVars.gameH; y += toPixelSize(16)) {
         for (let x = 0; x < GameVars.gameW; x += toPixelSize(16)) {
             if (y < GameVars.gameH / 2) {
-                createWallBlock(mainMenuCtx, x, y);
+                createWallBlock(mainMenuCanv.getContext("2d"), x, y);
             } else {
                 createFloorBlock(mainMenuCanv, x, y);
             }
@@ -138,35 +180,26 @@ function drawMainMenu() {
     drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 8, "#edeef7", 1);
 }
 
-function createGameDiv() {
-    GameVars.gameDiv = createElem(mainDiv, "div", "game", ["hidden"]);
+function drawLeftBtn() {
+    leftMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px)';
+
+    genSmallBox(leftMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "v to ") + "start game"), leftMenuBtn, toPixelSize(1), 33, 10, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("with l weapon"), leftMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
 }
 
-function createGameOverMenu() {
-    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => {
-        if (skipElapsedTime / 1 >= 1) {
-            skipGameOver();
-        }
-    });
+function drawRightBtn() {
+    rightMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px)';
+
+    genSmallBox(rightMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "b to ") + "start game"), rightMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("with r weapon"), rightMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
 }
 
-function createMuteBtn() {
-    soundBtnCanv = createElem(mainDiv, "canvas", "soundbtn", null, toPixelSize(23), toPixelSize(12), GameVars.isMobile, null,
-        () => {
-            if (GameVars.sound) {
-                GameVars.sound.muteMusic();
-            } else {
-                GameVars.sound = new Sound();
-                GameVars.sound.initSound();
-            }
-        });
+function drawSoundBtn(isResize) {
     soundBtnCanv.style.transform = 'translate(' + (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px, ' + toPixelSize(10) + 'px)';
-    drawSoundBtn();
-}
-
-function drawSoundBtn() {
     let isSoundOn = GameVars.sound && GameVars.sound.isSoundOn;
-    if (lastSoundState !== isSoundOn) {
+    if (lastSoundState !== isSoundOn || isResize) {
         lastSoundState = isSoundOn;
         soundBtnCanv.getContext("2d").clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
         genSmallBox(soundBtnCanv, 0, 0, 22, 11, toPixelSize(1), isSoundOn ? "#00000066" : "#ffffffaa", isSoundOn ? "#100f0f66" : "#ffffff66");
@@ -178,14 +211,9 @@ function drawSoundBtn() {
     }
 }
 
-function createScoreCanv() {
-    scoreCanv = createElem(mainDiv, "canvas", "score", null, toPixelSize(23), toPixelSize(12));
+function drawScore(isResize) {
     scoreCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(10) + 'px)';
-    drawScore();
-}
-
-function drawScore() {
-    if (lastScore != GameVars.score) {
+    if (lastScore != GameVars.score || isResize) {
         let text;
         if (!GameVars.game) {
             text = "top score - " + GameVars.highScore;
@@ -200,18 +228,20 @@ function drawScore() {
     }
 }
 
-function skipGameOver() {
-    GameVars.sound.clickSound();
-    gameOverCanv.classList.add("hidden");
-    mainMenuDiv.classList.remove("hidden");
-    GameVars.gameDiv.innerHTML = "";
-    GameVars.game = null;
-    updateHighScore();
-    lastScore = 0;
-    drawScore();
-    leftWeapon = randomNumbOnRange(1, 3);
-    rightWeapon = randomNumbOnRange(1, 3);
-    drawMainMenu();
+function drawGameOver() {
+    gameOverCanv.getContext("2d").clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
+    genSmallBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
+    drawPixelTextInCanvas(convertTextToPixelArt("Game over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 40, "black", 5);
+    drawScoreCalc(gameOverCanv);
+}
+
+function drawScoreCalc(canvas) {
+    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 10, "black", 4);
+    drawPixelTextInCanvas(convertTextToPixelArt("enemies killed - " + GameVars.enemyKills * 10), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 15, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("boss enemies killed - " + GameVars.enemyBossKills * 100), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 30, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("keys caught - " + GameVars.keyCaught * 50), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 45, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("level - " + (GameVars.gameLevel - 1) * 500), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 60, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.score > GameVars.highScore ? "new record!" : "total") + " - " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 75, "black", 2);
 }
 
 function startGame(weaponType, handir) {
@@ -231,11 +261,18 @@ function startGame(weaponType, handir) {
     GameVars.game = new Game();
 }
 
-function initAudio() {
-    if (!GameVars.sound) {
-        GameVars.sound = new Sound();
-        GameVars.sound.initSound();
-    }
+function skipGameOver() {
+    GameVars.sound.clickSound();
+    gameOverCanv.classList.add("hidden");
+    mainMenuDiv.classList.remove("hidden");
+    GameVars.gameDiv.innerHTML = "";
+    GameVars.game = null;
+    updateHighScore();
+    lastScore = 0;
+    drawScore();
+    leftWeapon = randomNumbOnRange(1, 3);
+    rightWeapon = randomNumbOnRange(1, 3);
+    drawMainMenu();
 }
 
 function gameLoop() {
@@ -301,22 +338,6 @@ function updateHighScore() {
         GameVars.highScore = GameVars.score;
         localStorage.setItem(GameVars.storeId, GameVars.highScore);
     }
-}
-
-function drawGameOver() {
-    gameOverCanv.getContext("2d").clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
-    genSmallBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
-    drawPixelTextInCanvas(convertTextToPixelArt("Game over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 40, "black", 5);
-    drawScoreCalc(gameOverCanv);
-}
-
-function drawScoreCalc(canvas) {
-    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 10, "black", 4);
-    drawPixelTextInCanvas(convertTextToPixelArt("enemies killed - " + GameVars.enemyKills * 10), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 15, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("boss enemies killed - " + GameVars.enemyBossKills * 100), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 30, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("keys caught - " + GameVars.keyCaught * 50), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 45, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("level - " + (GameVars.gameLevel - 1) * 500), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 60, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.score > GameVars.highScore ? "new record!" : "total") + " - " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 75, "black", 2);
 }
 
 init();
