@@ -76,9 +76,13 @@ function init() {
 function addKeyListenerEvents() {
     window.addEventListener('keydown', (e) => {
         GameVars.keys[e.key] = true;
+        if (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') GameVars.weaponIcons?.update();
         initAudio();
     });
-    window.addEventListener('keyup', (e) => GameVars.keys[e.key] = false);
+    window.addEventListener('keyup', (e) => {
+        GameVars.keys[e.key] = false;
+        if (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') GameVars.weaponIcons?.update();
+    });
     window.addEventListener("click", (e) => initAudio());
 }
 
