@@ -19,8 +19,8 @@ export class LifeBar {
             this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
             this.lifeCanv.style.transform = 'translate(' + toPixelSize(14) + 'px, ' + toPixelSize(24) + 'px)';
         }
-        this.update();
         this.draw();
+        this.update();
     }
 
     addLife() {
