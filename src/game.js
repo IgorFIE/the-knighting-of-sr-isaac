@@ -76,7 +76,6 @@ export class Game {
         else {
             GameVars.currentRoom.update();
             GameVars.player.update();
-            GameVars.weaponIcons.update();
         }
     }
 

@@ -7,11 +7,25 @@ import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text"
 export class WeaponIcons {
     constructor() {
         this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), GameVars.isMobile, null,
-            (e) => GameVars.keys['v'] = true,
-            (e) => GameVars.keys['v'] = false);
+            (e) => {
+                let needsRedraw = GameVars.keys['v'] !== true;
+                GameVars.keys['v'] = true;
+                if (needsRedraw) this.update();
+            },
+            (e) => {
+                GameVars.keys['v'] = false;
+                this.update();
+            });
         this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), GameVars.isMobile, null,
-            (e) => GameVars.keys['b'] = true,
-            (e) => GameVars.keys['b'] = false);
+            (e) => {
+                let needsRedraw = GameVars.keys['b'] !== true;
+                GameVars.keys['b'] = true;
+                if (needsRedraw) this.update();
+            },
+            (e) => {
+                GameVars.keys['b'] = false;
+                this.update();
+            });
 
         this.leftCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
         this.rightCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';

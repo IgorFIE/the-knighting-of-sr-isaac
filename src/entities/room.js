@@ -139,11 +139,11 @@ export class Room {
     }
 
     openDoors() {
-        this.doorCanv.getContext("2d").clearRect(0, 0, this.doorCanv.width, this.doorCanv.height);
         const isKeyPressed = !!(GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B']);
         const shouldOpenTreasureDoor = isKeyPressed && GameVars.player.hasKey && this.checkIfInRangeOfPlayer(DoorType.TREASURE);
         const shouldOpenBossDoor = isKeyPressed && this.checkIfInRangeOfPlayer(DoorType.BOSS);
-        this.doors.forEach(door => {
+        const doorsToRedraw = this.doors.filter(door => {
+            let oldBlockType = door.blockType;
             if (door.blockType !== BlockType.DOOR_OPEN) {
                 switch (door.doorType) {
                     case DoorType.TREASURE:
@@ -164,8 +164,12 @@ export class Room {
                         break;
                 }
             }
-            door.draw();
+            return oldBlockType !== door.blockType;
         });
+        if (doorsToRedraw.length > 0) {
+            this.doorCanv.getContext("2d").clearRect(0, 0, this.doorCanv.width, this.doorCanv.height);
+            this.doors.forEach(door => door.draw());
+        }
     }
 
     checkIfInRangeOfPlayer(doorType) {

@@ -19,11 +19,17 @@ export class MovePad {
                 const xFinalValue = (Math.abs(xAmount) >= 0.2 ? 1 : 0) * xDir;
                 const yFinalValue = (Math.abs(yAmount) >= 0.2 ? 1 : 0) * yDir;
 
+                let needsRedraw = GameVars.keys["w"] !== yFinalValue < 0 ||
+                    GameVars.keys["s"] !== yFinalValue > 0 ||
+                    GameVars.keys["a"] !== xFinalValue < 0 ||
+                    GameVars.keys["d"] !== xFinalValue > 0;
+
                 GameVars.keys["w"] = yFinalValue < 0;
                 GameVars.keys["s"] = yFinalValue > 0;
                 GameVars.keys["a"] = xFinalValue < 0;
                 GameVars.keys["d"] = xFinalValue > 0;
-                this.draw();
+                
+                if (needsRedraw) this.draw();
             },
             (e) => {
                 GameVars.keys["w"] = false;

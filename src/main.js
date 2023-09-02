@@ -42,6 +42,9 @@ let soundBtnCanv;
 let leftWeapon;
 let rightWeapon;
 
+let lastScore;
+let lastSoundState = true; // so we draw it at the start
+
 let fpsInterval = 1000 / GameVars.fps;
 let then = Date.now();
 
@@ -136,7 +139,11 @@ function createGameDiv() {
 }
 
 function createGameOverMenu() {
-    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => skipGameOver());
+    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => {
+        if (skipElapsedTime / 1 >= 1) {
+            skipGameOver();
+        }
+    });
 }
 
 function createMuteBtn() {
@@ -154,13 +161,16 @@ function createMuteBtn() {
 }
 
 function drawSoundBtn() {
-    soundBtnCanv.getContext("2d").clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
     let isSoundOn = GameVars.sound && GameVars.sound.isSoundOn;
-    genSmallBox(soundBtnCanv, 0, 0, 22, 11, toPixelSize(1), isSoundOn ? "#00000066" : "#ffffffaa", isSoundOn ? "#100f0f66" : "#ffffff66");
-    drawSprite(soundBtnCanv, speaker, toPixelSize(1), 10, 3);
-    drawPixelTextInCanvas(convertTextToPixelArt("m"), soundBtnCanv, toPixelSize(1), 6, 6, "#edeef7", 1);
-    if (GameVars.sound && GameVars.sound.isSoundOn) {
-        drawSprite(soundBtnCanv, audio, toPixelSize(1), 15, 1);
+    if (lastSoundState !== isSoundOn) {
+        lastSoundState = isSoundOn;
+        soundBtnCanv.getContext("2d").clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
+        genSmallBox(soundBtnCanv, 0, 0, 22, 11, toPixelSize(1), isSoundOn ? "#00000066" : "#ffffffaa", isSoundOn ? "#100f0f66" : "#ffffff66");
+        drawSprite(soundBtnCanv, speaker, toPixelSize(1), 10, 3);
+        drawPixelTextInCanvas(convertTextToPixelArt("m"), soundBtnCanv, toPixelSize(1), 6, 6, "#edeef7", 1);
+        if (isSoundOn) {
+            drawSprite(soundBtnCanv, audio, toPixelSize(1), 15, 1);
+        }
     }
 }
 
@@ -171,17 +181,19 @@ function createScoreCanv() {
 }
 
 function drawScore() {
-    let text;
-    if (!GameVars.game) {
-        text = "top score - " + GameVars.highScore;
-    } else {
-        text = "Score - " + GameVars.score;
+    if (lastScore != GameVars.score) {
+        let text;
+        if (!GameVars.game) {
+            text = "top score - " + GameVars.highScore;
+        } else {
+            text = "Score - " + GameVars.score;
+        }
+        const textArray = convertTextToPixelArt(text);
+        const textLength = textArray[0].length * toPixelSize(1);
+        scoreCanv.width = textLength + toPixelSize(4);
+        genSmallBox(scoreCanv, 0, 0, (textArray[0].length + 3), 11, toPixelSize(1), "#00000066", "#100f0f66");
+        drawPixelTextInCanvas(textArray, scoreCanv, toPixelSize(1), (textArray[0].length + 4) / 2, 6, "#edeef7", 1);
     }
-    const textArray = convertTextToPixelArt(text);
-    const textLength = textArray[0].length * toPixelSize(1);
-    scoreCanv.width = textLength + toPixelSize(4);
-    genSmallBox(scoreCanv, 0, 0, (textArray[0].length + 3), 11, toPixelSize(1), "#00000066", "#100f0f66");
-    drawPixelTextInCanvas(textArray, scoreCanv, toPixelSize(1), (textArray[0].length + 4) / 2, 6, "#edeef7", 1);
 }
 
 function skipGameOver() {
@@ -191,6 +203,7 @@ function skipGameOver() {
     GameVars.gameDiv.innerHTML = "";
     GameVars.game = null;
     updateHighScore();
+    lastScore = 0;
     drawScore();
     leftWeapon = randomNumbOnRange(1, 3);
     rightWeapon = randomNumbOnRange(1, 3);
@@ -277,6 +290,7 @@ function handleMuteInput() {
 }
 
 function updateScore() {
+    lastScore = GameVars.score;
     GameVars.score = (GameVars.enemyKills * 10) + (GameVars.keyCaught * 50) + (GameVars.enemyBossKills * 100) + ((GameVars.gameLevel - 1) * 500);
 }
 

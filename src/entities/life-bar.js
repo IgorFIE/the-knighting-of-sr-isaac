@@ -10,6 +10,7 @@ export class LifeBar {
         this.life = currentLife || totalLife;
         this.parentCanv = parentCanv;
         this.parentRect;
+        this.updateLifeBar = true;
 
         this.lifeBackgroundCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heartB"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
         this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
@@ -26,11 +27,13 @@ export class LifeBar {
         this.life += GameVars.heartLifeVal;
         this.life = this.life > this.totalLife ? this.totalLife : this.life;
         this.draw();
+        this.updateLifeBar = true;
     }
 
     takeDmg(amount) {
         this.life -= amount;
         this.life = this.life < 0 ? 0 : this.life;
+        this.updateLifeBar = true;
     }
 
     update() {
@@ -43,7 +46,10 @@ export class LifeBar {
                 ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
                 -toPixelSize(13) + 'px)';
         }
-        this.lifeCanv.getContext("2d").clearRect((this.life * this.lifeCanv.width) / this.totalLife, 0, this.lifeCanv.width, this.lifeCanv.height);
+        if (this.updateLifeBar) {
+            this.updateLifeBar = false;
+            this.lifeCanv.getContext("2d").clearRect((this.life * this.lifeCanv.width) / this.totalLife, 0, this.lifeCanv.width, this.lifeCanv.height);
+        }
     }
 
     draw() {
