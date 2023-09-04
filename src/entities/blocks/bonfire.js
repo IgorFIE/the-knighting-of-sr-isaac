@@ -39,7 +39,7 @@ export class Bonfire {
 
     update() {
         if (this.room.enemies.length === 0) {
-            if (this.timeElapsed === 0) this.drawOn();
+            this.timeElapsed === 0 && this.drawOn();
             if (this.timeElapsed / 1 >= 1) {
                 if (circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj) &&
                     (GameVars.keys['v'] || GameVars.keys['V'] || GameVars.keys['b'] || GameVars.keys['B'])) {

@@ -39,9 +39,7 @@ export class Game {
     }
 
     getStartRoom(room) {
-        if (!isSpecialRoom(room)) {
-            return room;
-        }
+        if (!isSpecialRoom(room)) return room;
         return this.getStartRoom(GameVars.gameBoard.rooms[randomNumb(GameVars.gameBoard.rooms.length)]);
     }
 
@@ -94,13 +92,13 @@ export class Game {
         GameVars.player.init(newPos.x, newPos.y);
 
         this.minimap.update();
-        if (GameVars.isMobile) GameVars.movePad.update();
+        GameVars.isMobile && GameVars.movePad.update();
         GameVars.weaponIcons.update();
 
     }
 
     drawMainRoomText() {
-        const textColor = this.getTutorColor();
+        const textColor = GameVars.gameLevel < 3 ? "#2f492c" : GameVars.gameLevel < 6 ? "#38252e" : "#1b1116";
         drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), this.mainRoom.roomCanv, toPixelSize(2),
             GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 20, textColor, 1);
 
@@ -135,15 +133,5 @@ export class Game {
             (GameVars.gameW / toPixelSize(4)) + 18, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
         drawPixelTextInCanvas(convertTextToPixelArt("b"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) + 18, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
-    }
-
-    getTutorColor() {
-        if (GameVars.gameLevel < 3) {
-            return "#2f492c";
-        } else if (GameVars.gameLevel < 6) {
-            return "#38252e";
-        } else {
-            return "#1b1116";
-        }
     }
 }

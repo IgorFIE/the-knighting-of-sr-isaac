@@ -65,11 +65,7 @@ export class Room {
                 randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),
                 randomNumbOnRange(GameVars.gameH / 3, (GameVars.gameH / 3) * 2),
                 EnemyType.BASIC);
-            if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj))) {
-                this.enemies.push(newEnemy);
-            } else {
-                newEnemy.div.remove();
-            }
+            !this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj)) && this.enemies.push(newEnemy) || newEnemy.div.remove();
         }
     }
 
@@ -127,10 +123,8 @@ export class Room {
                 this.backBlocks[y][x] = new DoorTrigger(this, block.blockRoomX, block.blockRoomY, BlockType.FLOOR, xDir, yDir);
                 this.floors.push(this.backBlocks[y][x]);
 
-                if ((xDir === -1 && x === 0) || (xDir === 1 && x === this.backBlocks[0].length - 1) ||
-                    (yDir === -1 && y === 0) || (yDir === 1 && y === this.backBlocks.length - 1)) {
-                    this.doorTriggers.push(this.backBlocks[y][x]);
-                }
+                ((xDir === -1 && x === 0) || (xDir === 1 && x === this.backBlocks[0].length - 1) ||
+                    (yDir === -1 && y === 0) || (yDir === 1 && y === this.backBlocks.length - 1)) && this.doorTriggers.push(this.backBlocks[y][x]);
             }
         }
     }
@@ -150,9 +144,7 @@ export class Room {
             this.enemies.forEach(enemy => enemy.update());
             this.arrows.forEach(arrow => arrow.update());
         }
-        if (this.enemies.length === 0) {
-            this.openDoors();
-        }
+        this.enemies.length === 0 && this.openDoors();
     }
 
     openDoors() {

@@ -39,16 +39,16 @@ export class GameBoard {
 
             switch (randomNumb(4)) {
                 case 0:
-                    if (y - 1 >= 0) y--;
+                    y - 1 >= 0 && y--;
                     break;
                 case 1:
-                    if (y + 1 < this.board.length) y++;
+                    y + 1 < this.board.length && y++;
                     break;
                 case 2:
-                    if (x - 1 >= 0) x--;
+                    x - 1 >= 0 && x--;
                     break;
                 case 3:
-                    if (x + 1 < this.board.length) x++;
+                    x + 1 < this.board.length && x++;
                     break;
             }
         }
@@ -72,10 +72,10 @@ export class GameBoard {
     canPlaceSpecialRoom(x, y) {
         if (this.board[y][x] == null) {
             let countSides = 0;
-            if (y - 1 >= 0 && this.board[y - 1][x] != null) countSides++;
-            if (y + 1 < this.board.length && this.board[y + 1][x] != null) countSides++;
-            if (x - 1 >= 0 && this.board[y][x - 1] != null) countSides++;
-            if (x + 1 < this.board.length && this.board[y][x + 1] != null) countSides++;
+            y - 1 >= 0 && this.board[y - 1][x] != null && countSides++;
+            y + 1 < this.board.length && this.board[y + 1][x] != null && countSides++;
+            x - 1 >= 0 && this.board[y][x - 1] != null && countSides++;
+            x + 1 < this.board.length && this.board[y][x + 1] != null && countSides++;
             return (countSides == 1 || countSides == 2) && !this.containsSpecialRoomArround(x, y);
         }
         return false;

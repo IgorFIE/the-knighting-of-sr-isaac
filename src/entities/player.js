@@ -53,7 +53,7 @@ export class Player {
 
     update() {
         if (this.lifeBar.life > 0) {
-            if (this.hasKey) this.keyCanv.classList.remove("hidden");
+            this.hasKey && this.keyCanv.classList.remove("hidden");
             this.handleInput();
             this.atk();
             this.lifeBar.update();
@@ -120,12 +120,8 @@ export class Player {
     }
 
     atk() {
-        if (GameVars.keys['v'] || GameVars.keys['V']) {
-            this.playerRightWeapon.action();
-        }
-        if (GameVars.keys['b'] || GameVars.keys['B']) {
-            this.playerLeftWeapon.action();
-        }
+        (GameVars.keys['v'] || GameVars.keys['V']) && this.playerRightWeapon.action();
+        (GameVars.keys['b'] || GameVars.keys['B']) && this.playerLeftWeapon.action();
         this.playerRightWeapon.update();
         this.playerLeftWeapon.update();
     }

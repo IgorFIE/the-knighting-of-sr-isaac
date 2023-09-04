@@ -11,7 +11,7 @@ export class Weapon {
         this.weaponType = weaponType;
         this.parentDiv = parent.div;
         this.size = size || 2;
-        this.dmg = this.getDamage();
+        this.dmg = this.getDamage() * (this.size - 1);
         this.damagedObjs = new Map();
 
         this.sprite = getWeaponSprite(this.weaponType);
@@ -153,7 +153,7 @@ export class Weapon {
                 ];
             case WeaponType.SWORD:
                 return [
-                    { x: this.relativePos.x + (this.sprite[0].length / 2 * toPixelSize(this.size)), y: this.relativePos.y + this.getPecentageValue(90, this.sprite.length * toPixelSize(this.size)) }
+                    { x: this.relativePos.x + (this.sprite[0].length / 2 * toPixelSize(this.size)), y: this.relativePos.y + ((90 * this.sprite.length * toPixelSize(this.size)) / 100) }
                 ];
             case WeaponType.GREATSWORD:
             case WeaponType.HAMMER:
@@ -188,10 +188,6 @@ export class Weapon {
         }
     }
 
-    getPecentageValue(partialValue, totalValue) {
-        return (partialValue * totalValue) / 100;
-    }
-
     getUpdatedWeaponAtkLine(box, transform) {
         switch (this.weaponType) {
             case WeaponType.FIST:
@@ -205,7 +201,7 @@ export class Weapon {
                     { x: box.x + this.atkLine[1].x + (toPixelSize(this.size) * (transform.m11 - 1)), y: box.y + this.atkLine[1].y + transform.f * transform.m11 }
                 ];
             case WeaponType.SWORD:
-                let swordAnglePoint = this.retrieveAnglePoint(
+                const swordAnglePoint = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
                     this.sprite.length * toPixelSize(this.size),
@@ -219,7 +215,7 @@ export class Weapon {
             case WeaponType.HAMMER:
             case WeaponType.AXE:
             case WeaponType.MORNING_STAR:
-                let rotationAnglePoint = this.retrieveAnglePoint(
+                const rotationAnglePoint = this.retrieveAnglePoint(
                     box.x + this.atkLine[0].x,
                     box.y + this.atkLine[0].y,
                     this.sprite.length * toPixelSize(this.size),
@@ -230,13 +226,13 @@ export class Weapon {
                     { x: rotationAnglePoint.x, y: rotationAnglePoint.y }
                 ];
             case WeaponType.HALBERD:
-                let topPoint = this.retrieveAnglePoint(
+                const topPoint = this.retrieveAnglePoint(
                     box.x + this.atkLine[1].x,
                     box.y + this.atkLine[1].y + (this.sprite.length * toPixelSize(this.size)) + (transform.f * 1.1),
                     this.sprite.length * toPixelSize(this.size),
                     (Math.atan2(transform.b, transform.a) * 180 / Math.PI) + this.relativePos.r - 90
                 );
-                let bottomPoint = this.retrieveAnglePoint(
+                const bottomPoint = this.retrieveAnglePoint(
                     box.x + this.atkLine[1].x,
                     box.y + this.atkLine[1].y + (this.sprite.length * toPixelSize(this.size)) + (transform.f * 1.1),
                     (this.sprite.length * toPixelSize(this.size) / 2),
@@ -279,7 +275,7 @@ export class Weapon {
             if (this.isPlayer) {
                 GameVars.currentRoom.enemies.forEach(enemy => lineCircleCollision(newAtkLine, enemy.collisionObj) && this.dealDmgToBlock(enemy));
             } else {
-                if (lineCircleCollision(newAtkLine, GameVars.player.collisionObj)) this.dealDmgToBlock(GameVars.player);
+                lineCircleCollision(newAtkLine, GameVars.player.collisionObj) && this.dealDmgToBlock(GameVars.player);
             }
         }
         // }
@@ -295,31 +291,29 @@ export class Weapon {
             }
             this.damagedObjs.set(obj, true);
             obj.lifeBar.takeDmg(this.dmg);
-            if (this.weaponType === WeaponType.SHIELD) obj.validateMovement(
-                obj.collisionObj.x + toPixelSize(6 * this.handDir),
-                obj.collisionObj.y + toPixelSize(12));
+            this.weaponType === WeaponType.SHIELD && obj.validateMovement(obj.collisionObj.x + toPixelSize(6 * this.handDir), obj.collisionObj.y + toPixelSize(12));
         }
     }
 
     getDamage() {
         switch (this.weaponType) {
             case WeaponType.FIST:
-                return 1 * (this.size - 1);
+                return 1;
             case WeaponType.SHIELD:
-                return 2 * (this.size - 1);
+                return 2;
             case WeaponType.SWORD:
             case WeaponType.MORNING_STAR:
-                return 3 * (this.size - 1);
+                return 3;
             case WeaponType.SPEAR:
-                return 6 * (this.size - 1);
+                return 6;
             case WeaponType.AXE:
-                return 5 * (this.size - 1);
+                return 5;
             case WeaponType.HAMMER:
-                return 7 * (this.size - 1);
+                return 7;
             case WeaponType.HALBERD:
-                return 8 * (this.size - 1);
+                return 8;
             case WeaponType.GREATSWORD:
-                return 9 * (this.size - 1);
+                return 9;
         }
     }
 

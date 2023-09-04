@@ -14,18 +14,14 @@ export class Minimap {
         setElemSize(this.minimapCanv, toPixelSize(46), toPixelSize(46));
         this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(24) + 'px)';
 
-        if (!this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX]) {
-            this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] = true;
-        }
+        !this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] && (this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] = true);
 
         this.minimapCanv.getContext("2d").clearRect(0, 0, this.minimapCanv.width, this.minimapCanv.height);
 
         genSmallBox(this.minimapCanv, 0, 0, 22, 22, toPixelSize(2), "#00000066", "#100f0f66");
         for (let y = -2; y <= 2; y++) {
             for (let x = -2; x <= 2; x++) {
-                if (x === 0 && y === 0) {
-                    continue;
-                }
+                if (x === 0 && y === 0) continue;
                 if (this.validatePos(GameVars.currentRoom.roomX + x, GameVars.currentRoom.roomY + y)) {
                     if (this.visited[(GameVars.currentRoom.roomY + y) + "|" + (GameVars.currentRoom.roomX + x)]) {
                         this.createMiniMapRoom(x, y, "#703a33", "#2f1519");

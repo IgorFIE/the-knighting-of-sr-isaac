@@ -29,7 +29,7 @@ export class MovePad {
                 GameVars.keys["a"] = xFinalValue < 0;
                 GameVars.keys["d"] = xFinalValue > 0;
 
-                if (needsRedraw) this.update();
+                needsRedraw && this.update();
             },
             (e) => {
                 GameVars.keys["w"] = false;

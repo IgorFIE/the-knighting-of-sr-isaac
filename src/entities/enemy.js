@@ -36,7 +36,7 @@ export class Enemy {
     }
 
     init(x, y) {
-        this.activationDistance = this.getEnemyDistance();
+        this.activationDistance = this.enemySize * this.getEnemyDistance();
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
@@ -57,11 +57,11 @@ export class Enemy {
     getEnemyDistance() {
         switch (this.enemySubType) {
             case EnemySubType.AGRESSIVE:
-                return this.enemySize * 8;
+                return 8;
             case EnemySubType.DEFENSIVE:
-                return this.enemySize * 16;
+                return 16;
             case EnemySubType.AFRAID:
-                return this.enemySize * 19;
+                return 19;
         }
     }
 
@@ -89,12 +89,7 @@ export class Enemy {
     }
 
     getWeaponDistance(weapon) {
-        switch (weapon.weaponType) {
-            case WeaponType.FIST:
-                return toPixelSize(weapon.sprite.length * weapon.size) * 4;
-            default:
-                return toPixelSize(weapon.sprite.length * weapon.size) * 2;
-        }
+        return toPixelSize(weapon.sprite.length * weapon.size) * (weapon.weaponType === WeaponType.FIST ? 4 : 2);
     }
 
     getEnemyLife() {
@@ -131,7 +126,6 @@ export class Enemy {
                 });
             }
         }
-        this.enemyKeys = {};
     }
 
     handleInput() {
@@ -151,8 +145,8 @@ export class Enemy {
             yDistance > 0 ? this.enemyKeys['s'] = true : this.enemyKeys['w'] = true;
         }
 
-        const movKeys = Object.keys(this.enemyKeys).filter((key) => (key === 'w' || key === 's' || key === 'a' || key === 'd') && this.enemyKeys[key]);
-        if (movKeys.length > 0) {
+        const movKeysCount = Object.keys(this.enemyKeys).length;
+        if (movKeysCount > 0) {
             this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
             this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
             this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
@@ -163,13 +157,14 @@ export class Enemy {
             this.enemyRightWeapon.weaponCanv.style.animation = "";
         }
 
-        const speed = toPixelSize(this.enemySpeed);
-        const distance = movKeys.length > 1 ? speed / 1.4142 : speed;
-
+        const distance = toPixelSize(movKeysCount > 1 ? this.enemySpeed / 1.4142 : this.enemySpeed);
         if (this.enemyKeys['d']) { newRectX += distance; }
         if (this.enemyKeys['a']) { newRectX -= distance; }
         if (this.enemyKeys['w']) { newRectY -= distance; }
         if (this.enemyKeys['s']) { newRectY += distance; }
+
+        // maybe instead of creating a new obj we should convert all walues to false... better for performance
+        this.enemyKeys = {};
 
         this.validateMovement(this.collisionObj.x, newRectY);
         this.validateMovement(newRectX, this.collisionObj.y);
@@ -274,25 +269,21 @@ export class Enemy {
     }
 
     atk() {
-        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.rightWeaponActivationRange && this.shouldAtk()) {
-            this.enemyRightWeapon.action();
-        }
-        if (distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.leftWeaponActivationRange && this.shouldAtk()) {
-            this.enemyLeftWeapon.action();
-        }
+        distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.rightWeaponActivationRange && randomNumb(100) < this.atkProbablility() && this.enemyRightWeapon.action();
+        distBetwenObjs(GameVars.player.collisionObj, this.collisionObj) < this.leftWeaponActivationRange && randomNumb(100) < this.atkProbablility() && this.enemyLeftWeapon.action();
 
         this.enemyRightWeapon.update();
         this.enemyLeftWeapon.update();
     }
 
-    shouldAtk() {
+    atkProbablility() {
         switch (this.enemySubType) {
             case EnemySubType.AGRESSIVE:
-                return randomNumb(100) < 75;
+                return 75;
             case EnemySubType.DEFENSIVE:
-                return randomNumb(100) < 50;
+                return 50;
             case EnemySubType.AFRAID:
-                return randomNumb(100) < 25;
+                return 25;
         }
     }
 

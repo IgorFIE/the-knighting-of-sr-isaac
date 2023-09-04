@@ -26,9 +26,7 @@ export class Arrow {
         this.speed = 99 * this.speed / 100;
         this.canv.style.transform = 'translate(' + this.collisionObj.x + 'px, ' + this.collisionObj.y + 'px) rotate(' + 45 * this.dir + 'deg)';
 
-        if (Math.round(this.speed) === 0) {
-            this.destroy();
-        }
+        Math.round(this.speed) === 0 && this.destroy();
 
         GameVars.currentRoom.enemies.forEach(enemy => {
             if (!this.wasDestroyed && circleToCircleCollision(enemy.collisionObj, this.collisionObj)) {

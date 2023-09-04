@@ -74,12 +74,12 @@ const init = () => {
 const addKeyListenerEvents = () => {
     window.addEventListener('keydown', (e) => {
         GameVars.keys[e.key] = true;
-        if (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') GameVars.weaponIcons?.update();
+        (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') && GameVars.weaponIcons?.update();
         initAudio();
     });
     window.addEventListener('keyup', (e) => {
         GameVars.keys[e.key] = false;
-        if (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') GameVars.weaponIcons?.update();
+        (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') && GameVars.weaponIcons?.update();
     });
     window.addEventListener("click", (e) => initAudio());
 }
@@ -88,7 +88,7 @@ const setResize = () => {
     window.addEventListener("resize", () => {
         GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
         draw(true);
-        if (GameVars.game) GameVars.game.resize();
+        GameVars.game && GameVars.game.resize();
     });
 }
 
@@ -121,11 +121,7 @@ const createGameElements = () => {
             }
         });
 
-    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => {
-        if (skipElapsedTime / 1 >= 1) {
-            skipGameOver();
-        }
-    });
+    gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => skipElapsedTime / 1 >= 1 && skipGameOver());
 }
 
 const draw = (isResize) => {
@@ -151,11 +147,7 @@ const draw = (isResize) => {
 const drawMainMenu = () => {
     for (let y = 0; y < GameVars.gameH; y += toPixelSize(16)) {
         for (let x = 0; x < GameVars.gameW; x += toPixelSize(16)) {
-            if (y < GameVars.gameH / 2) {
-                createWallBlock(mainMenuCanv.getContext("2d"), x, y);
-            } else {
-                createFloorBlock(mainMenuCanv, x, y);
-            }
+            y < GameVars.gameH / 2 && createWallBlock(mainMenuCanv.getContext("2d"), x, y) || createFloorBlock(mainMenuCanv, x, y);
         }
     }
     let wKnightCenter = ((GameVars.gameW % 2 === 0 ? GameVars.gameW : GameVars.gameW + 1) / toPixelSize(10)) / 2;
@@ -201,9 +193,7 @@ const drawSoundBtn = (isResize) => {
         genSmallBox(soundBtnCanv, 0, 0, 22, 11, toPixelSize(1), isSoundOn ? "#00000066" : "#ffffffaa", isSoundOn ? "#100f0f66" : "#ffffff66");
         drawSprite(soundBtnCanv, speaker, toPixelSize(1), 10, 3);
         drawPixelTextInCanvas(convertTextToPixelArt("m"), soundBtnCanv, toPixelSize(1), 6, 6, "#edeef7", 1);
-        if (isSoundOn) {
-            drawSprite(soundBtnCanv, audio, toPixelSize(1), 15, 1);
-        }
+        isSoundOn && drawSprite(soundBtnCanv, audio, toPixelSize(1), 15, 1);
     }
 }
 
@@ -211,11 +201,7 @@ const drawScore = (isResize) => {
     scoreCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(10) + 'px)';
     if (lastScore != GameVars.score || isResize) {
         let text;
-        if (!GameVars.game) {
-            text = "top score - " + GameVars.highScore;
-        } else {
-            text = "Score - " + GameVars.score;
-        }
+        !GameVars.game && (text = "top score - " + GameVars.highScore) || (text = "Score - " + GameVars.score);
         const textArray = convertTextToPixelArt(text);
         const textLength = textArray[0].length * toPixelSize(1);
         scoreCanv.width = textLength + toPixelSize(4);
@@ -247,13 +233,7 @@ const startGame = (weaponType, handir) => {
     GameVars.gameDiv.classList.remove("hidden");
     GameVars.resetGameVars();
     skipElapsedTime = 0;
-
-    if (handir < 0) {
-        GameVars.lastPlayerRightWeaponType = weaponType;
-    } else {
-        GameVars.lastPlayerLeftWeaponType = weaponType;
-    }
-
+    handir < 0 && (GameVars.lastPlayerRightWeaponType = weaponType) || (GameVars.lastPlayerLeftWeaponType = weaponType);
     GameVars.game = new Game();
 }
 
@@ -309,9 +289,7 @@ const gameLoop = () => {
         }
         handleMuteInput();
         drawSoundBtn();
-        if (GameVars.sound) {
-            GameVars.sound.playMusic();
-        }
+        GameVars.sound && GameVars.sound.playMusic();
     }
     window.requestAnimationFrame(() => gameLoop());
 }

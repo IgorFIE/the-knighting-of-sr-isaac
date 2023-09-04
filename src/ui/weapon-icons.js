@@ -10,7 +10,7 @@ export class WeaponIcons {
             (e) => {
                 let needsRedraw = GameVars.keys['v'] !== true;
                 GameVars.keys['v'] = true;
-                if (needsRedraw) this.update();
+                needsRedraw && this.update();
             },
             (e) => {
                 GameVars.keys['v'] = false;
@@ -20,7 +20,7 @@ export class WeaponIcons {
             (e) => {
                 let needsRedraw = GameVars.keys['b'] !== true;
                 GameVars.keys['b'] = true;
-                if (needsRedraw) this.update();
+                needsRedraw && this.update();
             },
             (e) => {
                 GameVars.keys['b'] = false;

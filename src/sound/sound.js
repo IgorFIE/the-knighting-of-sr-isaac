@@ -25,9 +25,7 @@ export class Sound {
     }
 
     clickSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 174.6, 0.14, 0, 0.2);
-        }
+        this.isSoundOn && this.isSoundInitialized && this.playSound("square", 174.6, 0.14, 0, 0.2);
     }
 
     enemyTakeDmgSound() {
@@ -68,15 +66,11 @@ export class Sound {
     }
 
     atkSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("sine", 82.41, 0.4, 0, 0.2);
-        }
+        this.isSoundOn && this.isSoundInitialized && this.playSound("sine", 82.41, 0.4, 0, 0.2);
     }
 
     walkSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("triangle", 110, 0.05, 0, 0.1);
-        }
+        this.isSoundOn && this.isSoundInitialized && this.playSound("triangle", 110, 0.05, 0, 0.1);
     }
 
     openDoorSound() {
@@ -102,14 +96,10 @@ export class Sound {
 
                 this.playSound("triangle", mB[this.musicBassNote], 0.5, 0, 0.4);
                 this.musicBassNote++;
-                if (this.musicBassNote >= mB.length) {
-                    this.musicBassNote = 0;
-                }
+                this.musicBassNote >= mB.length && (this.musicBassNote = 0);
                 this.playSound("square", mM[this.musicMelodyNote], 0.08, 0, 0.4);
                 this.musicMelodyNote++;
-                if (this.musicMelodyNote >= mM.length) {
-                    this.musicMelodyNote = 0;
-                }
+                this.musicMelodyNote >= mM.length && (this.musicMelodyNote = 0);
 
                 this.currentTime = 0;
             } else {
