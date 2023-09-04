@@ -99,6 +99,15 @@ const pixelCal = (min, max) => {
     return hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
 };
 
+const calcResizePos = (x, y) => {
+    let newX = (GameVars.gameW * x) / GameVars.lastGameW;
+    let newY = (GameVars.gameH * y) / GameVars.lastGameH;
+    return {
+        x: newX < toPixelSize(48) ? toPixelSize(48) : newX > GameVars.gameW - toPixelSize(48) ? GameVars.gameW - toPixelSize(48) : newX,
+        y: newY < toPixelSize(48) ? toPixelSize(48) : newY > GameVars.gameH - toPixelSize(48) ? GameVars.gameH - toPixelSize(48) : newY
+    };
+}
+
 export const GameVars = {
     storeId,
     highScore,
@@ -155,7 +164,8 @@ export const GameVars = {
     heartLifeVal,
 
     resetGameVars,
-    updatePixelSize
+    updatePixelSize,
+    calcResizePos
     // initDebug
 }
 

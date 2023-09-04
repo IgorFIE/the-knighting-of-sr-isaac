@@ -102,12 +102,14 @@ export class Room {
         this.roomDiv.classList.remove("hidden");
         this.initRoomBlocks();
         this.arrows.forEach(arrow => arrow.destroy());
-        this.items.forEach(item => item.init(
-            (GameVars.gameW * item.x) / GameVars.lastGameW,
-            (GameVars.gameH * item.y) / GameVars.lastGameH));
-        this.enemies.forEach(enemy => enemy.init(
-            (GameVars.gameW * enemy.collisionObj.x) / GameVars.lastGameW,
-            (GameVars.gameH * enemy.collisionObj.y) / GameVars.lastGameH));
+        this.items.forEach(item => {
+            const newPos = GameVars.calcResizePos(item.x, item.y);
+            item.init(newPos.x, newPos.y);
+        });
+        this.enemies.forEach(enemy => {
+            const newPos = GameVars.calcResizePos(enemy.collisionObj.x, enemy.collisionObj.y);
+            enemy.init(newPos.x, newPos.y);
+        });
         this.roomDiv.classList.add("hidden");
     }
 

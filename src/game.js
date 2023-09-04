@@ -90,10 +90,8 @@ export class Game {
 
         this.drawMainRoomText();
 
-        GameVars.player.init(
-            (GameVars.gameW * GameVars.player.collisionObj.x) / GameVars.lastGameW,
-            (GameVars.gameH * GameVars.player.collisionObj.y) / GameVars.lastGameH,
-        );
+        const newPos = GameVars.calcResizePos(GameVars.player.collisionObj.x, GameVars.player.collisionObj.y);
+        GameVars.player.init(newPos.x, newPos.y);
 
         this.minimap.update();
         if (GameVars.isMobile) GameVars.movePad.update();
