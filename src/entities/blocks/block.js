@@ -1,6 +1,6 @@
 import { SquareObject } from "../../collision-objects/square-object";
-import { BlockType, getBlockColors, getFloorColors } from "../../enums/block-type";
-import { DoorType, getDoorColors } from "../../enums/door-type";
+import { BlockType } from "../../enums/block-type";
+import { DoorType } from "../../enums/door-type";
 import { GameVars, toPixelSize } from "../../game-variables";
 import { generateBox } from "../../utilities/box-generator";
 import { randomNumb } from "../../utilities/general-utilities";
@@ -54,7 +54,7 @@ export class Block {
                 break;
 
             case BlockType.DOOR_CLOSE:
-                const doorColors = getDoorColors(this.doorType);
+                const doorColors = this.getDoorColors(this.doorType);
                 this.createDoor(doorCtx, () => {
                     doorCtx.fillStyle = doorColors.md;
                     doorCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
@@ -180,13 +180,44 @@ export class Block {
     convertToMapPixel(value, amount = 2) {
         return value / toPixelSize(amount);
     }
+
+    getDoorColors(doorType) {
+        switch (doorType) {
+            case DoorType.TREASURE:
+                return { lt: "#ffff57", md: "#cd9722", dk: "#9e6800" };
+            case DoorType.BOSS:
+                return { lt: "#703a33", md: "#641f14", dk: "#431313" };
+            default:
+                return { lt: "#865433", md: "#843d0d", dk: "#2f1519" };
+        }
+    };
 }
+
+const getBlockColors = () => {
+    if (GameVars.gameLevel < 3) {
+        return { lt: "#999a9e", md: "#686b7a", dk: "#3e3846" };
+    } else if (GameVars.gameLevel < 6) {
+        return { lt: "#703a33", md: "#38252e", dk: "#1b1116" };
+    } else {
+        return { lt: "#431313", md: "#2f1519", dk: "#100f0f" };
+    }
+};
+
+const getFloorColors = () => {
+    if (GameVars.gameLevel < 3) {
+        return { lt: "#52804d", md: "#41663d" };
+    } else if (GameVars.gameLevel < 6) {
+        return { lt: "#41663d", md: "#2f492c" };
+    } else {
+        return { lt: "#703a33", md: "#38252e" };
+    }
+};
 
 export const createWallBlock = (ctx, x, y) => {
     const blockColors = getBlockColors();
     ctx.fillStyle = blockColors.md;
     ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
-    
+
     ctx.fillStyle = blockColors.dk;
     ctx.fillRect(x, y + toPixelSize(14), toPixelSize(16), toPixelSize(2));
     ctx.fillRect(x, y, toPixelSize(2), toPixelSize(16));
@@ -207,6 +238,6 @@ export const createFloorBlock = (canvas, x, y) => {
         toPixelSize(2), floorColors.lt, () => randomNumb(100) < 5);
 };
 
-export const convertToMapPixel = (value, amount = 2) => {
+const convertToMapPixel = (value, amount = 2) => {
     return value / toPixelSize(amount);
 };

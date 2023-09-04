@@ -6,7 +6,7 @@ const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
 const { knight } = require("./entities/sprites");
 const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
-const { fist, getWeaponSprite } = require("./enums/weapon-type");
+const { getWeaponSprite } = require("./enums/weapon-type");
 const { randomNumbOnRange } = require("./utilities/general-utilities");
 
 const speaker = [
