@@ -2,8 +2,11 @@
 
 NAME="the-knighting-of-sr-isaac"
 
-npm run build
-npm run compress
+npx webpack --config webpack.config.js
+npx -y uglify-js --compress --mangle -- ./dist/main.js > ./dist/main.tmp.js
+mv ./dist/main.tmp.js ./dist/main.js
+npx roadroller ./dist/main.js -o ./dist/main.tmp.js
+mv ./dist/main.tmp.js ./dist/main.js
 
 rm -rf ./build || true
 mkdir ./build
