@@ -3,7 +3,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions } from "../utilities/collision-utilities";
-import { createElem, drawSprite } from "../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { key, knight } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
@@ -13,34 +13,42 @@ export class Player {
     constructor() {
         this.hasKey = false;
         this.isAlive = true;
-        this.playerSpeed = toPixelSize(2);
-
-
-        this.collisionObj = new CircleObject(GameVars.gameW / 2, GameVars.gameH / 2, toPixelSize(4));
-        this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         this.div = createElem(GameVars.gameDiv, "div", null, ["player"]);
-
-        this.shadowCanv = createElem(this.div, "canvas", null, null, toPixelSize(2) * 7, toPixelSize(2) * 6);
-        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(4) + 'px, ' + toPixelSize(8) + 'px)';
-
-        this.playerCanv = createElem(this.div, "canvas", null, null, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
-
-        this.playerRightWeapon = new Weapon(GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, "#cd9722", null, true);
-        this.playerLeftWeapon = new Weapon(GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, "#cd9722", null, true);
+        this.shadowCanv = createElem(this.div, "canvas");
+        this.playerCanv = createElem(this.div, "canvas");
+        this.keyCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"]);
 
         this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
 
-        this.keyCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"], (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
+        this.init(GameVars.gameW / 2, GameVars.gameH / 2);
+    }
+
+    init(x, y) {
+        this.playerSpeed = toPixelSize(2);
+
+        this.collisionObj = new CircleObject(x, y, toPixelSize(4));
+        this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
+
+        setElemSize(this.shadowCanv, toPixelSize(2) * 7, toPixelSize(2) * 6);
+        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(4) + 'px, ' + toPixelSize(8) + 'px)';
+
+        setElemSize(this.playerCanv, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
+
+        if (this.playerRightWeapon) {
+            this.playerRightWeapon.init();
+            this.playerLeftWeapon.init();
+        } else {
+            this.playerRightWeapon = new Weapon(GameVars.lastPlayerRightWeaponType || WeaponType.FIST, -1, this, "#cd9722", null, true);
+            this.playerLeftWeapon = new Weapon(GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, "#cd9722", null, true);
+        }
+
+        this.lifeBar.init();
+
+        setElemSize(this.keyCanv, (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
         this.keyCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(37) + 'px)';
 
-        this.update();
         this.draw();
-
-        let playerRect = this.playerCanv.getBoundingClientRect();
-        this.div.style.width = playerRect.width + "px";
-        this.div.style.height = playerRect.height + "px";
-        this.div.style.transformOrigin = "70% 95%";
     }
 
     update() {
@@ -128,5 +136,10 @@ export class Player {
 
         genSmallBox(this.keyCanv, 0, 0, 4, 8, toPixelSize(2), "#00000066", "#100f0f66");
         drawSprite(this.keyCanv, key, toPixelSize(2), 1, 1);
+
+        let playerRect = this.playerCanv.getBoundingClientRect();
+        this.div.style.width = playerRect.width + "px";
+        this.div.style.height = playerRect.height + "px";
+        this.div.style.transformOrigin = "70% 95%";
     }
 }

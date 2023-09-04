@@ -1,11 +1,11 @@
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { createElem } from "../utilities/draw-utilities";
+import { createElem, setElemSize } from "../utilities/draw-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text";
 
 export class MovePad {
     constructor() {
-        this.movePadCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(64), toPixelSize(64), GameVars.isMobile, null,
+        this.movePadCanv = createElem(GameVars.gameDiv, "canvas", null, null, null, null, GameVars.isMobile, null,
             (e) => {
                 const canvBox = this.movePadCanv.getBoundingClientRect();
                 const touch = e.changedTouches[0];
@@ -28,22 +28,24 @@ export class MovePad {
                 GameVars.keys["s"] = yFinalValue > 0;
                 GameVars.keys["a"] = xFinalValue < 0;
                 GameVars.keys["d"] = xFinalValue > 0;
-                
-                if (needsRedraw) this.draw();
+
+                if (needsRedraw) this.update();
             },
             (e) => {
                 GameVars.keys["w"] = false;
                 GameVars.keys["s"] = false;
                 GameVars.keys["a"] = false;
                 GameVars.keys["d"] = false;
-                this.draw();
+                this.update();
             }
         );
-        this.movePadCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + (GameVars.gameH - this.movePadCanv.height - toPixelSize(12)) + 'px)';
-        this.draw();
+        this.update();
     }
 
-    draw() {
+    update() {
+        setElemSize(this.movePadCanv, toPixelSize(64), toPixelSize(64));
+        this.movePadCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + (GameVars.gameH - this.movePadCanv.height - toPixelSize(12)) + 'px)';
+
         this.movePadCanv.getContext("2d").clearRect(0, 0, this.movePadCanv.width, this.movePadCanv.height);
 
         genSmallBox(this.movePadCanv, 13, 13, 6, 6, toPixelSize(2), "#ffff57", "#100f0f66");

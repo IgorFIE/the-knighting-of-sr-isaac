@@ -3,21 +3,33 @@ import { ItemType } from "../enums/item-type";
 import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision } from "../utilities/collision-utilities";
-import { createElem, drawSprite } from "../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { heart, key } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Item {
-    constructor(x, y, itemType, subType, parentDiv) {
+    constructor(x, y, itemType, subType, room) {
+        this.room = room;
         this.wasPicked = false;
         this.x = x;
         this.y = y;
         this.itemType = itemType;
         this.subType = subType;
         this.sprite = this.getSprite(itemType, subType);
-        this.size = toPixelSize(itemType === ItemType.HEART ? 1 : 2);
 
         this.timeElapsed = 0;
+
+        this.itemDiv = createElem(room.roomDiv, "div", null, ["item"]);
+        this.itemCanv = createElem(this.itemDiv, "canvas");
+
+        this.init(x, y)
+    }
+
+    init(x, y) {
+        this.x = x;
+        this.y = y;
+
+        this.size = toPixelSize(this.itemType === ItemType.HEART ? 1 : 2);
 
         this.collisionObj = new CircleObject(
             x + (this.sprite[0].length * this.size / 2),
@@ -25,10 +37,8 @@ export class Item {
             (this.sprite[0].length > this.sprite.length ? this.sprite[0].length : this.sprite.length) * this.size);
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
-        this.itemDiv = createElem(parentDiv, "div", null, ["item"]);
-        this.itemCanv = createElem(this.itemDiv, "canvas", null, null, this.sprite[0].length * this.size, this.sprite.length * this.size);
-
         this.itemDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
+        setElemSize(this.itemCanv, this.sprite[0].length * this.size, this.sprite.length * this.size)
 
         this.draw();
     }
@@ -96,15 +106,15 @@ export class Item {
 
     dropCurrentWeapon(weapon) {
         if (weapon.weaponType != WeaponType.FIST) {
-            GameVars.currentRoom.items.push(
-                new Item(this.x, this.y, ItemType.WEAPON, weapon.weaponType, GameVars.currentRoom.roomDiv)
+            this.room.items.push(
+                new Item(this.x, this.y, ItemType.WEAPON, weapon.weaponType, this.room)
             );
         }
     }
 
     destroy() {
-        GameVars.currentRoom.items.splice(GameVars.currentRoom.items.indexOf(this), 1);
-        this.itemDiv.parentNode.removeChild(this.itemDiv);
+        this.room.items.splice(this.room.items.indexOf(this), 1);
+        this.itemDiv.remove();
     }
 
     draw() {

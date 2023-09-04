@@ -12,6 +12,11 @@ export const drawSprite = (canvas, sprite, pixelSize = 1, startX = 0, startY = 0
     }));
 };
 
+export const setElemSize = (elem, width, height) => {
+    elem.width = width;
+    elem.height = height;
+}
+
 export const createElem = (parentElem, elemType, id, classList, width, height, isMobile, backgroundColor, clickFn, endClickFn) => {
     let elem = document.createElement(elemType);
     if (id) elem.id = id;

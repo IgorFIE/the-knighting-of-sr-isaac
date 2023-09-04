@@ -1,7 +1,7 @@
 import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { lineCircleCollision } from "../utilities/collision-utilities";
-import { createElem, drawSprite } from "../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { Arrow } from "./arrow";
 
 export class Weapon {
@@ -11,20 +11,26 @@ export class Weapon {
         this.weaponType = weaponType;
         this.parentDiv = parent.div;
         this.size = size || 2;
+        this.dmg = this.getDamage();
+        this.damagedObjs = new Map();
+
         this.sprite = getWeaponSprite(this.weaponType);
         this.isPerformingAction = false;
         this.isPlayer = isPlayer;
 
         this.weaponDiv = createElem(this.parentDiv, "div", null, ["weapon"]);
-        this.weaponCanv = createElem(this.weaponDiv, "canvas", null, null, this.sprite[0].length * toPixelSize(this.size), this.sprite.length * toPixelSize(this.size));
+        this.weaponCanv = createElem(this.weaponDiv, "canvas");
+
+        this.init();
+    }
+
+    init() {
+        setElemSize(this.weaponCanv, this.sprite[0].length * toPixelSize(this.size), this.sprite.length * toPixelSize(this.size));
 
         this.atkAnimation = this.getWeaponAnimation();
-
         this.relativePos = this.getRelativePos();
         this.setWeaponPos();
         this.atkLine = this.getWeaponAtkLine();
-        this.damagedObjs = new Map();
-        this.dmg = this.getDamage();
 
         this.draw();
     }

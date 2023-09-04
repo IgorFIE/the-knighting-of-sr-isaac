@@ -6,7 +6,7 @@ import { RoomType } from "../enums/room-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
-import { createElem } from "../utilities/draw-utilities";
+import { createElem, setElemSize } from "../utilities/draw-utilities";
 import { randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { Bonfire } from "./blocks/bonfire";
@@ -25,24 +25,26 @@ export class Room {
         this.y = 0;
 
         this.roomType = RoomType.EMPTY;
-        this.backBlocks = [];
-        this.floors = [];
-        this.walls = [];
-        this.doors = [];
-        this.doorTriggers = [];
+
         this.items = [];
         this.enemies = [];
         this.arrows = [];
 
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
-        this.roomCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
-        this.doorCanv = createElem(this.roomDiv, "canvas", null, null, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        this.roomCanv = createElem(this.roomDiv, "canvas");
+        this.doorCanv = createElem(this.roomDiv, "canvas");
 
         this.initRoomBlocks();
         this.populateRandomEnemies();
     }
 
     initRoomBlocks() {
+        this.backBlocks = [];
+        this.floors = [];
+        this.walls = [];
+        this.doors = [];
+        this.doorTriggers = [];
+
         let obj, blockType;
         for (let y = 0; y < GameVars.roomHeight; y++) {
             this.backBlocks.push([]);
@@ -55,14 +57,14 @@ export class Room {
         }
     }
 
-    populateRandomEnemies() {
-        let count = randomNumbOnRange(GameVars.gameLevel, GameVars.gameLevel + 1);
+    populateRandomEnemies(amount) {
+        let count = amount || randomNumbOnRange(GameVars.gameLevel, GameVars.gameLevel + 1);
         count = count > 6 ? 6 : count;
         while (this.enemies.length !== count) {
-            let newEnemy = new Enemy(this.roomX, this.roomY,
+            let newEnemy = new Enemy(this,
                 randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),
                 randomNumbOnRange(GameVars.gameH / 3, (GameVars.gameH / 3) * 2),
-                EnemyType.BASIC, this.roomDiv);
+                EnemyType.BASIC);
             if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj))) {
                 this.enemies.push(newEnemy);
             } else {
@@ -75,17 +77,17 @@ export class Room {
         this.roomType = roomType;
         switch (this.roomType) {
             case RoomType.KEY:
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.KEY, null, this.roomDiv));
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.KEY, null, this));
                 break;
             case RoomType.TREASURE:
                 this.cleanEnemies();
                 const maxValue = GameVars.gameLevel + 3 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 3;
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, maxValue), this.roomDiv));
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, maxValue), this));
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();
                 this.items.push(new Bonfire((GameVars.gameW / 2), (GameVars.gameH / 2), this));
-                this.enemies.push(new Enemy(this.roomX, this.roomY, GameVars.gameW / 2, GameVars.gameH / 2, EnemyType.BOSS, this.roomDiv));
+                this.enemies.push(new Enemy(this, GameVars.gameW / 2, GameVars.gameH / 2, EnemyType.BOSS));
                 break;
         }
     }
@@ -94,6 +96,19 @@ export class Room {
         while (this.enemies.length > 0) {
             this.enemies[0].destroy();
         }
+    }
+
+    reInit() {
+        this.roomDiv.classList.remove("hidden");
+        this.initRoomBlocks();
+        this.arrows.forEach(arrow => arrow.destroy());
+        this.items.forEach(item => item.init(
+            (GameVars.gameW * item.x) / GameVars.lastGameW,
+            (GameVars.gameH * item.y) / GameVars.lastGameH));
+        this.enemies.forEach(enemy => enemy.init(
+            (GameVars.gameW * enemy.collisionObj.x) / GameVars.lastGameW,
+            (GameVars.gameH * enemy.collisionObj.y) / GameVars.lastGameH));
+        this.roomDiv.classList.add("hidden");
     }
 
     setDoor(startX, finishX, startY, finishY, xDir, yDir, doorType) {
@@ -177,6 +192,9 @@ export class Room {
     }
 
     draw() {
+        setElemSize(this.roomCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        setElemSize(this.doorCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+
         this.floors.forEach(block => block.draw());
         this.drawRoomShadows();
         this.walls.forEach(block => block.draw());

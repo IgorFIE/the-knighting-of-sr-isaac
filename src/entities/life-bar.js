@@ -1,6 +1,6 @@
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { createElem, drawSprite } from "../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { heart } from "./sprites";
 
 export class LifeBar {
@@ -10,16 +10,16 @@ export class LifeBar {
         this.life = currentLife || totalLife;
         this.parentCanv = parentCanv;
         this.parentRect;
-        this.updateLifeBar = true;
 
-        this.lifeBackgroundCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heartB"], toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
-        this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"], toPixelSize(8 * (this.totalLife / GameVars.heartLifeVal) - 1), toPixelSize(11));
+        this.lifeBackgroundCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heartB"]);
+        this.lifeCanv = createElem(isPlayer ? GameVars.gameDiv : parentCanv, "canvas", null, ["heart"]);
 
-        if (isPlayer) {
-            this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
-            this.lifeCanv.style.transform = 'translate(' + toPixelSize(14) + 'px, ' + toPixelSize(24) + 'px)';
-        }
+        this.init();
+    }
+
+    init() {
         this.draw();
+        this.updateLifeBar = true;
         this.update();
     }
 
@@ -53,6 +53,14 @@ export class LifeBar {
     }
 
     draw() {
+        setElemSize(this.lifeBackgroundCanv, toPixelSize(7 * (this.totalLife / GameVars.heartLifeVal) + (this.totalLife / GameVars.heartLifeVal) + 3), toPixelSize(11));
+        setElemSize(this.lifeCanv, toPixelSize(8 * (this.totalLife / GameVars.heartLifeVal) - 1), toPixelSize(11));
+
+        if (this.isPlayer) {
+            this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
+            this.lifeCanv.style.transform = 'translate(' + toPixelSize(14) + 'px, ' + toPixelSize(24) + 'px)';
+        }
+
         this.lifeBackgroundCanv.getContext("2d").clearRect(0, 0, this.lifeBackgroundCanv.width, this.lifeBackgroundCanv.height);
         genSmallBox(this.lifeBackgroundCanv, 0, 0, (8 * (this.totalLife / GameVars.heartLifeVal)) + 2, 10, toPixelSize(1), "#00000066", "#100f0f66");
         for (let i = 0; i < this.totalLife / GameVars.heartLifeVal; i++) {

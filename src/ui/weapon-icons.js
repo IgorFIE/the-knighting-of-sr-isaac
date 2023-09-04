@@ -1,12 +1,12 @@
 import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { createElem, drawSprite } from "../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../utilities/text";
 
 export class WeaponIcons {
     constructor() {
-        this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), GameVars.isMobile, null,
+        this.rightCanv = createElem(GameVars.gameDiv, "canvas", null, null, null, null, GameVars.isMobile, null,
             (e) => {
                 let needsRedraw = GameVars.keys['v'] !== true;
                 GameVars.keys['v'] = true;
@@ -16,7 +16,7 @@ export class WeaponIcons {
                 GameVars.keys['v'] = false;
                 this.update();
             });
-        this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, toPixelSize(30), toPixelSize(30), GameVars.isMobile, null,
+        this.leftCanv = createElem(GameVars.gameDiv, "canvas", null, null, null, null, GameVars.isMobile, null,
             (e) => {
                 let needsRedraw = GameVars.keys['b'] !== true;
                 GameVars.keys['b'] = true;
@@ -26,14 +26,16 @@ export class WeaponIcons {
                 GameVars.keys['b'] = false;
                 this.update();
             });
-
-        this.leftCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
-        this.rightCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
-
         this.update();
     }
 
     update() {
+        setElemSize(this.rightCanv, toPixelSize(30), toPixelSize(30));
+        setElemSize(this.leftCanv, toPixelSize(30), toPixelSize(30));
+
+        this.leftCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
+        this.rightCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
+
         this.drawIcon(this.rightCanv, GameVars.isMobile ? "A" : "V", GameVars.player.playerRightWeapon.weaponType, GameVars.keys['v'] || GameVars.keys['V']);
         this.drawIcon(this.leftCanv, GameVars.isMobile ? "B" : "B", GameVars.player.playerLeftWeapon.weaponType, GameVars.keys['b'] || GameVars.keys['B']);
     }

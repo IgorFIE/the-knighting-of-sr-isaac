@@ -1,19 +1,19 @@
 import { RoomType, isSpecialRoom } from "../enums/room-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { genSmallBox } from "../utilities/box-generator";
-import { createElem } from "../utilities/draw-utilities";
+import { createElem, setElemSize } from "../utilities/draw-utilities";
 
 export class Minimap {
     constructor() {
-        this.minimapCanv = createElem(GameVars.gameDiv, "canvas", "minimap", null, toPixelSize(46), toPixelSize(46));
-        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(24) + 'px)';
-
+        this.minimapCanv = createElem(GameVars.gameDiv, "canvas", "minimap");
         this.visited = {};
-
         this.update();
     }
 
     update() {
+        setElemSize(this.minimapCanv, toPixelSize(46), toPixelSize(46));
+        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(24) + 'px)';
+
         if (!this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX]) {
             this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] = true;
         }

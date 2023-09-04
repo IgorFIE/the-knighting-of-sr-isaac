@@ -2,24 +2,36 @@ import { CircleObject } from "../../collision-objects/circle-object";
 import { shortSword } from "../../enums/weapon-type";
 import { GameVars, toPixelSize } from "../../game-variables";
 import { circleToCircleCollision } from "../../utilities/collision-utilities";
-import { createElem, drawSprite } from "../../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../../utilities/draw-utilities";
 import { moveLevel } from "../../utilities/level-utilities";
 import { convertTextToPixelArt, drawPixelTextInCanvas } from "../../utilities/text";
 
 export class Bonfire {
     constructor(x, y, room) {
         this.room = room;
+
+        this.bonfireDiv = createElem(room.roomDiv, "div", null, ["bonfire"]);
+        this.swordCanv = createElem(this.bonfireDiv, "canvas");
+        this.bonfireCanv = createElem(this.bonfireDiv, "canvas");
+        this.bonfireTextCanv = createElem(this.bonfireDiv, "canvas");
+
+        this.init(x, y)
+    }
+
+    init(x, y) {
+        this.x = x;
+        this.y = y;
         this.timeElapsed = 0;
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(16));
 
-        this.bonfireDiv = createElem(room.roomDiv, "div", null, ["bonfire"]);
-        this.swordCanv = createElem(this.bonfireDiv, "canvas", null, null, shortSword.length * toPixelSize(2), shortSword.length * toPixelSize(2));
-        this.bonfireCanv = createElem(this.bonfireDiv, "canvas", null, null, bonfire.length * toPixelSize(2), bonfire.length * toPixelSize(2));
-        this.bonfireTextCanv = createElem(this.bonfireDiv, "canvas", null, null, toPixelSize(80), toPixelSize(6));
-
+        setElemSize(this.bonfireCanv, bonfire.length * toPixelSize(2), bonfire.length * toPixelSize(2));
         this.bonfireDiv.style.transform = 'translate(' + (x - (this.bonfireCanv.width / 2)) + 'px, ' + (y - (this.bonfireCanv.height / 2)) + 'px)';
+
+        setElemSize(this.swordCanv, shortSword.length * toPixelSize(2), shortSword.length * toPixelSize(2));
         this.swordCanv.style.transform = 'translate(' + toPixelSize(0) + 'px, ' + toPixelSize(-8) + 'px) rotate(-160deg)';
+
+        setElemSize(this.bonfireTextCanv, toPixelSize(80), toPixelSize(6));
         this.bonfireTextCanv.style.transform = 'translate(' + toPixelSize(-30) + 'px, ' + toPixelSize(-10) + 'px)';
 
         this.draw();
@@ -57,6 +69,11 @@ export class Bonfire {
         drawPixelTextInCanvas(convertTextToPixelArt("ascend to next level"), this.bonfireTextCanv, toPixelSize(1), 40, 3, "#edeef7", 1);
         this.bonfireCanv.getContext("2d").clearRect(0, 0, this.bonfireCanv.width, this.bonfireCanv.height);
         drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { bt: "#edeef7", bm: "#cd9722" });
+    }
+
+    destroy() {
+        this.room.items.splice(this.room.items.indexOf(this), 1);
+        this.bonfireDiv.remove();
     }
 }
 

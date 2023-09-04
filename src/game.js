@@ -15,7 +15,9 @@ export class Game {
         GameVars.gameBoard = new GameBoard(GameVars.gameBoardSize);
         GameVars.gameBoard.init();
 
-        GameVars.currentRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
+        this.mainRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
+
+        GameVars.currentRoom = this.mainRoom;
         GameVars.currentRoom.cleanEnemies();
         this.nextRoom;
 
@@ -79,41 +81,61 @@ export class Game {
         }
     }
 
+    resize() {
+        GameVars.gameBoard.rooms.forEach(room => room.reInit());
+        GameVars.gameBoard.createPaths();
+        GameVars.gameBoard.draw();
+
+        GameVars.currentRoom.roomDiv.classList.remove("hidden");
+
+        this.drawMainRoomText();
+
+        GameVars.player.init(
+            (GameVars.gameW * GameVars.player.collisionObj.x) / GameVars.lastGameW,
+            (GameVars.gameH * GameVars.player.collisionObj.y) / GameVars.lastGameH,
+        );
+
+        this.minimap.update();
+        if (GameVars.isMobile) GameVars.movePad.update();
+        GameVars.weaponIcons.update();
+
+    }
+
     drawMainRoomText() {
         const textColor = this.getTutorColor();
-        drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), this.mainRoom.roomCanv, toPixelSize(2),
             GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 20, textColor, 1);
 
-        drawPixelTextInCanvas(convertTextToPixelArt("^"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("^"), this.mainRoom.roomCanv, toPixelSize(2),
             GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 6, textColor, 1);
-        drawPixelTextInCanvas(convertTextToPixelArt("~"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("~"), this.mainRoom.roomCanv, toPixelSize(2),
             GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) + 6, textColor, 1);
 
-        drawPixelTextInCanvas(convertTextToPixelArt("<"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("<"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) - 6, (GameVars.gameH / toPixelSize(4)), textColor, 1);
-        drawPixelTextInCanvas(convertTextToPixelArt(">"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt(">"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) + 6, (GameVars.gameH / toPixelSize(4)), textColor, 1);
 
         if (!GameVars.isMobile) {
-            drawPixelTextInCanvas(convertTextToPixelArt("w"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+            drawPixelTextInCanvas(convertTextToPixelArt("w"), this.mainRoom.roomCanv, toPixelSize(2),
                 GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 12, textColor, 1);
-            drawPixelTextInCanvas(convertTextToPixelArt("s"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+            drawPixelTextInCanvas(convertTextToPixelArt("s"), this.mainRoom.roomCanv, toPixelSize(2),
                 GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) + 12, textColor, 1);
 
-            drawPixelTextInCanvas(convertTextToPixelArt("a"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+            drawPixelTextInCanvas(convertTextToPixelArt("a"), this.mainRoom.roomCanv, toPixelSize(2),
                 (GameVars.gameW / toPixelSize(4)) - 12, (GameVars.gameH / toPixelSize(4)), textColor, 1);
-            drawPixelTextInCanvas(convertTextToPixelArt("d"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+            drawPixelTextInCanvas(convertTextToPixelArt("d"), this.mainRoom.roomCanv, toPixelSize(2),
                 (GameVars.gameW / toPixelSize(4)) + 12, (GameVars.gameH / toPixelSize(4)), textColor, 1);
         }
 
-        drawPixelTextInCanvas(convertTextToPixelArt("r atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("r atk"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) - 18, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
-        drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "a" : "v"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt(GameVars.isMobile ? "a" : "v"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) - 18, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
 
-        drawPixelTextInCanvas(convertTextToPixelArt("l atk"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("l atk"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) + 18, (GameVars.gameH / toPixelSize(4)) + 20, textColor, 1);
-        drawPixelTextInCanvas(convertTextToPixelArt("b"), GameVars.currentRoom.roomCanv, toPixelSize(2),
+        drawPixelTextInCanvas(convertTextToPixelArt("b"), this.mainRoom.roomCanv, toPixelSize(2),
             (GameVars.gameW / toPixelSize(4)) + 18, (GameVars.gameH / toPixelSize(4)) + 28, textColor, 1);
     }
 

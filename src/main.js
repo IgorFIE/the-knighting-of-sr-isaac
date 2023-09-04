@@ -1,6 +1,6 @@
 const { GameVars, toPixelSize } = require("./game-variables");
 const { Game } = require("./game");
-const { createElem, drawSprite } = require("./utilities/draw-utilities");
+const { createElem, drawSprite, setElemSize } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genSmallBox } = require("./utilities/box-generator");
 const { Sound } = require("./sound/sound");
@@ -88,6 +88,7 @@ function setResize() {
     window.addEventListener("resize", () => {
         GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
         draw(true);
+        if (GameVars.game) GameVars.game.resize();
     });
 }
 
@@ -145,11 +146,6 @@ function draw(isResize) {
     drawSoundBtn(isResize);
 
     setElemSize(gameOverCanv, GameVars.gameW, GameVars.gameH);
-}
-
-function setElemSize(elem, width, height) {
-    elem.width = width;
-    elem.height = height;
 }
 
 function drawMainMenu() {

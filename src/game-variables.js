@@ -4,6 +4,9 @@ let highScore = parseInt(localStorage.getItem(storeId)) || 0;
 
 const isMobile = navigator.maxTouchPoints > 1;
 
+let lastGameW;
+let lastGameH;
+
 let gameW;
 let gameH;
 
@@ -68,11 +71,17 @@ const resetGameVars = () => {
 }
 
 const updatePixelSize = (width, height) => {
+    GameVars.lastGameW = GameVars.gameW;
+    GameVars.lastGameH = GameVars.gameH;
+
     GameVars.gameW = width;
     GameVars.gameH = height;
-    GameVars.pixelSize = (height < 500 || width < 500) ? 2 : pixelCal(1.5, 4.5);
+
+    GameVars.pixelSize = (height < 500 || width < 500) ? 2 : pixelCal(1, 4);
+
     GameVars.gameWdAsPixels = width / GameVars.pixelSize;
     GameVars.gameHgAsPixels = height / GameVars.pixelSize;
+
     GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
     GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
 }
@@ -95,6 +104,9 @@ export const GameVars = {
     highScore,
 
     isMobile,
+
+    lastGameW,
+    lastGameH,
 
     gameW,
     gameH,

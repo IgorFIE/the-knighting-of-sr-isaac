@@ -6,7 +6,7 @@ import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions, distBetwenObjs, circleToCircleCollision } from "../utilities/collision-utilities";
-import { createElem, drawSprite } from "../utilities/draw-utilities";
+import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Item } from "./item";
 import { LifeBar } from "./life-bar";
@@ -14,43 +14,44 @@ import { knight } from "./sprites";
 import { Weapon } from "./weapon";
 
 export class Enemy {
-    constructor(roomX, roomY, x, y, enemyType, roomDiv) {
+    constructor(room, x, y, enemyType, enemySubType) {
         this.isAlive = true;
-        this.roomX = roomX;
-        this.roomY = roomY;
+        this.room = room;
 
         this.enemyType = enemyType;
-        this.enemySubType = enemyChainMailColors[randomNumb(3)];
-        this.enemySpeed = toPixelSize(1 + (randomNumbOnRange(-5, 0) / 10));
+        this.enemySubType = enemySubType || enemyChainMailColors[randomNumb(3)];
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
+        this.enemySpeed = 1 + (randomNumbOnRange(-5, 0) / 10);
+
+        this.enemyKeys = {};
+        this.movTimeElapsed = 0;
+
+        this.div = createElem(room.roomDiv, "div", null, ["enemy"]);
+        this.shadowCanv = createElem(this.div, "canvas");
+        this.enemyCanv = createElem(this.div, "canvas");
+
+        this.lifeBar = new LifeBar(this.getEnemyLife() * GameVars.heartLifeVal, false, this.div);
+
+        this.init(x, y);
+    }
+
+    init(x, y) {
         this.activationDistance = this.getEnemyDistance();
 
         this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
-
-        this.enemyKeys = {};
         this.targetPos = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
-        this.movTimeElapsed = 0;
 
-        this.div = createElem(roomDiv, "div", null, ["enemy"]);
-
-        this.shadowCanv = createElem(this.div, "canvas", null, null, toPixelSize(this.enemySize) * 7, toPixelSize(this.enemySize) * 6);
+        setElemSize(this.shadowCanv, toPixelSize(this.enemySize) * 7, toPixelSize(this.enemySize) * 6);
         this.shadowCanv.style.transform = 'translate(' + -toPixelSize(this.enemySize * 2) + 'px, ' + toPixelSize(this.enemySize * 4) + 'px)';
 
-        this.enemyCanv = createElem(this.div, "canvas", null, null,
-            knight[0].length * toPixelSize(this.enemySize),
-            knight.length * toPixelSize(this.enemySize));
+        setElemSize(this.enemyCanv, knight[0].length * toPixelSize(this.enemySize), knight.length * toPixelSize(this.enemySize));
 
         this.setEnemyWeapons();
 
-        this.lifeBar = new LifeBar(this.getEnemyLife() * GameVars.heartLifeVal, false, this.div);
+        this.lifeBar.init();
 
         this.draw();
-
-        let enemyRect = this.enemyCanv.getBoundingClientRect();
-        this.div.style.width = enemyRect.width + "px";
-        this.div.style.height = enemyRect.height + "px";
-        this.div.style.transformOrigin = "70% 95%";
     }
 
     getEnemyDistance() {
@@ -65,15 +66,20 @@ export class Enemy {
     }
 
     setEnemyWeapons() {
-        const maxValue = GameVars.gameLevel + 2 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 2;
-        if (GameVars.gameLevel < 4) {
-            const isLeftWeapon = randomNumb(2) === 0;
-            this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+        if (this.enemyRightWeapon) {
+            this.enemyRightWeapon.init();
+            this.enemyLeftWeapon.init();
         } else {
-            const isLeftWeapon = randomNumb(2) === 0;
-            this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
-            this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(2, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
+            const maxValue = GameVars.gameLevel + 2 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 2;
+            if (GameVars.gameLevel < 4) {
+                const isLeftWeapon = randomNumb(2) === 0;
+                this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
+                this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+            } else {
+                const isLeftWeapon = randomNumb(2) === 0;
+                this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
+                this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(2, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
+            }
         }
 
         this.rightWeaponActivationRange = this.getWeaponDistance(this.enemyRightWeapon);
@@ -115,10 +121,10 @@ export class Enemy {
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
                     if (this.enemyType === EnemyType.BOSS) {
                         for (let i = randomNumbOnRange(1, 2); i > 0; i--) {
-                            GameVars.currentRoom.items.push(new Item(
+                            this.room.items.push(new Item(
                                 (GameVars.gameW / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
                                 (GameVars.gameH / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
-                                ItemType.HEART, null, GameVars.currentRoom.roomDiv));
+                                ItemType.HEART, null, this.room));
                         }
                     }
                     this.destroy();
@@ -157,7 +163,8 @@ export class Enemy {
             this.enemyRightWeapon.weaponCanv.style.animation = "";
         }
 
-        const distance = movKeys.length > 1 ? this.enemySpeed / 1.4142 : this.enemySpeed;
+        const speed = toPixelSize(this.enemySpeed);
+        const distance = movKeys.length > 1 ? speed / 1.4142 : speed;
 
         if (this.enemyKeys['d']) { newRectX += distance; }
         if (this.enemyKeys['a']) { newRectX -= distance; }
@@ -255,7 +262,7 @@ export class Enemy {
     validateMovement(x, y, ignoreCollisions) {
         this.fakeMovCircle.x = x;
         this.fakeMovCircle.y = y;
-        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.roomX, this.roomY, (circle) => this.move(circle), this);
+        ignoreCollisions ? this.move(this.fakeMovCircle) : checkForCollisions(this.fakeMovCircle, this.room.roomX, this.room.roomY, (circle) => this.move(circle), this);
     }
 
     move(circle) {
@@ -292,11 +299,15 @@ export class Enemy {
     draw() {
         genSmallBox(this.shadowCanv, 0, 0, 6, 5, toPixelSize(this.enemySize), "#00000033", "#00000033");
         drawSprite(this.enemyCanv, knight, toPixelSize(this.enemySize), 0, 0, { "hd": "#999a9e", "hl": "#686b7a", "cm": this.enemySubType });
+
+        let enemyRect = this.enemyCanv.getBoundingClientRect();
+        this.div.style.width = enemyRect.width + "px";
+        this.div.style.height = enemyRect.height + "px";
+        this.div.style.transformOrigin = "70% 95%";
     }
 
     destroy() {
         this.div.remove();
-        GameVars.gameBoard.board[this.roomY][this.roomX].enemies.splice(
-            GameVars.gameBoard.board[this.roomY][this.roomX].enemies.indexOf(this), 1);
+        this.room.enemies.splice(this.room.enemies.indexOf(this), 1);
     }
 }
