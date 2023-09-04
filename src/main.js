@@ -53,7 +53,7 @@ let then = Date.now();
 
 let skipElapsedTime = 0;
 
-function init() {
+const init = () => {
     GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
     GameVars.resetGameVars();
 
@@ -71,7 +71,7 @@ function init() {
     window.requestAnimationFrame(() => gameLoop());
 }
 
-function addKeyListenerEvents() {
+const addKeyListenerEvents = () => {
     window.addEventListener('keydown', (e) => {
         GameVars.keys[e.key] = true;
         if (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') GameVars.weaponIcons?.update();
@@ -84,7 +84,7 @@ function addKeyListenerEvents() {
     window.addEventListener("click", (e) => initAudio());
 }
 
-function setResize() {
+const setResize = () => {
     window.addEventListener("resize", () => {
         GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
         draw(true);
@@ -92,14 +92,14 @@ function setResize() {
     });
 }
 
-function initAudio() {
+const initAudio = () => {
     if (!GameVars.sound) {
         GameVars.sound = new Sound();
         GameVars.sound.initSound();
     }
 }
 
-function createGameElements() {
+const createGameElements = () => {
     mainDiv = document.getElementById("main");
     mainDiv.addEventListener("animationend", () => mainDiv.style.animation = "");
 
@@ -128,7 +128,7 @@ function createGameElements() {
     });
 }
 
-function draw(isResize) {
+const draw = (isResize) => {
     setElemSize(mainMenuDiv, GameVars.gameW, GameVars.gameH);
     setElemSize(mainMenuCanv, GameVars.gameW, GameVars.gameH);
     drawMainMenu();
@@ -148,7 +148,7 @@ function draw(isResize) {
     setElemSize(gameOverCanv, GameVars.gameW, GameVars.gameH);
 }
 
-function drawMainMenu() {
+const drawMainMenu = () => {
     for (let y = 0; y < GameVars.gameH; y += toPixelSize(16)) {
         for (let x = 0; x < GameVars.gameW; x += toPixelSize(16)) {
             if (y < GameVars.gameH / 2) {
@@ -176,7 +176,7 @@ function drawMainMenu() {
     drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 8, "#edeef7", 1);
 }
 
-function drawLeftBtn() {
+const drawLeftBtn = () => {
     leftMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px)';
 
     genSmallBox(leftMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
@@ -184,7 +184,7 @@ function drawLeftBtn() {
     drawPixelTextInCanvas(convertTextToPixelArt("with l weapon"), leftMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
 }
 
-function drawRightBtn() {
+const drawRightBtn = () => {
     rightMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px)';
 
     genSmallBox(rightMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
@@ -192,7 +192,7 @@ function drawRightBtn() {
     drawPixelTextInCanvas(convertTextToPixelArt("with r weapon"), rightMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
 }
 
-function drawSoundBtn(isResize) {
+const drawSoundBtn = (isResize) => {
     soundBtnCanv.style.transform = 'translate(' + (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px, ' + toPixelSize(10) + 'px)';
     let isSoundOn = GameVars.sound && GameVars.sound.isSoundOn;
     if (lastSoundState !== isSoundOn || isResize) {
@@ -207,7 +207,7 @@ function drawSoundBtn(isResize) {
     }
 }
 
-function drawScore(isResize) {
+const drawScore = (isResize) => {
     scoreCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(10) + 'px)';
     if (lastScore != GameVars.score || isResize) {
         let text;
@@ -224,14 +224,14 @@ function drawScore(isResize) {
     }
 }
 
-function drawGameOver() {
+const drawGameOver = () => {
     gameOverCanv.getContext("2d").clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
     genSmallBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
     drawPixelTextInCanvas(convertTextToPixelArt("Game over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 40, "black", 5);
     drawScoreCalc(gameOverCanv);
 }
 
-function drawScoreCalc(canvas) {
+const drawScoreCalc = (canvas) => {
     drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 10, "black", 4);
     drawPixelTextInCanvas(convertTextToPixelArt("enemies killed - " + GameVars.enemyKills * 10), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 15, "black", 2);
     drawPixelTextInCanvas(convertTextToPixelArt("boss enemies killed - " + GameVars.enemyBossKills * 100), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 30, "black", 2);
@@ -240,7 +240,7 @@ function drawScoreCalc(canvas) {
     drawPixelTextInCanvas(convertTextToPixelArt((GameVars.score > GameVars.highScore ? "new record!" : "total") + " - " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 75, "black", 2);
 }
 
-function startGame(weaponType, handir) {
+const startGame = (weaponType, handir) => {
     initAudio();
     GameVars.sound.clickSound();
     mainMenuDiv.classList.add("hidden");
@@ -257,7 +257,7 @@ function startGame(weaponType, handir) {
     GameVars.game = new Game();
 }
 
-function skipGameOver() {
+const skipGameOver = () => {
     GameVars.sound.clickSound();
     gameOverCanv.classList.add("hidden");
     mainMenuDiv.classList.remove("hidden");
@@ -271,7 +271,7 @@ function skipGameOver() {
     drawMainMenu();
 }
 
-function gameLoop() {
+const gameLoop = () => {
     elapsed = Date.now() - then;
     if (elapsed > fpsInterval) {
         then = Date.now() - (elapsed % fpsInterval);
@@ -316,7 +316,7 @@ function gameLoop() {
     window.requestAnimationFrame(() => gameLoop());
 }
 
-function handleMuteInput() {
+const handleMuteInput = () => {
     if (GameVars.keys['m'] || GameVars.keys['M']) {
         GameVars.keys['m'] = false;
         GameVars.keys['M'] = false;
@@ -324,12 +324,12 @@ function handleMuteInput() {
     }
 }
 
-function updateScore() {
+const updateScore = () => {
     lastScore = GameVars.score;
     GameVars.score = (GameVars.enemyKills * 10) + (GameVars.keyCaught * 50) + (GameVars.enemyBossKills * 100) + ((GameVars.gameLevel - 1) * 500);
 }
 
-function updateHighScore() {
+const updateHighScore = () => {
     if (GameVars.highScore < GameVars.score) {
         GameVars.highScore = GameVars.score;
         localStorage.setItem(GameVars.storeId, GameVars.highScore);
