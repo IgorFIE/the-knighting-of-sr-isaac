@@ -26,13 +26,13 @@ export class Bonfire {
         this.collisionObj = new CircleObject(x, y, toPixelSize(16));
 
         setElemSize(this.bonfireCanv, bonfire.length * toPixelSize(2), bonfire.length * toPixelSize(2));
-        this.bonfireDiv.style.transform = 'translate(' + (x - (this.bonfireCanv.width / 2)) + 'px, ' + (y - (this.bonfireCanv.height / 2)) + 'px)';
+        this.bonfireDiv.style.translate = (x - (this.bonfireCanv.width / 2)) + 'px ' + (y - (this.bonfireCanv.height / 2)) + 'px';
 
         setElemSize(this.swordCanv, shortSword.length * toPixelSize(2), shortSword.length * toPixelSize(2));
         this.swordCanv.style.transform = 'translate(' + toPixelSize(0) + 'px, ' + toPixelSize(-8) + 'px) rotate(-160deg)';
 
         setElemSize(this.bonfireTextCanv, toPixelSize(80), toPixelSize(6));
-        this.bonfireTextCanv.style.transform = 'translate(' + toPixelSize(-30) + 'px, ' + toPixelSize(-10) + 'px)';
+        this.bonfireTextCanv.style.translate = toPixelSize(-30) + 'px ' + toPixelSize(-10) + 'px';
 
         this.draw();
     }
@@ -55,9 +55,8 @@ export class Bonfire {
     validateMovement(x, y) {
         this.collisionObj.x = x;
         this.collisionObj.y = y;
-        this.bonfireDiv.style.transform = 'translate(' +
-            (this.collisionObj.x - (this.bonfireCanv.width / 2)) + 'px, ' +
-            (this.collisionObj.y - (this.bonfireCanv.height / 2)) + 'px)';
+        this.bonfireDiv.style.translate = (this.collisionObj.x - (this.bonfireCanv.width / 2)) + 'px ' +
+            (this.collisionObj.y - (this.bonfireCanv.height / 2)) + 'px';
     }
 
     draw() {

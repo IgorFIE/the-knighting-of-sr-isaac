@@ -37,7 +37,7 @@ export class Item {
             (this.sprite[0].length > this.sprite.length ? this.sprite[0].length : this.sprite.length) * this.size);
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
-        this.itemDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
+        this.itemDiv.style.translate = this.x + 'px ' + this.y + 'px';
         setElemSize(this.itemCanv, this.sprite[0].length * this.size, this.sprite.length * this.size)
 
         this.draw();
@@ -99,9 +99,8 @@ export class Item {
     validateMovement(x, y) {
         this.collisionObj.x = x;
         this.collisionObj.y = y;
-        this.itemDiv.style.transform = 'translate(' +
-            (this.collisionObj.x - (this.sprite[0].length * this.size) / 2) + 'px, ' +
-            (this.collisionObj.y - (this.sprite.length * this.size) / 2) + 'px)';
+        this.itemDiv.style.translate = (this.collisionObj.x - (this.sprite[0].length * this.size) / 2) + 'px ' +
+            (this.collisionObj.y - (this.sprite.length * this.size) / 2) + 'px';
     }
 
     dropCurrentWeapon(weapon) {

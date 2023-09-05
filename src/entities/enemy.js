@@ -43,7 +43,7 @@ export class Enemy {
         this.targetPos = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         setElemSize(this.shadowCanv, toPixelSize(this.enemySize) * 7, toPixelSize(this.enemySize) * 6);
-        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(this.enemySize * 2) + 'px, ' + toPixelSize(this.enemySize * 4) + 'px)';
+        this.shadowCanv.style.translate = -toPixelSize(this.enemySize * 2) + 'px ' + toPixelSize(this.enemySize * 4) + 'px';
 
         setElemSize(this.enemyCanv, knight[0].length * toPixelSize(this.enemySize), knight.length * toPixelSize(this.enemySize));
 
@@ -263,9 +263,8 @@ export class Enemy {
     move(circle) {
         this.collisionObj.x = circle.x;
         this.collisionObj.y = circle.y;
-        this.div.style.transform = 'translate(' +
-            (this.collisionObj.x - (knight[0].length * toPixelSize(this.enemySize)) / 2) + 'px, ' +
-            (this.collisionObj.y - (knight.length * toPixelSize(this.enemySize)) / 4 * 3) + 'px)';
+        this.div.style.translate = (this.collisionObj.x - (knight[0].length * toPixelSize(this.enemySize)) / 2) + 'px ' +
+            (this.collisionObj.y - (knight.length * toPixelSize(this.enemySize)) / 4 * 3) + 'px';
     }
 
     atk() {

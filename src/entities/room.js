@@ -135,7 +135,7 @@ export class Room {
             let yAmount = y - this.y;
             this.x = x;
             this.y = y;
-            this.roomDiv.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
+            this.roomDiv.style.translate = this.x + 'px ' + this.y + 'px';
             this.enemies.forEach(enemy => enemy.validateMovement(enemy.collisionObj.x + xAmount, enemy.collisionObj.y + yAmount, true));
             this.items.forEach(item => item.validateMovement(item.collisionObj.x + xAmount, item.collisionObj.y + yAmount));
             this.arrows.forEach(arrow => arrow.destroy());

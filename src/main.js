@@ -66,8 +66,6 @@ const init = () => {
     createGameElements();
     draw();
 
-    // createFpsElement(mainDiv);
-    // GameVars.initDebug();
     window.requestAnimationFrame(() => gameLoop());
 }
 
@@ -122,6 +120,9 @@ const createGameElements = () => {
         });
 
     gameOverCanv = createElem(mainDiv, "canvas", "gameoverscreen", ["hidden"], GameVars.gameW, GameVars.gameH, GameVars.isMobile, "#ff4b4be6", () => skipElapsedTime / 1 >= 1 && skipGameOver());
+
+    // createFpsElement(mainDiv);
+    // GameVars.initDebug();
 }
 
 const draw = (isResize) => {
@@ -169,7 +170,7 @@ const drawMainMenu = () => {
 }
 
 const drawLeftBtn = () => {
-    leftMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px)';
+    leftMenuBtn.style.translate = ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px';
 
     genSmallBox(leftMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "v to ") + "start game"), leftMenuBtn, toPixelSize(1), 33, 10, "#edeef7", 1);
@@ -177,7 +178,7 @@ const drawLeftBtn = () => {
 }
 
 const drawRightBtn = () => {
-    rightMenuBtn.style.transform = 'translate(' + ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px, ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px)';
+    rightMenuBtn.style.translate = ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px';
 
     genSmallBox(rightMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "b to ") + "start game"), rightMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
@@ -185,7 +186,7 @@ const drawRightBtn = () => {
 }
 
 const drawSoundBtn = (isResize) => {
-    soundBtnCanv.style.transform = 'translate(' + (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px, ' + toPixelSize(10) + 'px)';
+    soundBtnCanv.style.translate = (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px ' + toPixelSize(10) + 'px';
     let isSoundOn = GameVars.sound && GameVars.sound.isSoundOn;
     if (lastSoundState !== isSoundOn || isResize) {
         lastSoundState = isSoundOn;
@@ -198,7 +199,7 @@ const drawSoundBtn = (isResize) => {
 }
 
 const drawScore = (isResize) => {
-    scoreCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(10) + 'px)';
+    scoreCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(10) + 'px';
     if (lastScore != GameVars.score || isResize) {
         let text;
         !GameVars.game && (text = "top score - " + GameVars.highScore) || (text = "Score - " + GameVars.score);

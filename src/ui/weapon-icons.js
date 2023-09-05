@@ -33,8 +33,8 @@ export class WeaponIcons {
         setElemSize(this.rightCanv, toPixelSize(30), toPixelSize(30));
         setElemSize(this.leftCanv, toPixelSize(30), toPixelSize(30));
 
-        this.leftCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
-        this.rightCanv.style.transform = 'translate(' + (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px, ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px)';
+        this.leftCanv.style.translate = (GameVars.gameW - this.leftCanv.width - toPixelSize(12)) + 'px ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px';
+        this.rightCanv.style.translate = (GameVars.gameW - this.leftCanv.width - toPixelSize(30 + 24)) + 'px ' + (GameVars.gameH - this.leftCanv.height - toPixelSize(12)) + 'px';
 
         this.drawIcon(this.rightCanv, GameVars.isMobile ? "A" : "V", GameVars.player.playerRightWeapon.weaponType, GameVars.keys['v'] || GameVars.keys['V']);
         this.drawIcon(this.leftCanv, GameVars.isMobile ? "B" : "B", GameVars.player.playerLeftWeapon.weaponType, GameVars.keys['b'] || GameVars.keys['B']);

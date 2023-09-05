@@ -31,7 +31,7 @@ export class Player {
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
         setElemSize(this.shadowCanv, toPixelSize(2) * 7, toPixelSize(2) * 6);
-        this.shadowCanv.style.transform = 'translate(' + -toPixelSize(4) + 'px, ' + toPixelSize(8) + 'px)';
+        this.shadowCanv.style.translate = -toPixelSize(4) + 'px ' + toPixelSize(8) + 'px';
 
         setElemSize(this.playerCanv, knight[0].length * toPixelSize(2), knight.length * toPixelSize(2));
 
@@ -46,7 +46,7 @@ export class Player {
         this.lifeBar.init();
 
         setElemSize(this.keyCanv, (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
-        this.keyCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(37) + 'px)';
+        this.keyCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(37) + 'px';
 
         this.draw();
     }
@@ -114,9 +114,8 @@ export class Player {
     move(circle) {
         this.collisionObj.x = circle.x;
         this.collisionObj.y = circle.y;
-        this.div.style.transform = 'translate(' +
-            (this.collisionObj.x - (knight[0].length * toPixelSize(2)) / 2) + 'px, ' +
-            (this.collisionObj.y - (knight.length * toPixelSize(2)) / 4 * 3) + 'px)';
+        this.div.style.translate = (this.collisionObj.x - (knight[0].length * toPixelSize(2)) / 2) + 'px ' +
+            (this.collisionObj.y - (knight.length * toPixelSize(2)) / 4 * 3) + 'px';
     }
 
     atk() {

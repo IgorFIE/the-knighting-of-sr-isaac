@@ -44,7 +44,7 @@ export class MovePad {
 
     update() {
         setElemSize(this.movePadCanv, toPixelSize(64), toPixelSize(64));
-        this.movePadCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + (GameVars.gameH - this.movePadCanv.height - toPixelSize(12)) + 'px)';
+        this.movePadCanv.style.translate = toPixelSize(12) + 'px ' + (GameVars.gameH - this.movePadCanv.height - toPixelSize(12)) + 'px';
 
         this.movePadCanv.getContext("2d").clearRect(0, 0, this.movePadCanv.width, this.movePadCanv.height);
 

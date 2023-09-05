@@ -87,10 +87,10 @@ const updatePixelSize = (width, height) => {
 }
 
 // const initDebug = () => {
-//     GameVars.debug = document.createElement("div");
-//     GameVars.debug.style.fontSize = "50px";
-//     GameVars.debug.style.position = "absolute";
-//     document.getElementById("main").appendChild(GameVars.debug);
+    //     GameVars.debug = document.createElement("div");
+    //     GameVars.debug.style.fontSize = "50px";
+    //     GameVars.debug.style.position = "absolute";
+    //     document.getElementById("main").appendChild(GameVars.debug);
 // }
 
 const pixelCal = (min, max) => {

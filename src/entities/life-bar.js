@@ -39,12 +39,10 @@ export class LifeBar {
     update() {
         if (!this.isPlayer) {
             this.parentRect = this.parentCanv.getBoundingClientRect();
-            this.lifeBackgroundCanv.style.transform = 'translate(' +
-                ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px, ' +
-                -toPixelSize(13) + 'px)';
-            this.lifeCanv.style.transform = 'translate(' +
-                ((this.parentRect.width / 2) - (this.lifeCanv.width / 2) + toPixelSize(2)) + 'px, ' +
-                -toPixelSize(13) + 'px)';
+            this.lifeBackgroundCanv.style.translate = ((this.parentRect.width / 2) - (this.lifeCanv.width / 2)) + 'px ' +
+                -toPixelSize(13) + 'px';
+            this.lifeCanv.style.translate = ((this.parentRect.width / 2) - (this.lifeCanv.width / 2) + toPixelSize(2)) + 'px ' +
+                -toPixelSize(13) + 'px';
         }
         if (this.updateLifeBar) {
             this.updateLifeBar = false;
@@ -57,8 +55,8 @@ export class LifeBar {
         setElemSize(this.lifeCanv, toPixelSize(8 * (this.totalLife / GameVars.heartLifeVal) - 1), toPixelSize(11));
 
         if (this.isPlayer) {
-            this.lifeBackgroundCanv.style.transform = 'translate(' + toPixelSize(12) + 'px, ' + toPixelSize(24) + 'px)';
-            this.lifeCanv.style.transform = 'translate(' + toPixelSize(14) + 'px, ' + toPixelSize(24) + 'px)';
+            this.lifeBackgroundCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(24) + 'px';
+            this.lifeCanv.style.translate = toPixelSize(14) + 'px ' + toPixelSize(24) + 'px';
         }
 
         this.lifeBackgroundCanv.getContext("2d").clearRect(0, 0, this.lifeBackgroundCanv.width, this.lifeBackgroundCanv.height);

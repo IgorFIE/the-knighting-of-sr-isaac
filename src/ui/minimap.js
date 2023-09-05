@@ -12,7 +12,7 @@ export class Minimap {
 
     update() {
         setElemSize(this.minimapCanv, toPixelSize(46), toPixelSize(46));
-        this.minimapCanv.style.transform = 'translate(' + (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px, ' + toPixelSize(24) + 'px)';
+        this.minimapCanv.style.translate = (GameVars.gameW - this.minimapCanv.width - toPixelSize(12)) + 'px ' + toPixelSize(24) + 'px';
 
         !this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] && (this.visited[GameVars.currentRoom.roomY + "|" + GameVars.currentRoom.roomX] = true);
 
