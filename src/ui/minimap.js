@@ -44,15 +44,7 @@ export class Minimap {
         let roomType = GameVars.gameBoard.board[GameVars.currentRoom.roomY + y][GameVars.currentRoom.roomX + x].roomType;
         if (isSpecialRoom(roomType) && roomType !== RoomType.KEY) {
             const ctx = this.minimapCanv.getContext("2d");
-            ctx.fillStyle = "";
-            switch (roomType) {
-                case RoomType.BOSS:
-                    ctx.fillStyle = "#a80000";
-                    break;
-                case RoomType.TREASURE:
-                    ctx.fillStyle = "#ffff57";
-                    break;
-            }
+            ctx.fillStyle = roomType === RoomType.BOSS ? "#a80000" : roomType === RoomType.TREASURE ? "#ffff57" : "";
             this.minimapCanv.getContext("2d").fillRect(
                 ((x + 2) * toPixelSize(8)) + toPixelSize(5),
                 ((y + 2) * toPixelSize(8)) + toPixelSize(5),

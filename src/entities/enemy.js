@@ -60,9 +60,8 @@ export class Enemy {
                 return 8;
             case EnemySubType.DEFENSIVE:
                 return 16;
-            case EnemySubType.AFRAID:
-                return 19;
         }
+        return 19;
     }
 
     setEnemyWeapons() {
@@ -95,7 +94,7 @@ export class Enemy {
     getEnemyLife() {
         if (GameVars.gameLevel < 3) {
             return this.enemyType === EnemyType.BASIC ? 1 : 6;
-        } else if (GameVars.gameLevel < 6) {
+        } else if (GameVars.gameLevel < 5) {
             return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8);
         } else {
             return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(2, 3) : randomNumbOnRange(8, 10);
@@ -282,9 +281,8 @@ export class Enemy {
                 return 75;
             case EnemySubType.DEFENSIVE:
                 return 50;
-            case EnemySubType.AFRAID:
-                return 25;
         }
+        return 25;
     }
 
     draw() {

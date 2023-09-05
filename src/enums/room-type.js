@@ -11,7 +11,6 @@ export const isSpecialRoom = (roomType) => {
         case RoomType.KEY:
         case RoomType.BOSS:
             return true;
-        default:
-            return false;
     }
+    return false;
 }
