@@ -31,9 +31,8 @@ export const getWeaponSprite = (weaponType) => {
             return crossbow;
         case WeaponType.HALBERD:
             return halberd;
-        default:
-            return fist;
     }
+    return fist;
 }
 
 const fist = [

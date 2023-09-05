@@ -25,69 +25,55 @@ export class Sound {
     }
 
     clickSound() {
-        this.isSoundOn && this.isSoundInitialized && this.playSound("square", 174.6, 0.14, 0, 0.2);
+        this.playSound("square", 174.6, 0.14, 0, 0.2);
     }
 
     enemyTakeDmgSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 32.70, 0.12, 0, 0.1);
-            this.playSound("square", 36.71, 0.12, 0.1, 0.2);
-            this.playSound("square", 16.35, 0.14, 0.2, 0.2);
-        }
+        this.playSound("square", 32.70, 0.12, 0, 0.1);
+        this.playSound("square", 36.71, 0.12, 0.1, 0.2);
+        this.playSound("square", 16.35, 0.14, 0.2, 0.2);
     }
 
     playerTakeDmgSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 130.81, 0.14, 0, 0.1);
-            this.playSound("square", 146.83, 0.14, 0.1, 0.2);
-            this.playSound("square", 65.41, 0.16, 0.2, 0.2);
-        }
+        this.playSound("square", 130.81, 0.14, 0, 0.1);
+        this.playSound("square", 146.83, 0.14, 0.1, 0.2);
+        this.playSound("square", 65.41, 0.16, 0.2, 0.2);
     }
 
     spawnSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 293.7, 0.1, 0, 0.2);
-        }
+        this.playSound("square", 293.7, 0.1, 0, 0.2);
     }
 
     deadSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 18.35, 0.1, 0, 0.1);
-            this.playSound("square", 36.71, 0.1, 0.1, 0.2);
-            this.playSound("square", 73.42, 0.1, 0.2, 0.2);
-        }
+        this.playSound("square", 18.35, 0.1, 0, 0.1);
+        this.playSound("square", 36.71, 0.1, 0.1, 0.2);
+        this.playSound("square", 73.42, 0.1, 0.2, 0.2);
     }
 
     pickItem() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 932.3, 0.1, 0, 0.1);
-            this.playSound("square", 1865, 0.1, 0.1, 0.2);
-        }
+        this.playSound("square", 932.3, 0.1, 0, 0.1);
+        this.playSound("square", 1865, 0.1, 0.1, 0.2);
     }
 
     atkSound() {
-        this.isSoundOn && this.isSoundInitialized && this.playSound("sine", 82.41, 0.4, 0, 0.2);
+        this.playSound("sine", 82.41, 0.4, 0, 0.2);
     }
 
     walkSound() {
-        this.isSoundOn && this.isSoundInitialized && this.playSound("triangle", 110, 0.05, 0, 0.1);
+        this.playSound("triangle", 110, 0.05, 0, 0.1);
     }
 
     openDoorSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("triangle", 293.66, 0.05, 0, 0.1);
-            this.playSound("triangle", 146.83, 0.05, 0.1, 0.2);
-        }
+        this.playSound("triangle", 293.66, 0.05, 0, 0.1);
+        this.playSound("triangle", 146.83, 0.05, 0.1, 0.2);
     }
 
 
 
     playOverSound() {
-        if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 32.70, 0.3, 0, 0.1);
-            this.playSound("square", 36.71, 0.2, 0.1, 0.2);
-            this.playSound("square", 16.35, 0.3, 0.2, 0.1);
-        }
+        this.playSound("square", 32.70, 0.3, 0, 0.1);
+        this.playSound("square", 36.71, 0.2, 0.1, 0.2);
+        this.playSound("square", 16.35, 0.3, 0.2, 0.1);
     }
 
     playMusic() {
@@ -109,18 +95,20 @@ export class Sound {
     }
 
     playSound(type, value, volume, start, end) {
-        const o = this.context.createOscillator();
-        const g = this.context.createGain();
-        o.type = type;
-        o.frequency.value = value;
+        if (this.isSoundOn && this.isSoundInitialized) {
+            const o = this.context.createOscillator();
+            const g = this.context.createGain();
+            o.type = type;
+            o.frequency.value = value;
 
-        g.gain.setValueAtTime(volume, this.context.currentTime);
-        g.gain.linearRampToValueAtTime(0.00001, this.context.currentTime + end);
+            g.gain.setValueAtTime(volume, this.context.currentTime);
+            g.gain.linearRampToValueAtTime(0.00001, this.context.currentTime + end);
 
-        o.connect(g);
-        g.connect(this.context.destination);
-        o.start(start);
-        o.stop(this.context.currentTime + end);
+            o.connect(g);
+            g.connect(this.context.destination);
+            o.start(start);
+            o.stop(this.context.currentTime + end);
+        }
     }
 }
 

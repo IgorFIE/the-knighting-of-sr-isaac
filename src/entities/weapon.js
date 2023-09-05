@@ -159,13 +159,13 @@ export class Weapon {
             case WeaponType.HAMMER:
             case WeaponType.AXE:
             case WeaponType.MORNING_STAR:
-                let anglePoint1 = this.retrieveAnglePoint(
+                const anglePoint1 = this.retrieveAnglePoint(
                     this.relativePos.x,
                     this.relativePos.y,
                     this.sprite.length * toPixelSize(this.size),
                     this.relativePos.r + 72.5
                 );
-                let anglePoint2 = this.retrieveAnglePoint(
+                const anglePoint2 = this.retrieveAnglePoint(
                     this.relativePos.x,
                     this.relativePos.y,
                     this.sprite[0].length / 2 * toPixelSize(this.size),

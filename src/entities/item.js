@@ -49,9 +49,8 @@ export class Item {
                 return key;
             case ItemType.HEART:
                 return heart;
-            case ItemType.WEAPON:
-                return getWeaponSprite(subType);
         }
+        return getWeaponSprite(subType);
     }
 
     update() {
@@ -104,11 +103,7 @@ export class Item {
     }
 
     dropCurrentWeapon(weapon) {
-        if (weapon.weaponType != WeaponType.FIST) {
-            this.room.items.push(
-                new Item(this.x, this.y, ItemType.WEAPON, weapon.weaponType, this.room)
-            );
-        }
+        weapon.weaponType != WeaponType.FIST && this.room.items.push(new Item(this.x, this.y, ItemType.WEAPON, weapon.weaponType, this.room));
     }
 
     destroy() {

@@ -23,9 +23,7 @@ export const convertTextToPixelArt = (text) => {
     space.forEach((val, pixelLetterHeight) => {
         let newPixelTextArray = [];
         textLetters.forEach((val, letterPos) => {
-            if (letterPos > 0) {
-                newPixelTextArray.push([false]);
-            }
+            letterPos > 0 && newPixelTextArray.push([false]);
             const currentPixelLetter = retrievePixelLetter(textLetters[letterPos]);
             newPixelTextArray.push(currentPixelLetter[pixelLetterHeight]);
         });

@@ -129,9 +129,8 @@ export class GameBoard {
                 return DoorType.TREASURE;
             case RoomType.BOSS:
                 return DoorType.BOSS;
-            default:
-                return DoorType.NORMAL;
         }
+        return DoorType.NORMAL;
     };
 
     draw() {

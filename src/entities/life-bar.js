@@ -60,13 +60,12 @@ export class LifeBar {
         }
 
         this.lifeBackgroundCanv.getContext("2d").clearRect(0, 0, this.lifeBackgroundCanv.width, this.lifeBackgroundCanv.height);
+        this.lifeCanv.getContext("2d").clearRect(0, 0, this.lifeCanv.width, this.lifeCanv.height);
+
         genSmallBox(this.lifeBackgroundCanv, 0, 0, (8 * (this.totalLife / GameVars.heartLifeVal)) + 2, 10, toPixelSize(1), "#00000066", "#100f0f66");
+        
         for (let i = 0; i < this.totalLife / GameVars.heartLifeVal; i++) {
             drawSprite(this.lifeBackgroundCanv, heart, toPixelSize(1), 2 + (8 * i), 2, { "ho": "#2f1519", "hi": "#100f0f" });
-        }
-
-        this.lifeCanv.getContext("2d").clearRect(0, 0, this.lifeCanv.width, this.lifeCanv.height);
-        for (let i = 0; i < this.totalLife / GameVars.heartLifeVal; i++) {
             drawSprite(this.lifeCanv, heart, toPixelSize(1), (8 * i), 2, { "ho": "#edeef7", "hi": "#a80000" });
         }
     }
