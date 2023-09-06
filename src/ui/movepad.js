@@ -13,8 +13,8 @@ export class MovePad {
                 const xAmount = ((touch.pageX - canvBox.x) - (this.movePadCanv.width / 2)) / (this.movePadCanv.width / 2);
                 const yAmount = ((touch.pageY - canvBox.y) - (this.movePadCanv.height / 2)) / (this.movePadCanv.height / 2);
 
-                const xFinalValue = (Math.abs(xAmount) >= 0.2 ? 1 : 0) * xAmount < 0 ? -1 : 1;
-                const yFinalValue = (Math.abs(yAmount) >= 0.2 ? 1 : 0) * yAmount < 0 ? -1 : 1;
+                const xFinalValue = (Math.abs(xAmount) >= 0.2 ? 1 : 0) * (xAmount < 0 ? -1 : 1);
+                const yFinalValue = (Math.abs(yAmount) >= 0.2 ? 1 : 0) * (yAmount < 0 ? -1 : 1);
 
                 let needsRedraw = GameVars.keys["w"] !== yFinalValue < 0 ||
                     GameVars.keys["s"] !== yFinalValue > 0 ||
