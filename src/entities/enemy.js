@@ -23,7 +23,7 @@ export class Enemy {
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
         this.enemySpeed = 1 + (randomNumbOnRange(-5, 0) / 10);
 
-        this.enemyKeys = {};
+        this.enemyKeys = new Map();
         this.movTimeElapsed = 0;
 
         this.div = createElem(room.roomDiv, "div", null, ["enemy"]);
@@ -137,15 +137,14 @@ export class Enemy {
         const yDistance = this.targetPos.y - this.collisionObj.y;
 
         if (xDistance < -toPixelSize(4) || xDistance > toPixelSize(4)) {
-            xDistance > 0 ? this.enemyKeys['d'] = true : this.enemyKeys['a'] = true;
+            xDistance > 0 ? this.enemyKeys.set('d', true) : this.enemyKeys.set('a', true);
         }
 
         if (yDistance < -toPixelSize(4) || yDistance > toPixelSize(4)) {
-            yDistance > 0 ? this.enemyKeys['s'] = true : this.enemyKeys['w'] = true;
+            yDistance > 0 ? this.enemyKeys.set('s', true) : this.enemyKeys.set('w', true);
         }
 
-        const movKeysCount = Object.keys(this.enemyKeys).length;
-        if (movKeysCount > 0) {
+        if (this.enemyKeys.size > 0) {
             this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
             this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
             this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
@@ -156,14 +155,13 @@ export class Enemy {
             this.enemyRightWeapon.weaponCanv.style.animation = "";
         }
 
-        const distance = toPixelSize(movKeysCount > 1 ? this.enemySpeed / 1.4142 : this.enemySpeed);
-        if (this.enemyKeys['d']) { newRectX += distance; }
-        if (this.enemyKeys['a']) { newRectX -= distance; }
-        if (this.enemyKeys['w']) { newRectY -= distance; }
-        if (this.enemyKeys['s']) { newRectY += distance; }
+        const distance = toPixelSize(this.enemyKeys.size > 1 ? this.enemySpeed / 1.4142 : this.enemySpeed);
+        if (this.enemyKeys.has('d')) { newRectX += distance; }
+        if (this.enemyKeys.has('a')) { newRectX -= distance; }
+        if (this.enemyKeys.has('w')) { newRectY -= distance; }
+        if (this.enemyKeys.has('s')) { newRectY += distance; }
 
-        // maybe instead of creating a new obj we should convert all walues to false... better for performance
-        this.enemyKeys = {};
+        this.enemyKeys.clear();
 
         this.validateMovement(this.collisionObj.x, newRectY);
         this.validateMovement(newRectX, this.collisionObj.y);
