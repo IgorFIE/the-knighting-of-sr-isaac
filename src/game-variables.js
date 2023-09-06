@@ -2,7 +2,7 @@ const storeId = 'igorfie-the-knighting-of-sr-isaac';
 
 let highScore = parseInt(localStorage.getItem(storeId)) || 0;
 
-const isMobile = navigator.maxTouchPoints > 1;
+const isMobile = navigator.maxTouchPoints > 1 && navigator.maxTouchPoints !== 256;
 
 let lastGameW;
 let lastGameH;
@@ -87,10 +87,10 @@ const updatePixelSize = (width, height) => {
 }
 
 // const initDebug = () => {
-    //     GameVars.debug = document.createElement("div");
-    //     GameVars.debug.style.fontSize = "50px";
-    //     GameVars.debug.style.position = "absolute";
-    //     document.getElementById("main").appendChild(GameVars.debug);
+//     GameVars.debug = document.createElement("div");
+//     GameVars.debug.style.fontSize = "50px";
+//     GameVars.debug.style.position = "absolute";
+//     document.getElementById("main").appendChild(GameVars.debug);
 // }
 
 const pixelCal = (min, max) => {
