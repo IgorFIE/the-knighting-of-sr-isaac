@@ -46,8 +46,6 @@ export class Player {
         }
 
         this.walkAnim = this.playerCanv.animate(walk(), { duration: 160 });
-        this.leftWeaponAnim = this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
-        this.rightWeaponAnim = this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
 
         this.lifeBar.init();
 
@@ -61,11 +59,9 @@ export class Player {
         if (handDir > 0) {
             this.dropWeapon(x, y, this.playerLeftWeapon);
             this.playerLeftWeapon = new Weapon(weaponType, handDir, this, "#cd9722", null, true);
-            this.leftWeaponAnim = this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
         } else {
             this.dropWeapon(x, y, this.playerRightWeapon);
             this.playerRightWeapon = new Weapon(weaponType, handDir, this, "#cd9722", null, true);
-            this.rightWeaponAnim = this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
         }
     }
 
@@ -102,10 +98,10 @@ export class Player {
             key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight'
         ) && GameVars.keys[key]);
 
-        if (movKeys.length > 0 && this.walkAnim?.finished) {
-            this.walkAnim.play();
-            !this.playerLeftWeapon.isPerformingAction && this.leftWeaponAnim.play();
-            !this.playerRightWeapon.isPerformingAction && this.rightWeaponAnim.play();
+        if (movKeys.length > 0 && this.walkAnim.playState === "finished") {
+            this.walkAnim = this.playerCanv.animate(walk(), { duration: 160 });
+            !this.playerLeftWeapon.isPerformingAction && this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
+            !this.playerRightWeapon.isPerformingAction && this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
             GameVars.sound.walkSound();
         }
 

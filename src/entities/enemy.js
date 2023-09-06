@@ -50,8 +50,6 @@ export class Enemy {
         this.setEnemyWeapons();
 
         this.walkAnim = this.enemyCanv.animate(walk(), { duration: 160 });
-        this.leftWeaponAnim = this.enemyLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
-        this.rightWeaponAnim = this.enemyRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
 
         this.lifeBar.init();
 
@@ -148,10 +146,10 @@ export class Enemy {
             yDistance > 0 ? this.enemyKeys.set('s', true) : this.enemyKeys.set('w', true);
         }
 
-        if (this.enemyKeys.size > 0 && this.walkAnim?.finished) {
-            this.walkAnim.play();
-            !this.enemyLeftWeapon.isPerformingAction && this.leftWeaponAnim.play();
-            !this.enemyRightWeapon.isPerformingAction && this.rightWeaponAnim.play();
+        if (this.enemyKeys.size > 0 && this.walkAnim.playState === "finished") {
+            this.walkAnim = this.enemyCanv.animate(walk(), { duration: 160 });
+            !this.enemyLeftWeapon.isPerformingAction && this.enemyLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
+            !this.enemyRightWeapon.isPerformingAction && this.enemyRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
             GameVars.sound.walkSound();
         }
 
