@@ -71,16 +71,12 @@ export class Item {
                     case ItemType.WEAPON:
                         if (!this.wasPicked && (GameVars.keys['v'] || GameVars.keys['B'])) {
                             this.wasPicked = true;
-                            this.dropCurrentWeapon(GameVars.player.playerRightWeapon);
-                            GameVars.player.playerRightWeapon.destroy();
-                            GameVars.player.playerRightWeapon = new Weapon(this.subType, -1, GameVars.player, "#cd9722", null, true);
+                            GameVars.player.pickWeapon(this.x, this.y, this.subType, -1);
                             GameVars.weaponIcons.update();
                         }
                         if (!this.wasPicked && (GameVars.keys['b'] || GameVars.keys['B'])) {
                             this.wasPicked = true;
-                            this.dropCurrentWeapon(GameVars.player.playerLeftWeapon);
-                            GameVars.player.playerLeftWeapon.destroy();
-                            GameVars.player.playerLeftWeapon = new Weapon(this.subType, 1, GameVars.player, "#cd9722", null, true);
+                            GameVars.player.pickWeapon(this.x, this.y, this.subType, 1);
                             GameVars.weaponIcons.update();
                         }
                         break;
@@ -100,10 +96,6 @@ export class Item {
         this.collisionObj.y = y;
         this.itemDiv.style.translate = (this.collisionObj.x - (this.sprite[0].length * this.size) / 2) + 'px ' +
             (this.collisionObj.y - (this.sprite.length * this.size) / 2) + 'px';
-    }
-
-    dropCurrentWeapon(weapon) {
-        weapon.weaponType != WeaponType.FIST && this.room.items.push(new Item(this.x, this.y, ItemType.WEAPON, weapon.weaponType, this.room));
     }
 
     destroy() {

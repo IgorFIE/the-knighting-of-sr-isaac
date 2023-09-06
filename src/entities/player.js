@@ -7,7 +7,9 @@ import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities
 import { key, knight } from "./sprites";
 import { LifeBar } from "./life-bar";
 import { Weapon } from "./weapon";
-import { deadAnim } from "../utilities/animation-utilities";
+import { deadAnim, walk, weaponWalkLeft, weaponWalkRight } from "../utilities/animation-utilities";
+import { Item } from "./item";
+import { ItemType } from "../enums/item-type";
 
 export class Player {
     constructor() {
@@ -43,12 +45,33 @@ export class Player {
             this.playerLeftWeapon = new Weapon(GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, "#cd9722", null, true);
         }
 
+        this.walkAnim = this.playerCanv.animate(walk(), { duration: 160 });
+        this.leftWeaponAnim = this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
+        this.rightWeaponAnim = this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
+
         this.lifeBar.init();
 
         setElemSize(this.keyCanv, (key[0].length * toPixelSize(2)) + toPixelSize(4), (key.length * toPixelSize(2)) + toPixelSize(4));
         this.keyCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(37) + 'px';
 
         this.draw();
+    }
+
+    pickWeapon(x, y, weaponType, handDir) {
+        if (handDir > 0) {
+            this.dropWeapon(x, y, this.playerLeftWeapon);
+            this.playerLeftWeapon = new Weapon(weaponType, handDir, this, "#cd9722", null, true);
+            this.leftWeaponAnim = this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
+        } else {
+            this.dropWeapon(x, y, this.playerRightWeapon);
+            this.playerRightWeapon = new Weapon(weaponType, handDir, this, "#cd9722", null, true);
+            this.rightWeaponAnim = this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
+        }
+    }
+
+    dropWeapon(x, y, weapon) {
+        weapon.weaponType != WeaponType.FIST && GameVars.currentRoom.items.push(new Item(x, y, ItemType.WEAPON, weapon.weaponType, GameVars.currentRoom));
+        weapon.destroy();
     }
 
     update() {
@@ -59,7 +82,6 @@ export class Player {
             this.lifeBar.update();
         } else {
             if (this.isAlive) {
-                this.clearAnim();
                 this.lifeBar.update();
                 this.isAlive = false;
                 this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
@@ -80,13 +102,11 @@ export class Player {
             key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight'
         ) && GameVars.keys[key]);
 
-        if (movKeys.length > 0) {
-            this.playerCanv.style.animation = "walk 0.16s infinite ease-in-out";
-            this.playerLeftWeapon.weaponCanv.style.animation = this.playerLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
-            this.playerRightWeapon.weaponCanv.style.animation = this.playerRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
+        if (movKeys.length > 0 && this.walkAnim?.finished) {
+            this.walkAnim.play();
+            !this.playerLeftWeapon.isPerformingAction && this.leftWeaponAnim.play();
+            !this.playerRightWeapon.isPerformingAction && this.rightWeaponAnim.play();
             GameVars.sound.walkSound();
-        } else {
-            this.clearAnim();
         }
 
         const distance = movKeys.length > 1 ? this.playerSpeed / 1.4142 : this.playerSpeed;
@@ -97,12 +117,6 @@ export class Player {
 
         this.validateMovement(this.collisionObj.x, newRectY);
         this.validateMovement(newRectX, this.collisionObj.y);
-    }
-
-    clearAnim() {
-        this.playerCanv.style.animation = "";
-        this.playerLeftWeapon.weaponCanv.style.animation = "";
-        this.playerRightWeapon.weaponCanv.style.animation = "";
     }
 
     validateMovement(x, y, ignoreCollisions) {

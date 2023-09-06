@@ -3,7 +3,7 @@ import { EnemySubType, EnemyType, enemyChainMailColors } from "../enums/enemy-ty
 import { ItemType } from "../enums/item-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
-import { deadAnim } from "../utilities/animation-utilities";
+import { deadAnim, walk, weaponWalkLeft, weaponWalkRight } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
 import { checkForCollisions, distBetwenObjs, circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
@@ -48,6 +48,10 @@ export class Enemy {
         setElemSize(this.enemyCanv, knight[0].length * toPixelSize(this.enemySize), knight.length * toPixelSize(this.enemySize));
 
         this.setEnemyWeapons();
+
+        this.walkAnim = this.enemyCanv.animate(walk(), { duration: 160 });
+        this.leftWeaponAnim = this.enemyLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
+        this.rightWeaponAnim = this.enemyRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
 
         this.lifeBar.init();
 
@@ -144,15 +148,11 @@ export class Enemy {
             yDistance > 0 ? this.enemyKeys.set('s', true) : this.enemyKeys.set('w', true);
         }
 
-        if (this.enemyKeys.size > 0) {
-            this.enemyCanv.style.animation = "walk 0.16s infinite ease-in-out";
-            this.enemyLeftWeapon.weaponCanv.style.animation = this.enemyLeftWeapon.isPerformingAction ? "" : "weaponWalkLeft 0.16s infinite ease-in-out";
-            this.enemyRightWeapon.weaponCanv.style.animation = this.enemyRightWeapon.isPerformingAction ? "" : "weaponWalkRight 0.16s infinite ease-in-out";
+        if (this.enemyKeys.size > 0 && this.walkAnim?.finished) {
+            this.walkAnim.play();
+            !this.enemyLeftWeapon.isPerformingAction && this.leftWeaponAnim.play();
+            !this.enemyRightWeapon.isPerformingAction && this.rightWeaponAnim.play();
             GameVars.sound.walkSound();
-        } else {
-            this.enemyCanv.style.animation = "";
-            this.enemyLeftWeapon.weaponCanv.style.animation = "";
-            this.enemyRightWeapon.weaponCanv.style.animation = "";
         }
 
         const distance = toPixelSize(this.enemyKeys.size > 1 ? this.enemySpeed / 1.4142 : this.enemySpeed);
