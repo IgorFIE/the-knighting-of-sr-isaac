@@ -126,7 +126,7 @@ export class Weapon {
     }
 
     setWeaponPos() {
-        this.weaponDiv.style.transform = 'translate(' + this.relativePos.x + 'px, ' + this.relativePos.y + 'px)';
+        this.weaponDiv.style.translate = this.relativePos.x + 'px ' + this.relativePos.y + 'px';
         switch (this.weaponType) {
             case WeaponType.SWORD:
                 this.weaponCanv.style.transformOrigin = "50% 90%";
@@ -137,7 +137,7 @@ export class Weapon {
             case WeaponType.MORNING_STAR:
             case WeaponType.CROSSBOW:
             case WeaponType.HALBERD:
-                this.weaponDiv.style.transform += ' rotate(' + this.relativePos.r + 'deg)';
+                this.weaponDiv.style.rotate = this.relativePos.r + 'deg';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
                 break;
         }

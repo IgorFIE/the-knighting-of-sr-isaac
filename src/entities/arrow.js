@@ -24,7 +24,8 @@ export class Arrow {
         this.collisionObj.x += this.speed * this.dir;
         this.collisionObj.y -= this.speed;
         this.speed = 99 * this.speed / 100;
-        this.canv.style.transform = 'translate(' + this.collisionObj.x + 'px, ' + this.collisionObj.y + 'px) rotate(' + 45 * this.dir + 'deg)';
+        this.canv.style.translate = this.collisionObj.x + 'px ' + this.collisionObj.y + 'px';
+        this.canv.style.rotate = 45 * this.dir + 'deg';
 
         Math.round(this.speed) === 0 && this.destroy();
 

@@ -116,7 +116,7 @@ export class Enemy {
                 GameVars.sound.deadSound();
                 this.lifeBar.update();
                 this.isAlive = false;
-                this.div.animate(deadAnim(this.div.style.transform), { duration: 500, fill: "forwards" }).finished.then(() => {
+                this.div.animate(deadAnim(), { duration: 500, fill: "forwards" }).finished.then(() => {
                     if (this.enemyType === EnemyType.BOSS) {
                         for (let i = randomNumbOnRange(1, 2); i > 0; i--) {
                             this.room.items.push(new Item(

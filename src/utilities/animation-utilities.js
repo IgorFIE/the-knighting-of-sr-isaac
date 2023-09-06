@@ -1,10 +1,8 @@
 import { toPixelSize } from "../game-variables";
 
-export const deadAnim = (currentTransform) => {
+export const deadAnim = () => {
     return {
-        transform: [
-            currentTransform + " rotate(0deg)",
-            currentTransform + " rotate(90deg)"],
+        rotate: [0, 90 + "deg"],
         easing: ["ease-in-out", "ease-in-out"],
         offset: [0, 1]
     };
@@ -12,33 +10,24 @@ export const deadAnim = (currentTransform) => {
 
 export const walk = () => {
     return {
-        transform: [
-            "translateY(0px) rotate(0deg)",
-            "translateY(" + toPixelSize(-3) + "px) rotate(" + toPixelSize(-3) + "deg)",
-            "translateY(0px) rotate(0deg)"
-        ],
+        translate: [0, "0 " + toPixelSize(-3) + "px", 0],
+        rotate: [0, toPixelSize(-3) + "deg", 0],
         offset: [0, 0.5, 1]
     };
 };
 
 export const weaponWalkLeft = () => {
     return {
-        transform: [
-            "translateX(" + toPixelSize(-2) + "px) translateY(" + toPixelSize(-2) + "px) rotate(" + toPixelSize(-2) + "deg)",
-            "translateX(0px) translateY(0px) rotate(0deg)",
-            "translateX(" + toPixelSize(-2) + "px) translateY(" + toPixelSize(-2) + "px) rotate(" + toPixelSize(-2) + "deg)"
-        ],
+        translate: [toPixelSize(-2) + "px " + toPixelSize(-2) + "px", 0, toPixelSize(-2) + "px " + toPixelSize(-2) + "px"],
+        rotate: [toPixelSize(-2) + "deg", 0, toPixelSize(-2) + "deg"],
         offset: [0, 0.5, 1]
     };
 };
 
 export const weaponWalkRight = () => {
     return {
-        transform: [
-            "translateX(" + toPixelSize(2) + "px) translateY(" + toPixelSize(-2) + "px) rotate(" + toPixelSize(2) + "deg)",
-            "translateX(0px) translateY(0px) rotate(0deg)",
-            "translateX(" + toPixelSize(2) + "px) translateY(" + toPixelSize(-2) + "px) rotate(" + toPixelSize(2) + "deg)"
-        ],
+        translate: [toPixelSize(2) + "px " + toPixelSize(-2) + "px", 0, toPixelSize(2) + "px " + toPixelSize(-2) + "px"],
+        rotate: [toPixelSize(2) + "deg", 0, toPixelSize(2) + "deg"],
         offset: [0, 0.5, 1]
     };
 };

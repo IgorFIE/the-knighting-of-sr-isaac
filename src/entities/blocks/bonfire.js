@@ -29,7 +29,8 @@ export class Bonfire {
         this.bonfireDiv.style.translate = (x - (this.bonfireCanv.width / 2)) + 'px ' + (y - (this.bonfireCanv.height / 2)) + 'px';
 
         setElemSize(this.swordCanv, shortSword.length * toPixelSize(2), shortSword.length * toPixelSize(2));
-        this.swordCanv.style.transform = 'translate(' + toPixelSize(0) + 'px, ' + toPixelSize(-8) + 'px) rotate(-160deg)';
+        this.swordCanv.style.translate = toPixelSize(0) + 'px ' + toPixelSize(-8) + 'px';
+        this.swordCanv.style.rotate = '-160deg';
 
         setElemSize(this.bonfireTextCanv, toPixelSize(80), toPixelSize(6));
         this.bonfireTextCanv.style.translate = toPixelSize(-30) + 'px ' + toPixelSize(-10) + 'px';
