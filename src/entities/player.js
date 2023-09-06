@@ -45,7 +45,7 @@ export class Player {
             this.playerLeftWeapon = new Weapon(GameVars.lastPlayerLeftWeaponType || WeaponType.FIST, 1, this, "#cd9722", null, true);
         }
 
-        this.walkAnim = this.playerCanv.animate(walk(), { duration: 160 });
+        this.walkAnim = this.playerCanv.animate(walk(), { duration: 160, fill: 'forwards' });
 
         this.lifeBar.init();
 
@@ -99,9 +99,9 @@ export class Player {
         ) && GameVars.keys[key]);
 
         if (movKeys.length > 0 && this.walkAnim.playState === "finished") {
-            this.walkAnim = this.playerCanv.animate(walk(), { duration: 160 });
-            !this.playerLeftWeapon.isPerformingAction && this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
-            !this.playerRightWeapon.isPerformingAction && this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
+            this.walkAnim.play();
+            this.playerLeftWeapon.weaponCanv.animate(weaponWalkLeft(), { duration: 160 });
+            this.playerRightWeapon.weaponCanv.animate(weaponWalkRight(), { duration: 160 });
             GameVars.sound.walkSound();
         }
 
