@@ -77,7 +77,7 @@ const updatePixelSize = (width, height) => {
     GameVars.gameW = width;
     GameVars.gameH = height;
 
-    GameVars.pixelSize = (height < 500 || width < 500) ? 2 : pixelCal(1, 4);
+    GameVars.pixelSize = pixelCal(2, 4);
 
     GameVars.gameWdAsPixels = width / GameVars.pixelSize;
     GameVars.gameHgAsPixels = height / GameVars.pixelSize;
@@ -96,7 +96,8 @@ const updatePixelSize = (width, height) => {
 const pixelCal = (min, max) => {
     let hgPixelSize = Math.round((GameVars.gameH - 270) * ((max - min) / (1100 - 270)) + min);
     let wdPixelSize = Math.round((GameVars.gameW - 480) * ((max - min) / (1000 - 480)) + min);
-    return hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+    let pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+    return pixelSize >= 1 ? pixelSize : 1;
 };
 
 const calcResizePos = (x, y) => {
