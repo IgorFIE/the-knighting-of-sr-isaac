@@ -6,9 +6,9 @@ export const WeaponType = {
     AXE: 4, // down/side atk
     SPEAR: 5, // range down atk
     HALBERD: 6, // range top atk
-    SWORD: 7, // top/side/down atk
-    GREATSWORD: 8, // rotation atk
-    CROSSBOW: 9 // top/side atk
+    CROSSBOW: 7, // top/side atk
+    SWORD: 8, // top/side/down atk
+    GREATSWORD: 9 // rotation atk
 };
 
 export const getWeaponSprite = (weaponType) => {

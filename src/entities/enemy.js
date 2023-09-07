@@ -38,7 +38,7 @@ export class Enemy {
     init(x, y) {
         this.activationDistance = this.enemySize * this.getEnemyDistance();
 
-        this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2));
+        this.collisionObj = new CircleObject(x, y, toPixelSize(this.enemySize * 2.5));
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
         this.targetPos = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
