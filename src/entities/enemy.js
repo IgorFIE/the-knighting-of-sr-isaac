@@ -72,14 +72,16 @@ export class Enemy {
             this.enemyLeftWeapon.init();
         } else {
             const maxValue = GameVars.gameLevel + 2 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 2;
-            if (GameVars.gameLevel < 4) {
-                const isLeftWeapon = randomNumb(2) === 0;
+            const isLeftWeapon = randomNumb(2) === 0;
+            if (GameVars.gameLevel < 4 && this.enemyType !== EnemyType.BOSS) {
                 this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
                 this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
-            } else {
-                const isLeftWeapon = randomNumb(2) === 0;
+            } else if (GameVars.gameLevel < 9) {
                 this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
                 this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(2, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
+            } else {
+                this.enemyRightWeapon = new Weapon(randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
+                this.enemyLeftWeapon = new Weapon(randomNumbOnRange(2, maxValue), 1, this, "#686b7a", this.enemySize);
             }
         }
 
@@ -90,16 +92,18 @@ export class Enemy {
     }
 
     getWeaponDistance(weapon) {
-        return toPixelSize(weapon.sprite.length * weapon.size) * (weapon.weaponType === WeaponType.FIST ? 4 : 2);
+
+
+        return toPixelSize(weapon.sprite.length * weapon.size) * (weapon.weaponType === WeaponType.FIST ? 4 : weapon.weaponType === WeaponType.CROSSBOW ? 8 : 2);
     }
 
     getEnemyLife() {
         if (GameVars.gameLevel < 3) {
             return this.enemyType === EnemyType.BASIC ? 1 : 6;
         } else if (GameVars.gameLevel < 5) {
-            return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(6, 8);
+            return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(8, 10);
         } else {
-            return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(2, 3) : randomNumbOnRange(8, 10);
+            return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(2, 3) : randomNumbOnRange(12, 14);
         }
     }
 
@@ -123,6 +127,8 @@ export class Enemy {
                                 ItemType.HEART, null, this.room));
                         }
                     }
+                    randomNumb(100) < 10 && this.priorityWeapon.weaponType !== WeaponType.FIST && GameVars.currentRoom.items.push(
+                        new Item(this.collisionObj.x, this.collisionObj.y, ItemType.WEAPON, this.priorityWeapon.weaponType, GameVars.currentRoom));
                     this.destroy();
                 });
             }
@@ -238,6 +244,7 @@ export class Enemy {
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, distance));
                 break;
             case WeaponType.HAMMER:
+            case WeaponType.CROSSBOW:
             case WeaponType.HALBERD:
                 this.targetPos.x += toPixelSize(this.priorityWeapon.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(distance / 8, distance));

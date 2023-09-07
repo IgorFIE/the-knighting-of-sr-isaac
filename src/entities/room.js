@@ -7,7 +7,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
 import { createElem, setElemSize } from "../utilities/draw-utilities";
-import { randomNumbOnRange } from "../utilities/general-utilities";
+import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { Bonfire } from "./blocks/bonfire";
 import { DoorTrigger } from "./blocks/door-trigger";
@@ -59,7 +59,7 @@ export class Room {
 
     populateRandomEnemies() {
         let count = randomNumbOnRange(GameVars.gameLevel, GameVars.gameLevel + 1);
-        count = count > 6 ? 6 : count;
+        count = count > 10 ? 10 : count;
         while (this.enemies.length !== count) {
             let newEnemy = new Enemy(this,
                 randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),
@@ -77,8 +77,12 @@ export class Room {
                 break;
             case RoomType.TREASURE:
                 this.cleanEnemies();
+                this.items.push(new Item(
+                    (GameVars.gameW / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
+                    (GameVars.gameH / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
+                    ItemType.HEART, null, this));
                 const maxValue = GameVars.gameLevel + 3 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 3;
-                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(1, maxValue), this));
+                this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(maxValue - 3, maxValue), this));
                 break;
             case RoomType.BOSS:
                 this.cleanEnemies();

@@ -9,7 +9,7 @@ export const moveLevel = () => {
     GameVars.lastPlayerLeftWeaponType = GameVars.player.playerLeftWeapon.weaponType;
 
     GameVars.gameLevel++;
-    GameVars.gameBoardSize += 2;
+    GameVars.gameBoardSize++;
 
     GameVars.game = new Game();
 }
