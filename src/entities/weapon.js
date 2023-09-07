@@ -323,7 +323,7 @@ export class Weapon {
             this.isPerformingAction = true;
             if (this.weaponType == WeaponType.CROSSBOW) {
                 const box = this.weaponCanv.getBoundingClientRect();
-                GameVars.currentRoom.arrows.push(new Arrow(box.x + (box.width / 2), box.y + (box.height / 2), this.handDir, this.color, this.size));
+                GameVars.currentRoom.arrows.push(new Arrow(box.x + (box.width / 2), box.y + (box.height / 2), this.handDir, this.color, this.size, this.isPlayer));
             }
             this.atkAnimation = this.getWeaponAnimation();
             this.atkAnimation.finished.then(() => {

@@ -4,10 +4,12 @@ import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite } from "../utilities/draw-utilities";
 
 export class Arrow {
-    constructor(x, y, dir, color, size) {
+    constructor(x, y, dir, color, size, isPlayer) {
+        this.dir = dir;
         this.color = color;
         this.size = size;
-        this.dir = dir;
+        this.isPlayer = isPlayer;
+
         this.speed = toPixelSize(3);
         this.wasDestroyed = false;
 
@@ -29,25 +31,28 @@ export class Arrow {
 
         Math.round(this.speed) === 0 && this.destroy();
 
-        GameVars.currentRoom.enemies.forEach(enemy => {
-            if (!this.wasDestroyed && circleToCircleCollision(enemy.collisionObj, this.collisionObj)) {
-                GameVars.sound.enemyTakeDmgSound();
-                enemy.lifeBar.takeDmg(3);
+        if (this.isPlayer) {
+            GameVars.currentRoom.enemies.forEach(enemy => {
+                if (!this.wasDestroyed && circleToCircleCollision(enemy.collisionObj, this.collisionObj)) {
+                    this.destroy();
+                    GameVars.sound.enemyTakeDmgSound();
+                    enemy.lifeBar.takeDmg(3);
+                }
+            });
+        } else {
+            if (!this.wasDestroyed && circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj)) {
                 this.destroy();
+                GameVars.gameDiv.parentNode.style.animation = "takedmg 400ms ease-in-out";
+                GameVars.sound.playerTakeDmgSound();
+                GameVars.player.lifeBar.takeDmg(3);
             }
-        });
-
-        if (!this.wasDestroyed && circleToCircleCollision(GameVars.player.collisionObj, this.collisionObj)) {
-            GameVars.sound.playerTakeDmgSound();
-            GameVars.player.lifeBar.takeDmg(3);
-            this.destroy();
         }
     }
 
     destroy() {
         this.wasDestroyed = true;
-        this.canv.remove();
         GameVars.currentRoom.arrows.splice(GameVars.currentRoom.arrows.indexOf(this), 1);
+        this.canv.remove();
     }
 
     draw() {
