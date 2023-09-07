@@ -7,7 +7,7 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
 import { createElem, setElemSize } from "../utilities/draw-utilities";
-import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
+import { randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { Bonfire } from "./blocks/bonfire";
 import { DoorTrigger } from "./blocks/door-trigger";

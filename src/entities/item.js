@@ -1,11 +1,10 @@
 import { CircleObject } from "../collision-objects/circle-object";
 import { ItemType } from "../enums/item-type";
-import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
+import { getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { heart, key } from "./sprites";
-import { Weapon } from "./weapon";
 
 export class Item {
     constructor(x, y, itemType, subType, room) {

@@ -31,7 +31,6 @@ const audio = [
     [null, null, null, null]
 ];
 
-let mainDiv;
 let mainMenuDiv;
 let mainMenuCanv;
 
@@ -70,16 +69,15 @@ const init = () => {
 }
 
 const addKeyListenerEvents = () => {
-    window.addEventListener('keydown', (e) => {
-        GameVars.keys[e.key] = true;
-        (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') && GameVars.weaponIcons?.update();
-        initAudio();
-    });
-    window.addEventListener('keyup', (e) => {
-        GameVars.keys[e.key] = false;
-        (e.key === 'v' || e.key === 'V' || e.key === 'b' || e.key === 'B') && GameVars.weaponIcons?.update();
-    });
+    window.addEventListener('keydown', (e) => updateKeys(e.key, true));
+    window.addEventListener('keyup', (e) => updateKeys(e.key, false));
     window.addEventListener("click", (e) => initAudio());
+}
+
+const updateKeys = (key, isDown) => {
+    GameVars.keys[key] = isDown;
+    (key === 'v' || key === 'V' || key === 'b' || key === 'B') && GameVars.weaponIcons?.update();
+    initAudio();
 }
 
 const setResize = () => {
@@ -98,7 +96,7 @@ const initAudio = () => {
 }
 
 const createGameElements = () => {
-    mainDiv = document.getElementById("main");
+    let mainDiv = document.getElementById("main");
     mainDiv.addEventListener("animationend", () => mainDiv.style.animation = "");
 
     GameVars.gameDiv = createElem(mainDiv, "div", "game", ["hidden"]);
@@ -131,10 +129,10 @@ const draw = (isResize) => {
     drawMainMenu();
 
     setElemSize(leftMenuBtn, toPixelSize(66), toPixelSize(30));
-    drawLeftBtn();
+    drawBtn(leftMenuBtn, -toPixelSize(30 * 2.6), (GameVars.isMobile ? "" : "v to "), "with l weapon");
 
     setElemSize(rightMenuBtn, toPixelSize(66), toPixelSize(30));
-    drawRightBtn();
+    drawBtn(rightMenuBtn, toPixelSize(30 * 0.4), (GameVars.isMobile ? "" : "b to "), "with r weapon");
 
     setElemSize(scoreCanv, toPixelSize(23), toPixelSize(12));
     drawScore(isResize);
@@ -162,27 +160,18 @@ const drawMainMenu = () => {
 
     genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 32, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(3), Math.round(GameVars.gameW / 2 / toPixelSize(3)), 11, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("sr Isaac"), mainMenuCanv, toPixelSize(2), Math.round(GameVars.gameW / 2 / toPixelSize(2)), 25, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("sr isaac"), mainMenuCanv, toPixelSize(2), Math.round(GameVars.gameW / 2 / toPixelSize(2)), 25, "#edeef7", 1);
 
     genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 16, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 17, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("each weapon has a different atk pattern"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 24, "#edeef7", 1);
     drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2023 - igor estevao"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 8, "#edeef7", 1);
 }
 
-const drawLeftBtn = () => {
-    leftMenuBtn.style.translate = ((GameVars.gameW / 2) - toPixelSize(30 * 2.6)) + 'px ' + (mainMenuCanv.height - toPixelSize(36) - leftMenuBtn.height) + 'px';
-
-    genSmallBox(leftMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "v to ") + "start game"), leftMenuBtn, toPixelSize(1), 33, 10, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("with l weapon"), leftMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
-}
-
-const drawRightBtn = () => {
-    rightMenuBtn.style.translate = ((GameVars.gameW / 2) + toPixelSize(30 * 0.4)) + 'px ' + (mainMenuCanv.height - toPixelSize(36) - rightMenuBtn.height) + 'px';
-
-    genSmallBox(rightMenuBtn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt((GameVars.isMobile ? "" : "b to ") + "start game"), rightMenuBtn, toPixelSize(1), 35, 10, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("with r weapon"), rightMenuBtn, toPixelSize(1), 33, 20, "#edeef7", 1);
+const drawBtn = (btn, xPos, topText, bottomText) => {
+    btn.style.translate = ((GameVars.gameW / 2) + xPos) + 'px ' + (mainMenuCanv.height - toPixelSize(36) - btn.height) + 'px';
+    genSmallBox(btn, 0, 0, 32, 14, toPixelSize(2), "#060606", "#060606");
+    drawPixelTextInCanvas(convertTextToPixelArt(topText + "start game"), btn, toPixelSize(1), 35, 10, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt(bottomText), btn, toPixelSize(1), 33, 20, "#edeef7", 1);
 }
 
 const drawSoundBtn = (isResize) => {
