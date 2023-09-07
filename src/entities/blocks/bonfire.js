@@ -62,13 +62,13 @@ export class Bonfire {
 
     draw() {
         drawSprite(this.swordCanv, shortSword, toPixelSize(2), null, null);
-        drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { bt: "#686b7a", bm: "#3e3846" });
+        drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { "bt": "#686b7a", "bm": "#3e3846" });
     }
 
     drawOn() {
         drawPixelTextInCanvas(convertTextToPixelArt("ascend to next level"), this.bonfireTextCanv, toPixelSize(1), 40, 3, "#edeef7", 1);
         this.bonfireCanv.getContext("2d").clearRect(0, 0, this.bonfireCanv.width, this.bonfireCanv.height);
-        drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { bt: "#edeef7", bm: "#cd9722" });
+        drawSprite(this.bonfireCanv, bonfire, toPixelSize(2), null, null, { "bt": "#edeef7", "bm": "#cd9722" });
     }
 
     destroy() {

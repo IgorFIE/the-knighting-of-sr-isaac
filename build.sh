@@ -12,8 +12,8 @@ rm -rf ./build || true
 mkdir ./build
 
 cp -r ./dist/* ./build/
-cat ./dist/index.html | sed -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' > ./build/index.tmp1.html
-cat ./build/index.tmp1.html | tr '\n' ' ' | sed 's/  //g' > ./build/index.tmp2.html
+cat ./build/index.html | sed -e :a -re 's/<!--.*?-->//g;/<!--/N;//ba' > ./build/index.tmp1.html
+cat ./build/index.html | tr '\n' ' ' | sed 's/  //g' > ./build/index.tmp2.html
 cat ./build/index.tmp2.html | sed 's/> </></g' > ./build/index.html
 rm ./build/index.tmp*.html
 
