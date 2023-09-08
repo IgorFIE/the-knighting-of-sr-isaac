@@ -2,6 +2,7 @@ import { CircleObject } from "../collision-objects/circle-object";
 import { ItemType } from "../enums/item-type";
 import { getWeaponSprite } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
+import { genSmallBox } from "../utilities/box-generator";
 import { circleToCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { heart, key } from "./sprites";
@@ -19,6 +20,7 @@ export class Item {
         this.timeElapsed = 0;
 
         this.itemDiv = createElem(room.roomDiv, "div", null, ["item"]);
+        this.shadowCanv = createElem(this.itemDiv, "canvas");
         this.itemCanv = createElem(this.itemDiv, "canvas");
 
         this.init(x, y)
@@ -36,7 +38,13 @@ export class Item {
             (this.sprite[0].length > this.sprite.length ? this.sprite[0].length : this.sprite.length) * this.size);
         this.fakeMovCircle = new CircleObject(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r);
 
+
         this.itemDiv.style.translate = this.x + 'px ' + this.y + 'px';
+
+        let shadowSize = toPixelSize(2) * (5);
+        setElemSize(this.shadowCanv, shadowSize, shadowSize);
+        this.shadowCanv.style.translate = -this.size + 'px ' + ((this.size * this.sprite.length) - (shadowSize / 2)) + 'px';
+
         setElemSize(this.itemCanv, this.sprite[0].length * this.size, this.sprite.length * this.size)
 
         this.draw();
@@ -103,6 +111,7 @@ export class Item {
     }
 
     draw() {
+        genSmallBox(this.shadowCanv, 0, 0, 4, 4, toPixelSize(2), "#00000033", "#00000033");
         drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? { "ho": "#edeef7", "hi": "#a80000" } : { "wc": "#3e3846" });
     }
 }
