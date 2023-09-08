@@ -95,7 +95,7 @@ export class Projectile {
             }
         }
 
-        Math.round(this.speed) === 1 && !this.wasDestroyed && this.destroy();
+        Math.round(this.speed) === 0 && !this.wasDestroyed && this.destroy();
 
         // const ctx = GameVars.atkCanv.getContext("2d");
         // ctx.beginPath();
