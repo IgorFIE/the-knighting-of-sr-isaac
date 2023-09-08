@@ -14,7 +14,7 @@ export class Projectile {
         this.isPlayer = isPlayer;
 
         this.dmg = this.getDamage() * (size - 1);
-        this.speed = toPixelSize(this.getSpeed());
+        this.speed = toPixelSize(this.getSpeed() * (size - 1));
 
         this.wasDestroyed = false;
 

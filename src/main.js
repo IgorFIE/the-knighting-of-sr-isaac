@@ -146,7 +146,11 @@ const draw = (isResize) => {
 const drawMainMenu = () => {
     for (let y = 0; y < GameVars.gameH; y += toPixelSize(16)) {
         for (let x = 0; x < GameVars.gameW; x += toPixelSize(16)) {
-            y < GameVars.gameH / 2 && createWallBlock(mainMenuCanv.getContext("2d"), x, y) || createFloorBlock(mainMenuCanv, x, y);
+            if (y < GameVars.gameH / 2) {
+                createWallBlock(mainMenuCanv.getContext("2d"), x, y)
+            } else {
+                createFloorBlock(mainMenuCanv, x, y)
+            };
         }
     }
     let wKnightCenter = ((GameVars.gameW % 2 === 0 ? GameVars.gameW : GameVars.gameW + 1) / toPixelSize(10)) / 2;
