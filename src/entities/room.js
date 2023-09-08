@@ -84,8 +84,9 @@ export class Room {
         this.stonesBlocks = [];
         for (let y = 0; y < GameVars.roomHeight; y++) {
             for (let x = 0; x < GameVars.roomWidth; x++) {
-                if ((y > 3 && y <= GameVars.roomHeight - 4 && x > 3 && x <= GameVars.roomWidth - 4) &&
-                    !(y > 5 && y <= GameVars.roomHeight - 6 && x > 5 && x <= GameVars.roomWidth - 6)) {
+                if ((y > 3 && y < GameVars.roomHeight - 4 && x > 3 && x < GameVars.roomWidth - 4) &&
+                    !(y > 6 && y < GameVars.roomHeight - 7 && x > 6 && x < GameVars.roomWidth - 7) &&
+                    !(y > (GameVars.roomHeight / 2) - 3 && y < (GameVars.roomHeight / 2) + 3 && x > (GameVars.roomWidth / 2) - 3 && x < (GameVars.roomWidth / 2) + 3)) {
                     let random = randomNumb(100);
                     random >= 5 && random < 15 && this.stonesBlocks.push(new Stone(this, x, y));
                     random < 5 && this.spikesBlocks.push(new Spikes(this, x, y));
