@@ -155,8 +155,11 @@ const drawMainMenu = () => {
     genSmallBox(mainMenuCanv, wKnightCenter - 3.5, hKnightCenter + 1, 6, 5, toPixelSize(10), "#00000033", "#00000033");
     drawSprite(mainMenuCanv, knight, toPixelSize(10), wKnightCenter - 1.5, hKnightCenter - 3.5, { "hd": "#cd9722", "hl": "#ffff57", "cm": "#9e6800" });
 
-    drawSprite(mainMenuCanv, getWeaponSprite(leftWeapon), toPixelSize(10), wKnightCenter - 5.5, hKnightCenter - 1.5, { "wc": "#cd9722" });
-    drawSprite(mainMenuCanv, getWeaponSprite(rightWeapon), toPixelSize(10), wKnightCenter + 2.5, hKnightCenter - 1.5, { "wc": "#cd9722" });
+    let leftSprite = getWeaponSprite(leftWeapon);
+    let rightSprite = getWeaponSprite(rightWeapon);
+
+    drawSprite(mainMenuCanv, leftSprite, toPixelSize(10), wKnightCenter - 4 - (leftSprite[0].length / 2), hKnightCenter - 1.5, { "wc": "#cd9722" });
+    drawSprite(mainMenuCanv, rightSprite, toPixelSize(10), wKnightCenter + 4 - (rightSprite[0].length / 2), hKnightCenter - 1.5, { "wc": "#cd9722" });
 
     genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 32, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(3), Math.round(GameVars.gameW / 2 / toPixelSize(3)), 11, "#edeef7", 1);
