@@ -19,7 +19,7 @@ export class Enemy {
         this.room = room;
 
         this.enemyType = enemyType;
-        this.enemySubType = enemySubType || enemyChainMailColors[randomNumb(3)];
+        this.enemySubType = enemySubType || enemyChainMailColors[enemyType === EnemyType.BASIC ? randomNumb(3) : randomNumbOnRange(1, 2)];
         this.enemySize = enemyType === EnemyType.BASIC ? 2 : 4;
         this.enemySpeed = 1 + (randomNumbOnRange(-5, 0) / 10);
 
