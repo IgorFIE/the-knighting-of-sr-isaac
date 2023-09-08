@@ -298,7 +298,7 @@ export class Enemy {
     }
 
     destroy() {
-        this.div.remove();
         this.room.enemies.splice(this.room.enemies.indexOf(this), 1);
+        this.div.parentNode.removeChild(this.div);
     }
 }

@@ -115,7 +115,7 @@ export class Projectile {
     destroy() {
         this.wasDestroyed = true;
         GameVars.currentRoom.projectiles.splice(GameVars.currentRoom.projectiles.indexOf(this), 1);
-        this.canv.remove();
+        this.canv.parentNode.removeChild(this.canv);
     }
 
     draw() {
