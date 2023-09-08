@@ -72,9 +72,7 @@ export class Projectile {
                 break;
         }
 
-        if (this.projectileType !== ProjectileType.ARROW && this.anim.playState === "finished") {
-            this.anim.play();
-        }
+        this.projectileType !== ProjectileType.ARROW && this.anim.playState === "finished" && this.anim.play();
 
         this.move();
 
@@ -95,12 +93,14 @@ export class Projectile {
             }
         }
 
-        Math.round(this.speed) === 0 && !this.wasDestroyed && this.destroy();
+        Math.round(this.speed) <= 0 && !this.wasDestroyed && this.destroy();
 
         // const ctx = GameVars.atkCanv.getContext("2d");
         // ctx.beginPath();
         // ctx.arc(this.collisionObj.x, this.collisionObj.y, this.collisionObj.r, 0, 2 * Math.PI);
         // ctx.stroke();
+
+        return !this.wasDestroyed;
     }
 
     move() {
@@ -114,7 +114,6 @@ export class Projectile {
 
     destroy() {
         this.wasDestroyed = true;
-        GameVars.currentRoom.projectiles.splice(GameVars.currentRoom.projectiles.indexOf(this), 1);
         this.canv.parentNode.removeChild(this.canv);
     }
 

@@ -143,10 +143,11 @@ export class Room {
             this.enemies.forEach(enemy => enemy.validateMovement(enemy.collisionObj.x + xAmount, enemy.collisionObj.y + yAmount, true));
             this.items.forEach(item => item.validateMovement(item.collisionObj.x + xAmount, item.collisionObj.y + yAmount));
             this.projectiles.forEach(projectile => projectile.destroy());
+            this.projectiles = [];
         } else {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
-            this.projectiles.forEach(projectile => projectile.update());
+            this.projectiles = this.projectiles.filter(projectile => projectile.update());
         }
         this.enemies.length === 0 && this.openDoors();
     }

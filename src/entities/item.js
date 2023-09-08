@@ -103,6 +103,6 @@ export class Item {
     }
 
     draw() {
-        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? { "ho": "#edeef7", "hi": "#a80000" } : { "wc": "#686b7a" });
+        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? { "ho": "#edeef7", "hi": "#a80000" } : { "wc": "#3e3846" });
     }
 }
