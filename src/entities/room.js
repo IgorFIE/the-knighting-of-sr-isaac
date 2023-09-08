@@ -7,10 +7,11 @@ import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
 import { createElem, setElemSize } from "../utilities/draw-utilities";
-import { randomNumbOnRange } from "../utilities/general-utilities";
+import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { Bonfire } from "./blocks/bonfire";
 import { DoorTrigger } from "./blocks/door-trigger";
+import { Spikes } from "./blocks/spikes";
 import { Enemy } from "./enemy";
 import { Item } from "./item";
 
@@ -33,9 +34,11 @@ export class Room {
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
         this.roomCanv = createElem(this.roomDiv, "canvas");
         this.doorCanv = createElem(this.roomDiv, "canvas");
+        this.spikeCanv = createElem(this.roomDiv, "canvas");
 
         this.initRoomBlocks();
         this.populateRandomEnemies();
+        this.createSpikes();
     }
 
     initRoomBlocks() {
@@ -69,6 +72,18 @@ export class Room {
         }
     }
 
+    createSpikes() {
+        this.spikesBlocks = [];
+        for (let y = 0; y < GameVars.roomHeight; y++) {
+            for (let x = 0; x < GameVars.roomWidth; x++) {
+                (y > 3 && y <= GameVars.roomHeight - 4 && x > 3 && x <= GameVars.roomWidth - 4) &&
+                    !(y > 5 && y <= GameVars.roomHeight - 6 && x > 5 && x <= GameVars.roomWidth - 6) &&
+                    randomNumb(100) < 5 &&
+                    this.spikesBlocks.push(new Spikes(this, x, y));
+            }
+        }
+    }
+
     setSpecialRoomType(roomType) {
         this.roomType = roomType;
         switch (this.roomType) {
@@ -98,9 +113,23 @@ export class Room {
         }
     }
 
+    removeSpikes() {
+        this.spikeCanv.getContext("2d").clearRect(0, 0, this.spikeCanv.width, this.spikeCanv.height);
+        this.spikesBlocks = [];
+    }
+
     reInit() {
         this.roomDiv.classList.remove("hidden");
         this.initRoomBlocks();
+
+        setElemSize(this.spikeCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        this.spikeCanv.getContext("2d").clearRect(0, 0, this.spikeCanv.width, this.spikeCanv.height);
+        this.spikesBlocks.forEach(spikes => {
+            const newPos = GameVars.calcResizePos(spikes.collisionObj.x, spikes.collisionObj.y);
+            spikes.init(newPos.x, newPos.y);
+            spikes.draw();
+        });
+
         this.projectiles.forEach(projectile => projectile.destroy());
         this.items.forEach(item => {
             const newPos = GameVars.calcResizePos(item.x, item.y);
@@ -148,6 +177,7 @@ export class Room {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
             this.projectiles = this.projectiles.filter(projectile => projectile.update());
+            this.spikesBlocks.forEach(spikes => spikes.update());
         }
         this.enemies.length === 0 && this.openDoors();
     }
@@ -193,11 +223,13 @@ export class Room {
     draw() {
         setElemSize(this.roomCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
         setElemSize(this.doorCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        setElemSize(this.spikeCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
         this.floors.forEach(block => block.draw());
         this.drawRoomShadows();
         this.walls.forEach(block => block.draw());
         this.doors.forEach(block => block.draw());
+        this.spikesBlocks.forEach(spikes => spikes.draw());
     }
 
     drawRoomShadows() {
