@@ -74,14 +74,14 @@ export class Enemy {
             const maxValue = GameVars.gameLevel + 5 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 5;
             const isLeftWeapon = randomNumb(2) === 0;
             if (GameVars.gameLevel < 4 && this.enemyType !== EnemyType.BOSS) {
-                this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
-                this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#686b7a", this.enemySize);
+                this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#3e3846", this.enemySize);
+                this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(0, maxValue) : WeaponType.FIST, 1, this, "#3e3846", this.enemySize);
             } else if (GameVars.gameLevel < 9) {
-                this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
-                this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(2, maxValue) : WeaponType.SHIELD, 1, this, "#686b7a", this.enemySize);
+                this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.SHIELD : randomNumbOnRange(2, maxValue), -1, this, "#3e3846", this.enemySize);
+                this.enemyLeftWeapon = new Weapon(isLeftWeapon ? randomNumbOnRange(2, maxValue) : WeaponType.SHIELD, 1, this, "#3e3846", this.enemySize);
             } else {
-                this.enemyRightWeapon = new Weapon(randomNumbOnRange(2, maxValue), -1, this, "#686b7a", this.enemySize);
-                this.enemyLeftWeapon = new Weapon(randomNumbOnRange(2, maxValue), 1, this, "#686b7a", this.enemySize);
+                this.enemyRightWeapon = new Weapon(randomNumbOnRange(2, maxValue), -1, this, "#3e3846", this.enemySize);
+                this.enemyLeftWeapon = new Weapon(randomNumbOnRange(2, maxValue), 1, this, "#3e3846", this.enemySize);
             }
         }
 
@@ -232,19 +232,19 @@ export class Enemy {
             case WeaponType.FIST:
             case WeaponType.SHIELD:
             case WeaponType.SPEAR:
-            case WeaponType.TROWING_KNIVE:
                 this.targetPos.x += toPixelSize(randomNumbOnRange(-distance, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, -distance / 8));
                 break;
             case WeaponType.SWORD:
             case WeaponType.AXE:
             case WeaponType.TROWING_AXE:
+            case WeaponType.TROWING_KNIVE:
+            case WeaponType.CROSSBOW:
             case WeaponType.MORNING_STAR:
                 this.targetPos.x += toPixelSize(this.priorityWeapon.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, distance));
                 break;
             case WeaponType.HAMMER:
-            case WeaponType.CROSSBOW:
             case WeaponType.HALBERD:
                 this.targetPos.x += toPixelSize(this.priorityWeapon.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(distance / 8, distance));

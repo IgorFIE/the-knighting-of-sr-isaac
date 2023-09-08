@@ -22,10 +22,11 @@ export class Projectile {
 
         if (projectileType !== ProjectileType.ARROW) {
             this.canv.style.transformOrigin = "50% 50%";
-            this.canv.animate({
+            this.anim = this.canv.animate({
                 rotate: [0 + "deg", -360 + "deg"],
                 offset: [0, 1]
-            }, { duration: 300, iterations: Infinity });
+            }, { duration: 300 }); // no idea why iterations: Infinity stopped working... https://developer.mozilla.org/en-US/docs/Web/API/KeyframeEffect/KeyframeEffect#parameters
+            this.anim.persist();
         } else {
             this.canv.style.transformOrigin = "50% 0%";
         }
@@ -71,6 +72,10 @@ export class Projectile {
                 break;
         }
 
+        if (this.projectileType !== ProjectileType.ARROW && this.anim.playState === "finished") {
+            this.anim.play();
+        }
+
         this.move();
 
         if (this.isPlayer) {
@@ -89,7 +94,7 @@ export class Projectile {
                 GameVars.player.lifeBar.takeDmg(this.dmg);
             }
         }
-        
+
         Math.round(this.speed) === 1 && !this.wasDestroyed && this.destroy();
 
         // const ctx = GameVars.atkCanv.getContext("2d");
