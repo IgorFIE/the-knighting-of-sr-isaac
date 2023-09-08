@@ -56,6 +56,7 @@ export class WeaponIcons {
             case WeaponType.FIST:
                 pixelSize = 6; x = 1; y = 1;
                 break;
+            case WeaponType.AXE:
             case WeaponType.SHIELD:
                 pixelSize = 5; x = 1; y = 1;
                 break;
@@ -68,12 +69,12 @@ export class WeaponIcons {
             case WeaponType.SPEAR:
                 pixelSize = 5; x = 2; y = -8;
                 break;
-            case WeaponType.AXE:
-                pixelSize = 5; x = 1; y = 1;
-                break;
             case WeaponType.HAMMER:
             case WeaponType.MORNING_STAR:
                 pixelSize = 5; x = 1; y = 2;
+                break;
+            case WeaponType.HALBERD:
+                pixelSize = 5; x = 1; y = -1;
                 break;
             case WeaponType.CROSSBOW:
                 pixelSize = 4; x = -1; y = 0;
