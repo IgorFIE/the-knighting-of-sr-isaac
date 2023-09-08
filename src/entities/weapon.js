@@ -360,6 +360,6 @@ export class Weapon {
     }
 
     destroy() {
-        this.weaponDiv.parentNode.removeChild(this.weaponDiv);
+        this.weaponDiv.remove();
     }
 }

@@ -99,7 +99,7 @@ export class Item {
 
     destroy() {
         this.room.items.splice(this.room.items.indexOf(this), 1);
-        this.itemDiv.parentNode.removeChild(this.itemDiv);
+        this.itemDiv.remove();
     }
 
     draw() {

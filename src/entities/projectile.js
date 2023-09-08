@@ -114,7 +114,7 @@ export class Projectile {
 
     destroy() {
         this.wasDestroyed = true;
-        this.canv.parentNode.removeChild(this.canv);
+        this.canv.remove();
     }
 
     draw() {

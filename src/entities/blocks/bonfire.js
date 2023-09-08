@@ -73,7 +73,7 @@ export class Bonfire {
 
     destroy() {
         this.room.items.splice(this.room.items.indexOf(this), 1);
-        this.bonfireDiv.parentNode.removeChild(this.bonfireDiv);
+        this.bonfireDiv.remove();
     }
 }
 
