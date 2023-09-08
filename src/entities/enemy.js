@@ -1,7 +1,7 @@
 import { CircleObject } from "../collision-objects/circle-object";
 import { EnemySubType, EnemyType, enemyChainMailColors } from "../enums/enemy-type";
 import { ItemType } from "../enums/item-type";
-import { WeaponType } from "../enums/weapon-type";
+import { WeaponType, isProjectileWeapon } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim, walk, weaponWalkLeft, weaponWalkRight } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
@@ -71,7 +71,7 @@ export class Enemy {
             this.enemyRightWeapon.init();
             this.enemyLeftWeapon.init();
         } else {
-            const maxValue = GameVars.gameLevel + 2 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 2;
+            const maxValue = GameVars.gameLevel + 5 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 5;
             const isLeftWeapon = randomNumb(2) === 0;
             if (GameVars.gameLevel < 4 && this.enemyType !== EnemyType.BOSS) {
                 this.enemyRightWeapon = new Weapon(isLeftWeapon ? WeaponType.FIST : randomNumbOnRange(0, maxValue), -1, this, "#686b7a", this.enemySize);
@@ -92,9 +92,7 @@ export class Enemy {
     }
 
     getWeaponDistance(weapon) {
-
-
-        return toPixelSize(weapon.sprite.length * weapon.size) * (weapon.weaponType === WeaponType.FIST ? 4 : weapon.weaponType === WeaponType.CROSSBOW ? 8 : 2);
+        return toPixelSize(weapon.sprite.length * weapon.size) * (weapon.weaponType === WeaponType.FIST ? 4 : isProjectileWeapon(weapon.weaponType) ? 16 : 2);
     }
 
     getEnemyLife() {
@@ -234,11 +232,13 @@ export class Enemy {
             case WeaponType.FIST:
             case WeaponType.SHIELD:
             case WeaponType.SPEAR:
+            case WeaponType.TROWING_KNIVE:
                 this.targetPos.x += toPixelSize(randomNumbOnRange(-distance, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, -distance / 8));
                 break;
             case WeaponType.SWORD:
             case WeaponType.AXE:
+            case WeaponType.TROWING_AXE:
             case WeaponType.MORNING_STAR:
                 this.targetPos.x += toPixelSize(this.priorityWeapon.handDir > 0 ? randomNumbOnRange(-distance, -distance / 8) : randomNumbOnRange(distance / 8, distance));
                 this.targetPos.y += toPixelSize(randomNumbOnRange(-distance, distance));

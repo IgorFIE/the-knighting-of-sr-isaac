@@ -51,6 +51,8 @@ export class WeaponIcons {
     drawWeapon(canvas, weaponType) {
         let pixelSize, x, y;
         switch (weaponType) {
+            case WeaponType.TROWING_AXE:
+            case WeaponType.TROWING_KNIVE:
             case WeaponType.FIST:
                 pixelSize = 6; x = 1; y = 1;
                 break;

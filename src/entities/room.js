@@ -28,7 +28,7 @@ export class Room {
 
         this.items = [];
         this.enemies = [];
-        this.arrows = [];
+        this.projectiles = [];
 
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
         this.roomCanv = createElem(this.roomDiv, "canvas");
@@ -81,7 +81,7 @@ export class Room {
                     (GameVars.gameW / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
                     (GameVars.gameH / 2) + toPixelSize(randomNumbOnRange(-32, 32)),
                     ItemType.HEART, null, this));
-                const maxValue = GameVars.gameLevel + 3 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 3;
+                const maxValue = GameVars.gameLevel + 6 >= Object.keys(WeaponType).length ? Object.keys(WeaponType).length - 1 : GameVars.gameLevel + 6;
                 this.items.push(new Item(GameVars.gameW / 2, GameVars.gameH / 2, ItemType.WEAPON, randomNumbOnRange(maxValue - 3, maxValue), this));
                 break;
             case RoomType.BOSS:
@@ -101,7 +101,7 @@ export class Room {
     reInit() {
         this.roomDiv.classList.remove("hidden");
         this.initRoomBlocks();
-        this.arrows.forEach(arrow => arrow.destroy());
+        this.projectiles.forEach(projectile => projectile.destroy());
         this.items.forEach(item => {
             const newPos = GameVars.calcResizePos(item.x, item.y);
             item.init(newPos.x, newPos.y);
@@ -142,11 +142,11 @@ export class Room {
             this.roomDiv.style.translate = this.x + 'px ' + this.y + 'px';
             this.enemies.forEach(enemy => enemy.validateMovement(enemy.collisionObj.x + xAmount, enemy.collisionObj.y + yAmount, true));
             this.items.forEach(item => item.validateMovement(item.collisionObj.x + xAmount, item.collisionObj.y + yAmount));
-            this.arrows.forEach(arrow => arrow.destroy());
+            this.projectiles.forEach(projectile => projectile.destroy());
         } else {
             this.items.forEach(item => item.update());
             this.enemies.forEach(enemy => enemy.update());
-            this.arrows.forEach(arrow => arrow.update());
+            this.projectiles.forEach(projectile => projectile.update());
         }
         this.enemies.length === 0 && this.openDoors();
     }

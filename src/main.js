@@ -56,8 +56,8 @@ const init = () => {
     GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
     GameVars.resetGameVars();
 
-    leftWeapon = randomNumbOnRange(1, 3);
-    rightWeapon = randomNumbOnRange(1, 3);
+    leftWeapon = randomNumbOnRange(1, 6);
+    rightWeapon = randomNumbOnRange(1, 6);
 
     addKeyListenerEvents();
     setResize();
@@ -236,8 +236,8 @@ const skipGameOver = () => {
     updateHighScore();
     lastScore = 0;
     drawScore();
-    leftWeapon = randomNumbOnRange(1, 3);
-    rightWeapon = randomNumbOnRange(1, 3);
+    leftWeapon = randomNumbOnRange(1, 6);
+    rightWeapon = randomNumbOnRange(1, 6);
     drawMainMenu();
 }
 

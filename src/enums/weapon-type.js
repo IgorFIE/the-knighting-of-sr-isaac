@@ -2,14 +2,32 @@ export const WeaponType = {
     FIST: 0, // down atk
     SHIELD: 1, // down/side atk
     MORNING_STAR: 2, // side atk
-    HAMMER: 3, // top/side atk
-    AXE: 4, // down/side atk
-    SPEAR: 5, // range down atk
-    HALBERD: 6, // range top atk
-    CROSSBOW: 7, // top/side atk
-    SWORD: 8, // top/side/down atk
-    GREATSWORD: 9 // rotation atk
+    TROWING_KNIVE: 3, // down/side atk
+    HAMMER: 4, // top/side atk
+    AXE: 5, // down/side atk
+    TROWING_AXE: 6, // side atk
+    SPEAR: 7, // range down atk
+    HALBERD: 8, // range top atk
+    CROSSBOW: 9, // top/side atk
+    SWORD: 10, // top/side/down atk
+    GREATSWORD: 11 // rotation atk
 };
+
+export const ProjectileType = {
+    ARROW: 0,
+    KNIVE: 1,
+    AXE: 2
+}
+
+export const getProjectileType = (weaponType) => {
+    switch (weaponType) {
+        case WeaponType.TROWING_KNIVE:
+            return ProjectileType.KNIVE;
+        case WeaponType.TROWING_AXE:
+            return ProjectileType.AXE;
+    }
+    return ProjectileType.ARROW;
+}
 
 export const getWeaponSprite = (weaponType) => {
     switch (weaponType) {
@@ -17,6 +35,10 @@ export const getWeaponSprite = (weaponType) => {
             return shield;
         case WeaponType.SWORD:
             return shortSword;
+        case WeaponType.TROWING_KNIVE:
+            return tKnive;
+        case WeaponType.TROWING_AXE:
+            return tAxe;
         case WeaponType.GREATSWORD:
             return greatsword;
         case WeaponType.SPEAR:
@@ -33,6 +55,26 @@ export const getWeaponSprite = (weaponType) => {
             return halberd;
     }
     return fist;
+}
+
+export const getProjectileSprite = (projectileType) => {
+    switch (projectileType) {
+        case ProjectileType.KNIVE:
+            return tKnive;
+        case ProjectileType.AXE:
+            return tAxe;
+    }
+    return arrow;
+}
+
+export const isProjectileWeapon = (weaponType) => {
+    switch (weaponType) {
+        case WeaponType.TROWING_KNIVE:
+        case WeaponType.TROWING_AXE:
+        case WeaponType.CROSSBOW:
+            return true;
+    }
+    return false;
 }
 
 const fist = [
@@ -140,4 +182,28 @@ const halberd = [
     [null, "wc", null],
     [null, "wc", null],
     [null, "wc", null]
+];
+
+const arrow = [
+    ["#edeef7"],
+    ["#edeef7"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["wc"],
+    ["#edeef7"]
+];
+
+const tKnive = [
+    ["wc"],
+    ["#edeef7"],
+    ["#edeef7"]
+];
+
+const tAxe = [
+    ["#edeef7", "#999a9e"],
+    ["#edeef7", "wc"],
+    [null, "wc"],
+    [null, "wc"]
 ];

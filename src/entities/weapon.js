@@ -1,8 +1,8 @@
-import { WeaponType, getWeaponSprite } from "../enums/weapon-type";
+import { WeaponType, getProjectileType, getWeaponSprite, isProjectileWeapon } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { lineCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
-import { Arrow } from "./arrow";
+import { Projectile } from "./projectile";
 
 export class Weapon {
     constructor(weaponType, handDir, parent, color, size, isPlayer) {
@@ -61,9 +61,21 @@ export class Weapon {
                     easing: ["ease-in", "ease-out", "ease-in"],
                     offset: [0, 0.25, 1]
                 }, 250);
+            case WeaponType.TROWING_AXE:
+                return this.weaponCanv.animate({
+                    transform: ["translateY(0) rotate(0)", "translateY(" + toPixelSize(8) + "px) rotate(" + 180 * this.handDir + "deg)", "translateY(0) rotate(0)"],
+                    easing: ["ease-in", "ease-out", "ease-in"],
+                    offset: [0, 0.15, 1]
+                }, 1200);
             case WeaponType.AXE:
                 return this.weaponCanv.animate({
                     transform: ["rotate(0)", "rotate(" + 225 * this.handDir + "deg)", "rotate(0)"],
+                    easing: ["ease-in", "ease-out", "ease-in"],
+                    offset: [0, 0.35, 1]
+                }, 300);
+            case WeaponType.TROWING_KNIVE:
+                return this.weaponCanv.animate({
+                    transform: ["translateY(0) rotate(0)", "translateY(" + toPixelSize(8) + "px) rotate(" + 225 * this.handDir + "deg)", "translateY(0) rotate(0)"],
                     easing: ["ease-in", "ease-out", "ease-in"],
                     offset: [0, 0.35, 1]
                 }, 300);
@@ -110,6 +122,7 @@ export class Weapon {
                 return { x: toPixelSize(this.size * 3 * this.handDir), y: -toPixelSize(2), r: -90 };
             case WeaponType.GREATSWORD:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: -toPixelSize(this.handDir === - 1 ? this.size * 0.5 : this.size * 5.5), r: 45 * this.handDir };
+            case WeaponType.TROWING_KNIVE:
             case WeaponType.SPEAR:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 2) : this.size * 4), y: -toPixelSize(this.size) };
             case WeaponType.HALBERD:
@@ -122,6 +135,9 @@ export class Weapon {
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 5) : this.size * 6), y: -toPixelSize(this.handDir === - 1 ? -this.size * 4 : -this.size * 2), r: 45 * this.handDir };
             case WeaponType.CROSSBOW:
                 return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 10) : this.size * 8), y: toPixelSize(this.handDir === - 1 ? this.size * 2 : -this.size * 3), r: 45 * this.handDir };
+
+            case WeaponType.TROWING_AXE:
+                return { x: toPixelSize(this.handDir === - 1 ? -(this.size * 6) : this.size * 8), y: toPixelSize(this.handDir === - 1 ? this.size * 2 : this.size * 1), r: 45 * this.handDir };
         }
     }
 
@@ -136,6 +152,8 @@ export class Weapon {
             case WeaponType.AXE:
             case WeaponType.MORNING_STAR:
             case WeaponType.CROSSBOW:
+            case WeaponType.TROWING_KNIVE:
+            case WeaponType.TROWING_AXE:
             case WeaponType.HALBERD:
                 this.weaponDiv.style.rotate = this.relativePos.r + 'deg';
                 this.weaponCanv.style.transformOrigin = "50% 100%";
@@ -259,7 +277,7 @@ export class Weapon {
 
     update() {
         // if (GameVars.atkCanv) {
-        if (this.isPerformingAction && this.weaponType !== WeaponType.CROSSBOW) {
+        if (this.isPerformingAction && !isProjectileWeapon(this.weaponType)) {
             let transform = new WebKitCSSMatrix(window.getComputedStyle(this.weaponCanv).transform);
             let newAtkLine = this.getUpdatedWeaponAtkLine(this.parentDiv.getBoundingClientRect(), transform);
 
@@ -304,10 +322,10 @@ export class Weapon {
             case WeaponType.SWORD:
             case WeaponType.MORNING_STAR:
                 return 3;
-            case WeaponType.SPEAR:
-                return 6;
             case WeaponType.AXE:
                 return 5;
+            case WeaponType.SPEAR:
+                return 6;
             case WeaponType.HAMMER:
                 return 7;
             case WeaponType.HALBERD:
@@ -321,16 +339,20 @@ export class Weapon {
         if (!this.isPerformingAction) {
             GameVars.sound.atkSound();
             this.isPerformingAction = true;
-            if (this.weaponType == WeaponType.CROSSBOW) {
-                const box = this.weaponCanv.getBoundingClientRect();
-                GameVars.currentRoom.arrows.push(new Arrow(box.x + (box.width / 2), box.y + (box.height / 2), this.handDir, this.color, this.size, this.isPlayer));
-            }
+            isProjectileWeapon(this.weaponType) && this.createProjectile();
             this.atkAnimation = this.getWeaponAnimation();
             this.atkAnimation.finished.then(() => {
                 this.isPerformingAction = false;
                 this.damagedObjs.clear();
             });
         }
+    }
+
+    createProjectile() {
+        const box = this.weaponCanv.getBoundingClientRect();
+        GameVars.currentRoom.projectiles.push(
+            new Projectile(box.x + (box.width / 2), box.y + (box.height / 2), this.handDir, this.color, this.size, getProjectileType(this.weaponType), this.isPlayer)
+        );
     }
 
     draw() {
