@@ -34,6 +34,7 @@ export const distBetwenObjs = (obj1, obj2) => {
 
 export const checkForCollisions = (fakeMovCircle, roomX, roomY, fn, enemyBlock) => {
     if (!(GameVars.gameBoard.board[roomY][roomX].walls.find((wall) => rectCircleCollision(fakeMovCircle, wall.collisionObj)) ||
+        (GameVars.gameBoard.board[roomY][roomX].stonesBlocks.find((stone) => rectCircleCollision(fakeMovCircle, stone.collisionObj))) ||
         (GameVars.gameBoard.board[roomY][roomX].enemies.find((enemy) => enemy !== enemyBlock && circleToCircleCollision(fakeMovCircle, enemy.collisionObj))) ||
         (enemyBlock && circleToCircleCollision(fakeMovCircle, GameVars.player.collisionObj)) ||
         (GameVars.gameBoard.board[roomY][roomX].doors.find((door) => door.blockType !== BlockType.DOOR_OPEN && rectCircleCollision(fakeMovCircle, door.collisionObj))))) {

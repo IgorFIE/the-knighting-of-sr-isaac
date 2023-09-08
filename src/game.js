@@ -16,7 +16,7 @@ export class Game {
         GameVars.gameBoard.init();
 
         this.mainRoom = this.getStartRoom(GameVars.gameBoard.board[GameVars.gameBoard.board.length / 2][GameVars.gameBoard.board[0].length / 2]);
-        this.mainRoom.removeSpikes();
+        this.mainRoom.removeSpikesAndStonesForMainText();
 
         GameVars.currentRoom = this.mainRoom;
         GameVars.currentRoom.cleanEnemies();

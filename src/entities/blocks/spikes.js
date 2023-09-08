@@ -35,12 +35,12 @@ export class Spikes {
     }
 
     draw() {
-        const ctx = this.room.spikeCanv.getContext('2d');
+        const ctx = this.room.environmentCanv.getContext('2d');
         ctx.fillStyle = "#00000044";
         ctx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(12), toPixelSize(12));
         for (let y = -1; y < 6; y += 4) {
             for (let x = -1; x < 8; x += 5) {
-                drawSprite(this.room.spikeCanv, spike, toPixelSize(2), (this.collisionObj.x / toPixelSize(2)) + x, (this.collisionObj.y / toPixelSize(2)) + y);
+                drawSprite(this.room.environmentCanv, spike, toPixelSize(2), (this.collisionObj.x / toPixelSize(2)) + x, (this.collisionObj.y / toPixelSize(2)) + y);
             }
         }
     }

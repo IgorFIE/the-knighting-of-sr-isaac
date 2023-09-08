@@ -5,13 +5,14 @@ import { ItemType } from "../enums/item-type";
 import { RoomType } from "../enums/room-type";
 import { WeaponType } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
-import { circleToCircleCollision, distBetwenObjs } from "../utilities/collision-utilities";
+import { circleToCircleCollision, distBetwenObjs, rectCircleCollision } from "../utilities/collision-utilities";
 import { createElem, setElemSize } from "../utilities/draw-utilities";
 import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Block } from "./blocks/block";
 import { Bonfire } from "./blocks/bonfire";
 import { DoorTrigger } from "./blocks/door-trigger";
 import { Spikes } from "./blocks/spikes";
+import { Stone } from "./blocks/stone";
 import { Enemy } from "./enemy";
 import { Item } from "./item";
 
@@ -34,11 +35,11 @@ export class Room {
         this.roomDiv = createElem(GameVars.gameDiv, "div", null, ["room"]);
         this.roomCanv = createElem(this.roomDiv, "canvas");
         this.doorCanv = createElem(this.roomDiv, "canvas");
-        this.spikeCanv = createElem(this.roomDiv, "canvas");
+        this.environmentCanv = createElem(this.roomDiv, "canvas");
 
         this.initRoomBlocks();
+        this.createSpikesAndStones();
         this.populateRandomEnemies();
-        this.createSpikes();
     }
 
     initRoomBlocks() {
@@ -68,18 +69,27 @@ export class Room {
                 randomNumbOnRange(GameVars.gameW / 3, (GameVars.gameW / 3) * 2),
                 randomNumbOnRange(GameVars.gameH / 3, (GameVars.gameH / 3) * 2),
                 EnemyType.BASIC);
-            !this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj)) && this.enemies.push(newEnemy) || newEnemy.div.remove();
+            if (!this.enemies.find(enemy => circleToCircleCollision(newEnemy.collisionObj, enemy.collisionObj)) &&
+                !this.stonesBlocks.find(stone => rectCircleCollision(newEnemy.collisionObj, stone.collisionObj)) &&
+                !this.spikesBlocks.find(spike => rectCircleCollision(newEnemy.collisionObj, spike.collisionObj))) {
+                this.enemies.push(newEnemy);
+            } else {
+                newEnemy.div.remove();
+            }
         }
     }
 
-    createSpikes() {
+    createSpikesAndStones() {
         this.spikesBlocks = [];
+        this.stonesBlocks = [];
         for (let y = 0; y < GameVars.roomHeight; y++) {
             for (let x = 0; x < GameVars.roomWidth; x++) {
-                (y > 3 && y <= GameVars.roomHeight - 4 && x > 3 && x <= GameVars.roomWidth - 4) &&
-                    !(y > 5 && y <= GameVars.roomHeight - 6 && x > 5 && x <= GameVars.roomWidth - 6) &&
-                    randomNumb(100) < 5 &&
-                    this.spikesBlocks.push(new Spikes(this, x, y));
+                if ((y > 3 && y <= GameVars.roomHeight - 4 && x > 3 && x <= GameVars.roomWidth - 4) &&
+                    !(y > 5 && y <= GameVars.roomHeight - 6 && x > 5 && x <= GameVars.roomWidth - 6)) {
+                    let random = randomNumb(100);
+                    random >= 5 && random < 15 && this.stonesBlocks.push(new Stone(this, x, y));
+                    random < 5 && this.spikesBlocks.push(new Spikes(this, x, y));
+                }
             }
         }
     }
@@ -113,21 +123,33 @@ export class Room {
         }
     }
 
-    removeSpikes() {
-        this.spikeCanv.getContext("2d").clearRect(0, 0, this.spikeCanv.width, this.spikeCanv.height);
-        this.spikesBlocks = [];
+    removeSpikesAndStonesForMainText() {
+        this.spikesBlocks = this.spikesBlocks.filter(spike => this.validateMainMenuEnvironment(spike.collisionObj));
+        this.stonesBlocks = this.stonesBlocks.filter(stone => this.validateMainMenuEnvironment(stone.collisionObj));
+        this.environmentCanv.getContext("2d").clearRect(0, 0, this.environmentCanv.width, this.environmentCanv.height);
+        this.spikesBlocks.forEach(spikes => spikes.draw());
+        this.stonesBlocks.forEach(stone => stone.draw());
+    }
+
+    validateMainMenuEnvironment(collisionObj) {
+        return collisionObj.x < (GameVars.gameW / 2) - toPixelSize(64) || collisionObj.x > (GameVars.gameW / 2) + toPixelSize(64);
     }
 
     reInit() {
         this.roomDiv.classList.remove("hidden");
         this.initRoomBlocks();
 
-        setElemSize(this.spikeCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
-        this.spikeCanv.getContext("2d").clearRect(0, 0, this.spikeCanv.width, this.spikeCanv.height);
+        setElemSize(this.environmentCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        this.environmentCanv.getContext("2d").clearRect(0, 0, this.environmentCanv.width, this.environmentCanv.height);
         this.spikesBlocks.forEach(spikes => {
             const newPos = GameVars.calcResizePos(spikes.collisionObj.x, spikes.collisionObj.y);
             spikes.init(newPos.x, newPos.y);
             spikes.draw();
+        });
+        this.stonesBlocks.forEach(stone => {
+            const newPos = GameVars.calcResizePos(stone.collisionObj.x, stone.collisionObj.y);
+            stone.init(newPos.x, newPos.y);
+            stone.draw();
         });
 
         this.projectiles.forEach(projectile => projectile.destroy());
@@ -223,13 +245,14 @@ export class Room {
     draw() {
         setElemSize(this.roomCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
         setElemSize(this.doorCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
-        setElemSize(this.spikeCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
+        setElemSize(this.environmentCanv, toPixelSize(GameVars.gameWdAsPixels), toPixelSize(GameVars.gameHgAsPixels));
 
         this.floors.forEach(block => block.draw());
         this.drawRoomShadows();
         this.walls.forEach(block => block.draw());
         this.doors.forEach(block => block.draw());
         this.spikesBlocks.forEach(spikes => spikes.draw());
+        this.stonesBlocks.forEach(stone => stone.draw());
     }
 
     drawRoomShadows() {

@@ -54,9 +54,9 @@ export class Block {
                 break;
 
             case BlockType.DOOR_CLOSE:
-                const doorColors = this.doorType === DoorType.TREASURE ? { lt: "#ffff57", md: "#cd9722", dk: "#9e6800" } :
-                    this.doorType === DoorType.BOSS ? { lt: "#703a33", md: "#641f14", dk: "#431313" } :
-                        { lt: "#865433", md: "#843d0d", dk: "#2f1519" };
+                const doorColors = this.doorType === DoorType.TREASURE ? { "lt": "#ffff57", "md": "#cd9722", "dk": "#9e6800" } :
+                    this.doorType === DoorType.BOSS ? { "lt": "#703a33", "md": "#641f14", "dk": "#431313" } :
+                        { "lt": "#865433", "md": "#843d0d", "dk": "#2f1519" };
                 this.createDoor(doorCtx, () => {
                     doorCtx.fillStyle = doorColors.md;
                     doorCtx.fillRect(this.collisionObj.x, this.collisionObj.y, toPixelSize(16), toPixelSize(16));
@@ -184,10 +184,10 @@ export class Block {
     }
 }
 
-const getBlockColors = () => {
-    return GameVars.gameLevel < 3 ? { lt: "#999a9e", md: "#686b7a", dk: "#3e3846" } :
-        GameVars.gameLevel < 5 ? { lt: "#703a33", md: "#38252e", dk: "#1b1116" } :
-            { lt: "#431313", md: "#2f1519", dk: "#100f0f" };
+export const getBlockColors = () => {
+    return GameVars.gameLevel < 3 ? { "lt": "#999a9e", "md": "#686b7a", "dk": "#3e3846" } :
+        GameVars.gameLevel < 5 ? { "lt": "#703a33", "md": "#38252e", "dk": "#1b1116" } :
+            { "lt": "#431313", "md": "#2f1519", "dk": "#100f0f" };
 };
 
 export const createWallBlock = (ctx, x, y) => {
@@ -205,9 +205,9 @@ export const createWallBlock = (ctx, x, y) => {
 };
 
 export const createFloorBlock = (canvas, x, y) => {
-    const floorColors = GameVars.gameLevel < 3 ? { lt: "#52804d", md: "#41663d" } :
-        GameVars.gameLevel < 5 ? { lt: "#41663d", md: "#2f492c" } :
-            { lt: "#703a33", md: "#38252e" };
+    const floorColors = GameVars.gameLevel < 3 ? { "lt": "#52804d", "md": "#41663d" } :
+        GameVars.gameLevel < 5 ? { "lt": "#41663d", "md": "#2f492c" } :
+            { "lt": "#703a33", "md": "#38252e" };
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = floorColors.md;
     ctx.fillRect(x, y, toPixelSize(16), toPixelSize(16));
