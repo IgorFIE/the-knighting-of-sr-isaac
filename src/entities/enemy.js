@@ -30,7 +30,7 @@ export class Enemy {
         this.shadowCanv = createElem(this.div, "canvas");
         this.enemyCanv = createElem(this.div, "canvas");
 
-        this.lifeBar = new LifeBar(this.getEnemyLife() * GameVars.heartLifeVal, false, this.div);
+        this.lifeBar = new LifeBar(this.getEnemyLife() * GameVars.heartLifeVal, false, enemyType === EnemyType.BOSS, this.div);
 
         this.init(x, y);
     }

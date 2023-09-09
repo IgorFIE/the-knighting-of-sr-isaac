@@ -21,7 +21,7 @@ export class Player {
         this.playerCanv = createElem(this.div, "canvas");
         this.keyCanv = createElem(GameVars.gameDiv, "canvas", null, ["hidden"]);
 
-        this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, this.playerCanv, GameVars.lastPlayerLife);
+        this.lifeBar = new LifeBar(GameVars.heartLifeVal * 3, true, false, this.playerCanv, GameVars.lastPlayerLife);
 
         this.init(GameVars.gameW / 2, GameVars.gameH / 2);
     }
