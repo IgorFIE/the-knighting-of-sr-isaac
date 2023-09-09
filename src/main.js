@@ -63,7 +63,7 @@ const init = () => {
     setResize();
 
     createGameElements();
-    draw();
+    draw(true);
 
     window.requestAnimationFrame(() => gameLoop());
 }
@@ -75,8 +75,9 @@ const addKeyListenerEvents = () => {
 }
 
 const updateKeys = (key, isDown) => {
+    const needsRedraw = GameVars.keys[key] !== isDown;
     GameVars.keys[key] = isDown;
-    (key === 'v' || key === 'V' || key === 'b' || key === 'B') && GameVars.weaponIcons?.update();
+    (key === 'v' || key === 'V' || key === 'b' || key === 'B') && needsRedraw && GameVars.weaponIcons?.update();
     initAudio();
 }
 
@@ -182,9 +183,9 @@ const drawBtn = (btn, xPos, topText, bottomText) => {
 }
 
 const drawSoundBtn = (isResize) => {
-    soundBtnCanv.style.translate = (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px ' + toPixelSize(10) + 'px';
     let isSoundOn = GameVars.sound && GameVars.sound.isSoundOn;
     if (lastSoundState !== isSoundOn || isResize) {
+        soundBtnCanv.style.translate = (GameVars.gameW - soundBtnCanv.width - toPixelSize(24)) + 'px ' + toPixelSize(10) + 'px';
         lastSoundState = isSoundOn;
         soundBtnCanv.getContext("2d").clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
         genSmallBox(soundBtnCanv, 0, 0, 22, 11, toPixelSize(1), isSoundOn ? "#00000066" : "#ffffffaa", isSoundOn ? "#100f0f66" : "#ffffff66");
@@ -195,11 +196,9 @@ const drawSoundBtn = (isResize) => {
 }
 
 const drawScore = (isResize) => {
-    scoreCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(10) + 'px';
     if (lastScore != GameVars.score || isResize) {
-        let text;
-        !GameVars.game && (text = "top score - " + GameVars.highScore) || (text = "Score - " + GameVars.score);
-        const textArray = convertTextToPixelArt(text);
+        scoreCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(10) + 'px';
+        const textArray = convertTextToPixelArt(!GameVars.game ? "top score - " + GameVars.highScore : "Score - " + GameVars.score);
         const textLength = textArray[0].length * toPixelSize(1);
         scoreCanv.width = textLength + toPixelSize(4);
         genSmallBox(scoreCanv, 0, 0, (textArray[0].length + 3), 11, toPixelSize(1), "#00000066", "#100f0f66");
