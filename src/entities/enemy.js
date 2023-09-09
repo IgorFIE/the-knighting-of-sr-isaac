@@ -125,8 +125,10 @@ export class Enemy {
                                 ItemType.HEART, null, this.room));
                         }
                     }
-                    randomNumb(100) < 10 && this.priorityWeapon.weaponType !== WeaponType.FIST && GameVars.currentRoom.items.push(
-                        new Item(this.collisionObj.x, this.collisionObj.y, ItemType.WEAPON, this.priorityWeapon.weaponType, GameVars.currentRoom));
+                    if (randomNumb(100) < 10 && this.priorityWeapon.weaponType !== WeaponType.FIST) {
+                        GameVars.sound.clickSound();
+                        GameVars.currentRoom.items.push(new Item(this.collisionObj.x, this.collisionObj.y, ItemType.WEAPON, this.priorityWeapon.weaponType, GameVars.currentRoom));
+                    }
                     this.destroy();
                 });
             }
