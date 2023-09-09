@@ -112,6 +112,6 @@ export class Item {
 
     draw() {
         genSmallBox(this.shadowCanv, 0, 0, 4, 4, toPixelSize(2), "#00000033", "#00000033");
-        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? { "ho": "#edeef7", "hi": "#a80000" } : { "wc": "#3e3846" });
+        drawSprite(this.itemCanv, this.sprite, this.size, null, null, this.itemType === ItemType.HEART ? { "ho": "#edeef7", "hi": "#a80000" } : { "wc": "#cd9722" });
     }
 }
