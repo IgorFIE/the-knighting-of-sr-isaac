@@ -4,15 +4,19 @@ Is a simple random room generated roguelike game where you combine different wea
 
 Prove yourself worthy of being called a knight and see how far you can go!!!
 
-Game instructions:
+You can play a live version here: https://igorfie.gitlab.io/the-knighting-of-sr-isaac/
+This game was created for the [2023 js13kGames](https://js13kgames.com/) where the theme was `13TH CENTURY`.
+
+### Game instructions:
 - w/a/s/d to walk and v/b to attack on desktop.
 - Gamepad and atk buttons a/b for mobile. 
 - Pick your starting weapon with v/b in the keyboard or press the buttons in mobile.
-- v/b or a/b allows you to pick weapons to the respective hand.
+- v/b or a/b allows you to pick weapons to the respective hand, it also allows you to open doors.
+- Treasure room can only be open if you have the key.
 - Clicking in the top right speaker or pressing "m" can mute the game sounds.
+- Enemies may drop their weapons after dead.
 
-# Weapons in game
-
+### Weapons in game
 Close Melee:
 - Fist: down atk
 - Shield: down-side atk, pushes enemies down
@@ -31,9 +35,10 @@ Range:
 - Trowing Axe: side atk
 - Crossbow: top-side atk
 
-You can play a live version here: https://igorfie.gitlab.io/the-knighting-of-sr-isaac/
-
-This game was created for the [2023 js13kGames](https://js13kgames.com/) where the theme was `13TH CENTURY`.
+### Enemy Behaviours
+- Afraid: keeps himself at a distance from the player, if player gets close they run away.
+- Agressive: follow the player and attacks.
+- Defensive: Gets close to player but Keeps a distance to perform attacks.
 
 ## TODO-FOR-THE-FUTURE-ME
 Since the limit of space was 13kbs I was out of space but in the future I may:
@@ -41,7 +46,7 @@ Since the limit of space was 13kbs I was out of space but in the future I may:
 - Implement armor items so player/enemeis can have an aditional shield "life" bar wich takes damage before the player/enemies real life.
 - Implemente general rougelike items to increase player life, atk base dmg, defence, etc.
 - Implemente more environment traps and sprites, like trees, bear traps, wood walls, etc.
-- Investigate a strange performance problem where the game slows down, can't figure out if it's due to the animate system used. It doesn't seem to be a memory leak, maybe garbage collector... But memory seems to be cleaned normally without causing issues... I have no idea.
+- Investigate a strange performance problem where the game slows down, can't figure out if it's due to the animation system used. It doesn't seem to be a memory leak, maybe garbage collector... But memory seems to be cleaned normally without causing issues... I have no idea. Maybe it's a problem with my machine since people don't seem to have the same issue.
 
 ### Setup
 Run `npm install` on a terminal
