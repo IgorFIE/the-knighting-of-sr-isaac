@@ -14,7 +14,7 @@ Game instructions:
 # Weapons in game
 
 Close Melee:
-- First: down atk
+- Fist: down atk
 - Shield: down-side atk, pushes enemies down
 - Axe: down-side atk
 - Morning Star: side atk
