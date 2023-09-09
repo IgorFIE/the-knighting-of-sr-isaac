@@ -99,7 +99,7 @@ export class Game {
     }
 
     drawMainRoomText() {
-        const textColor = GameVars.gameLevel < 3 ? "#2f492c" : GameVars.gameLevel < 6 ? "#38252e" : "#1b1116";
+        const textColor = GameVars.gameLevel < 3 ? "#2f492c" : GameVars.gameLevel < 5 ? "#38252e" : "#1b1116";
         drawPixelTextInCanvas(convertTextToPixelArt("level " + GameVars.gameLevel), this.mainRoom.roomCanv, toPixelSize(2),
             GameVars.gameW / toPixelSize(4), (GameVars.gameH / toPixelSize(4)) - 20, textColor, 1);
 
