@@ -5,7 +5,7 @@ import { WeaponType, isProjectileWeapon } from "../enums/weapon-type";
 import { GameVars, toPixelSize } from "../game-variables";
 import { deadAnim, walk, weaponWalkLeft, weaponWalkRight } from "../utilities/animation-utilities";
 import { genSmallBox } from "../utilities/box-generator";
-import { checkForCollisions, distBetwenObjs, circleToCircleCollision } from "../utilities/collision-utilities";
+import { checkForCollisions, distBetwenObjs, circleToCircleCollision, rectCircleCollision } from "../utilities/collision-utilities";
 import { createElem, drawSprite, setElemSize } from "../utilities/draw-utilities";
 import { randomNumb, randomNumbOnRange } from "../utilities/general-utilities";
 import { Item } from "./item";
@@ -138,6 +138,15 @@ export class Enemy {
         let newRectY = this.collisionObj.y;
 
         this.setTargetPosBasedOnEnemySubType();
+        let forceBreakCounter = 0;
+        while (this.room.enemies.find(enemy => enemy !== this && circleToCircleCollision(this.targetPos, enemy.collisionObj)) ||
+            this.room.stonesBlocks.find(stone => rectCircleCollision(this.targetPos, stone.collisionObj)) ||
+            this.room.spikesBlocks.find(spike => rectCircleCollision(this.targetPos, spike.collisionObj))) {
+            this.setTargetPosBasedOnEnemySubType();
+            forceBreakCounter++;
+            if (forceBreakCounter > 10) break;
+        }
+
 
         const xDistance = this.targetPos.x - this.collisionObj.x;
         const yDistance = this.targetPos.y - this.collisionObj.y;

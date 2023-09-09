@@ -82,6 +82,7 @@ export class Room {
     createSpikesAndStones() {
         this.spikesBlocks = [];
         this.stonesBlocks = [];
+        // this.stonesBlocks.push(new Stone(this, 3, 3)); //FOR DEBUG
         for (let y = 0; y < GameVars.roomHeight; y++) {
             for (let x = 0; x < GameVars.roomWidth; x++) {
                 if ((y > 3 && y < GameVars.roomHeight - 4 && x > 3 && x < GameVars.roomWidth - 4) &&

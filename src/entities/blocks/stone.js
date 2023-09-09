@@ -8,21 +8,26 @@ export class Stone {
         this.room = room;
         this.elapsedTime = 0;
 
-        this.init((blockRoomX * toPixelSize(16)), (blockRoomY * toPixelSize(16)));
+        this.init((blockRoomX * toPixelSize(16)) + toPixelSize(4), (blockRoomY * toPixelSize(16)) + toPixelSize(4));
     }
 
     init(x, y) {
-        this.collisionObj = new SquareObject(x, y, toPixelSize(16), toPixelSize(16));
+        this.collisionObj = new SquareObject(x, y, toPixelSize(8), toPixelSize(8));
     }
 
     draw() {
         genSmallBox(this.room.environmentCanv,
-            Math.round(this.collisionObj.x / toPixelSize(2) - 1),
-            Math.round(this.collisionObj.y / toPixelSize(2) + 1),
+            Math.round(this.collisionObj.x / toPixelSize(2) - 3),
+            Math.round(this.collisionObj.y / toPixelSize(2) - 1),
             9, 8, toPixelSize(2), "#00000044", "#00000044");
         drawSprite(this.room.environmentCanv, stone, toPixelSize(2),
-            Math.round(this.collisionObj.x / toPixelSize(2)),
-            Math.round(this.collisionObj.y / toPixelSize(2)));
+            Math.round(this.collisionObj.x / toPixelSize(2)) - 2,
+            Math.round(this.collisionObj.y / toPixelSize(2)) - 2);
+
+        // const ctx = this.room.environmentCanv.getContext('2d');
+        // ctx.beginPath();
+        // ctx.rect(this.collisionObj.x, this.collisionObj.y, this.collisionObj.w, this.collisionObj.h);
+        // ctx.stroke();
     }
 }
 
