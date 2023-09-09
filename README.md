@@ -41,6 +41,7 @@ Since the limit of space was 13kbs I was out of space but in the future I may:
 - Implement armor items so player/enemeis can have an aditional shield "life" bar wich takes damage before the player/enemies real life.
 - Implemente general rougelike items to increase player life, atk base dmg, defence, etc.
 - Implemente more environment traps and sprites, like trees, bear traps, wood walls, etc.
+- Investigate a strange performance problem where the game slows down, can't figure out if it's due to the animate system used. It doesn't seem to be a memory leak, maybe garbage collector... But memory seems to be cleaned normally without causing issues... I have no idea.
 
 ### Setup
 Run `npm install` on a terminal
