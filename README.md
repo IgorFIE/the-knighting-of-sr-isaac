@@ -5,9 +5,10 @@ Is a simple random room generated roguelike game where you combine different wea
 Prove yourself worthy of being called a knight and see how far you can go!!!
 
 You can play a live version here: https://igorfie.gitlab.io/the-knighting-of-sr-isaac/
+
 This game was created for the [2023 js13kGames](https://js13kgames.com/) where the theme was `13TH CENTURY`.
 
-### Game instructions:
+### Game instructions
 - w/a/s/d to walk and v/b to attack on desktop.
 - Gamepad and atk buttons a/b for mobile. 
 - Pick your starting weapon with v/b in the keyboard or press the buttons in mobile.
@@ -16,8 +17,9 @@ This game was created for the [2023 js13kGames](https://js13kgames.com/) where t
 - Clicking in the top right speaker or pressing "m" can mute the game sounds.
 - Enemies may drop their weapons after dead.
 
-### Weapons in game
-Close Melee:
+## Weapons in game
+
+### Close Melee:
 - Fist: down atk
 - Shield: down-side atk, pushes enemies down
 - Axe: down-side atk
@@ -25,17 +27,17 @@ Close Melee:
 - Hammer: top-side atk
 - Sword: top-side-down atk
 
-Long Range Melee:
+### Long Range Melee:
 - Spear: down atk
 - Greatsword: 360 atk
 - Halberd: top atk
 
-Range:
+### Range:
 - Trowing Knives: down-side atk
 - Trowing Axe: side atk
 - Crossbow: top-side atk
 
-### Enemy Behaviours
+## Enemy Behaviours
 - Afraid: keeps himself at a distance from the player, if player gets close they run away.
 - Agressive: follow the player and attacks.
 - Defensive: Gets close to player but Keeps a distance to perform attacks.
