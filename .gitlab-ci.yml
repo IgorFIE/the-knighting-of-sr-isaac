@@ -16,14 +16,14 @@ cache:
 #   script:
 #   - npm run build
 #   - cd dist
-#   - 7z a -mm=Deflate -mx=9 13thcenturykinght.zip *.html *.js
+#   - 7z a -mm=Deflate -mx=9 theknigthingofsrisaac.zip *.html *.js
 #   - cd -
-#   - mv dist/13thcenturykinght.zip ./
-#   # - echo 'file_size $(stat --printf="%s" 13thcenturykinght.zip)' > metrics.txt
-#   #- test $(stat --printf="%s" 13thcenturykinght.zip) -lt 13312
+#   - mv dist/theknigthingofsrisaac.zip ./
+#   # - echo 'file_size $(stat --printf="%s" theknigthingofsrisaac.zip)' > metrics.txt
+#   #- test $(stat --printf="%s" theknigthingofsrisaac.zip) -lt 13312
 #   artifacts:
 #     paths:
-#     - 13thcenturykinght.zip
+#     - theknigthingofsrisaac.zip
 #     # reports:
 #     #   metrics: metrics.txt
 
