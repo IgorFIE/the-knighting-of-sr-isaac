@@ -184,7 +184,7 @@ export class Block {
     }
 }
 
-export const getBlockColors = () => {
+const getBlockColors = () => {
     return GameVars.gameLevel < 3 ? { "lt": "#999a9e", "md": "#686b7a", "dk": "#3e3846" } :
         GameVars.gameLevel < 5 ? { "lt": "#703a33", "md": "#38252e", "dk": "#1b1116" } :
             { "lt": "#431313", "md": "#2f1519", "dk": "#100f0f" };

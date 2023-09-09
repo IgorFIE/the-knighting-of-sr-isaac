@@ -22,7 +22,7 @@ export class Stone {
             9, 8, toPixelSize(2), "#00000044", "#00000044");
         drawSprite(this.room.environmentCanv, stone, toPixelSize(2),
             Math.round(this.collisionObj.x / toPixelSize(2)) - 2,
-            Math.round(this.collisionObj.y / toPixelSize(2)) - 2);
+            Math.round(this.collisionObj.y / toPixelSize(2)) - 2, { "lt": "#999a9e", "md": "#686b7a", "dk": "#3e3846" });
 
         // const ctx = this.room.environmentCanv.getContext('2d');
         // ctx.beginPath();
@@ -32,12 +32,12 @@ export class Stone {
 }
 
 const stone = [
-    [null, "#999a9e", "#999a9e", "#999a9e", "#999a9e", "#999a9e", "#999a9e", null],
-    ["#3e3846", "#686b7a", "#686b7a", "#686b7a", "#686b7a", "#999a9e", "#686b7a", "#999a9e"],
-    ["#3e3846", "#686b7a", "#686b7a", "#686b7a", "#999a9e", "#3e3846", "#686b7a", "#999a9e"],
-    ["#3e3846", "#686b7a", "#686b7a", "#999a9e", "#3e3846", "#686b7a", "#686b7a", "#999a9e"],
-    ["#3e3846", "#686b7a", "#3e3846", "#3e3846", "#686b7a", "#686b7a", "#999a9e", "#999a9e"],
-    ["#3e3846", "#3e3846", "#686b7a", "#686b7a", "#3e3846", "#3e3846", "#686b7a", "#999a9e"],
-    ["#3e3846", "#686b7a", "#686b7a", "#3e3846", "#686b7a", "#686b7a", "#686b7a", "#999a9e"],
-    [null, "#3e3846", "#3e3846", "#3e3846", "#3e3846", "#3e3846", "#3e3846", null],
+    [null, "lt", "lt", "lt", "lt", "lt", "lt", null],
+    ["dk", "md", "md", "md", "md", "lt", "md", "lt"],
+    ["dk", "md", "md", "md", "lt", "dk", "md", "lt"],
+    ["dk", "md", "md", "lt", "dk", "md", "md", "lt"],
+    ["dk", "md", "dk", "dk", "md", "md", "lt", "lt"],
+    ["dk", "dk", "md", "md", "dk", "dk", "md", "lt"],
+    ["dk", "md", "md", "dk", "md", "md", "md", "lt"],
+    [null, "dk", "dk", "dk", "dk", "dk", "dk", null],
 ];
