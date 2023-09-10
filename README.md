@@ -1,6 +1,6 @@
 # The Knighting of Sr Isaac
 
-Is a simple random room generated roguelike game where you combine different weapons with unique attack paterns against enemies.
+Is a simple random room generated roguelike game where you combine different weapons with unique attack patterns against enemies.
 
 Prove yourself worthy of being called a knight and see how far you can go!!!
 
@@ -14,8 +14,8 @@ This game was created for the [2023 js13kGames](https://js13kgames.com/) where t
 - w/a/s/d to walk and v/b to attack on desktop.
 - Gamepad and atk buttons a/b for mobile. 
 - Pick your starting weapon with v/b in the keyboard or press the buttons in mobile.
-- v/b or a/b allows you to pick weapons to the respective hand, it also allows you to open doors.
-- Treasure room can only be open if you have the key.
+- v/b or a/b allows you to pick a weapons to that respective hand, it also allows you to open doors.
+- Treasure room can only be opened if you have the key.
 - Clicking in the top right speaker or pressing "m" can mute the game sounds.
 - Enemies may drop their weapons after dead.
 
@@ -41,10 +41,10 @@ This game was created for the [2023 js13kGames](https://js13kgames.com/) where t
 
 ## Enemy Behaviours
 - Afraid: keeps himself at a distance from the player, if player gets close they run away.
-- Agressive: follow the player and attacks.
-- Defensive: Gets close to player but Keeps a distance to perform attacks.
+- Agressive: follows the player and attacks.
+- Defensive: gets close to player but keeps a distance to perform attacks.
 
-## TODO-FOR-THE-FUTURE-ME
+## TODO-FOR-FUTURE-ME
 Since the limit of space was 13kbs I was out of space but in the future I may:
 - Implement A* algorithm for the enemies to walk.
 - Implement armor items so player/enemeis can have an aditional shield "life" bar wich takes damage before the player/enemies real life.
