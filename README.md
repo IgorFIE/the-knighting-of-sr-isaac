@@ -8,6 +8,8 @@ You can play a live version here: https://igorfie.gitlab.io/the-knighting-of-sr-
 
 This game was created for the [2023 js13kGames](https://js13kgames.com/) where the theme was `13TH CENTURY`.
 
+![game screen](media/the-knighting-of-sr-isaac.png "The Knighting of Sr Isaac Game Screen")
+
 ### Game instructions
 - w/a/s/d to walk and v/b to attack on desktop.
 - Gamepad and atk buttons a/b for mobile. 
