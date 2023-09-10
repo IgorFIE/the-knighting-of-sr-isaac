@@ -11,12 +11,12 @@ This game was created for the [2023 js13kGames](https://js13kgames.com/) where t
 ![game screen](media/the-knighting-of-sr-isaac.png "The Knighting of Sr Isaac Game Screen")
 
 ### Game instructions
-- w/a/s/d to walk and v/b to attack on desktop.
-- Gamepad and atk buttons a/b for mobile. 
-- Pick your starting weapon with v/b in the keyboard or press the buttons in mobile.
-- v/b or a/b allows you to pick a weapons to that respective hand, it also allows you to open doors.
+- `w`/`a`/`s`/`d` to walk and `v`/`b` to attack on desktop.
+- Gamepad and atk buttons `a`/`b` for mobile. 
+- Pick your starting weapon with `v`/`b` in the keyboard or press the buttons in mobile.
+- `v`/`b` or `a`/`b` allows you to pick a weapons to that respective hand, it also allows you to open doors.
 - Treasure room can only be opened if you have the key.
-- Clicking in the top right speaker or pressing "m" can mute the game sounds.
+- Clicking in the top right speaker or pressing `m` can mute the game sounds.
 - Enemies may drop their weapons after dead.
 
 ## Weapons in game
