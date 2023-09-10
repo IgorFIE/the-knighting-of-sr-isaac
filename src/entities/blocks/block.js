@@ -185,8 +185,8 @@ export class Block {
 }
 
 const getBlockColors = () => {
-    return GameVars.gameLevel < 3 ? { "lt": "#999a9e", "md": "#686b7a", "dk": "#3e3846" } :
-        GameVars.gameLevel < 5 ? { "lt": "#703a33", "md": "#38252e", "dk": "#1b1116" } :
+    return GameVars.gameLevel < 4 ? { "lt": "#999a9e", "md": "#686b7a", "dk": "#3e3846" } :
+        GameVars.gameLevel < 7 ? { "lt": "#703a33", "md": "#38252e", "dk": "#1b1116" } :
             { "lt": "#431313", "md": "#2f1519", "dk": "#100f0f" };
 };
 
@@ -205,8 +205,8 @@ export const createWallBlock = (ctx, x, y) => {
 };
 
 export const createFloorBlock = (canvas, x, y) => {
-    const floorColors = GameVars.gameLevel < 3 ? { "lt": "#52804d", "md": "#41663d" } :
-        GameVars.gameLevel < 5 ? { "lt": "#41663d", "md": "#2f492c" } :
+    const floorColors = GameVars.gameLevel < 4 ? { "lt": "#52804d", "md": "#41663d" } :
+        GameVars.gameLevel < 7 ? { "lt": "#41663d", "md": "#2f492c" } :
             { "lt": "#703a33", "md": "#38252e" };
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = floorColors.md;

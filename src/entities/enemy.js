@@ -96,9 +96,9 @@ export class Enemy {
     }
 
     getEnemyLife() {
-        if (GameVars.gameLevel < 3) {
+        if (GameVars.gameLevel < 4) {
             return this.enemyType === EnemyType.BASIC ? 1 : 6;
-        } else if (GameVars.gameLevel < 5) {
+        } else if (GameVars.gameLevel < 7) {
             return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(1, 2) : randomNumbOnRange(8, 10);
         } else {
             return this.enemyType === EnemyType.BASIC ? randomNumbOnRange(2, 3) : randomNumbOnRange(12, 14);
