@@ -302,7 +302,7 @@ const drawMainMenu = () => {
     1,
   );
   drawPixelTextInCanvas(
-    convertTextToPixelArt("js13kgames 2023 - igor estevao"),
+    convertTextToPixelArt("2023 - igor estevao"),
     mainMenuCanv,
     toPixelSize(1),
     GameVars.gameWdAsPixels / 2,
