@@ -1,16 +1,11 @@
-# The Knighting of Sr Isaac
+# Knight Arena
 
-Is a simple random room generated roguelike game where you combine different weapons with unique attack patterns against enemies.
+A simple random room generated roguelike game where you combine different weapons
+with unique attack patterns against enemies.
 
 Prove yourself worthy of being called a knight and see how far you can go!!!
 
-You can play a live version here: https://igorfie.gitlab.io/the-knighting-of-sr-isaac/
-
-This game was created for the [2023 js13kGames](https://js13kgames.com/) where the theme was `13TH CENTURY`.
-
-![game screen](media/the-knighting-of-sr-isaac.png "The Knighting of Sr Isaac Game Screen")
-
-### Game instructions
+## Game instructions
 - `w`/`a`/`s`/`d` to walk and `v`/`b` to attack on desktop.
 - Gamepad and atk buttons `a`/`b` for mobile. 
 - Pick your starting weapon with `v`/`b` in the keyboard or press the buttons in mobile.
@@ -44,19 +39,54 @@ This game was created for the [2023 js13kGames](https://js13kgames.com/) where t
 - Agressive: follows the player and attacks.
 - Defensive: gets close to player but keeps a distance to perform attacks.
 
-## TODO-FOR-FUTURE-ME
-Since the limit of space was 13kbs I was out of space but in the future I may:
-- Implement A* algorithm for the enemies to walk.
-- Implement armor items so player/enemeis can have an aditional shield "life" bar wich takes damage before the player/enemies real life.
-- Implemente general rougelike items to increase player life, atk base dmg, defence, etc.
-- Implemente more environment traps and sprites, like trees, bear traps, wood walls, etc.
-- Investigate a strange performance problem where the game slows down, can't figure out if it's due to the animation system used. It doesn't seem to be a memory leak, maybe garbage collector... But memory seems to be cleaned normally without causing issues... I have no idea. Maybe it's a problem with my machine since people don't seem to have the same issue.
+## Contributing
 
-### Setup
-Run `npm install` on a terminal
+### Installing Dependencies
 
-### Development
-Run `npm run start` to start the game in a development server on `localhost:8080`.
+After cloning this repo, install dependecies:
 
-### Production
-Use `npm run build` to create minified file and zip him with the `index.html`. The result will be available in the `build` directory.
+```
+pnpm i
+```
+
+### Code format
+
+```
+pnpm check
+```
+
+### Testing the app in the browser
+
+To test your work in your browser (with hot reloading!) while developing:
+
+```
+pnpm dev
+# Alternatively to test in a more advanced WebXDC emulator:
+pnpm start
+```
+
+### Building
+
+To package the WebXDC file:
+
+```
+pnpm build
+```
+
+To package the WebXDC with developer tools inside to debug in Delta Chat, set the `NODE_ENV`
+environment variable to "debug":
+
+```
+NODE_ENV=debug pnpm build
+```
+
+The resulting optimized `.xdc` file is saved in `dist-xdc/` folder.
+
+### Releasing
+
+To automatically build and create a new GitHub release with the `.xdc` file:
+
+```
+git tag v1.0.1
+git push origin v1.0.1
+```

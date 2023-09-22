@@ -1,13 +1,14 @@
-const { GameVars, toPixelSize } = require("./game-variables");
-const { Game } = require("./game");
-const { createElem, drawSprite, setElemSize } = require("./utilities/draw-utilities");
-const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
-const { genSmallBox } = require("./utilities/box-generator");
-const { Sound } = require("./sound/sound");
-const { knight } = require("./entities/sprites");
-const { createWallBlock, createFloorBlock } = require("./entities/blocks/block");
-const { getWeaponSprite } = require("./enums/weapon-type");
-const { randomNumbOnRange } = require("./utilities/general-utilities");
+import "webxdc-scores";
+import { GameVars, toPixelSize } from "./game-variables";
+import { Game } from "./game";
+import { createElem, drawSprite, setElemSize } from "./utilities/draw-utilities";
+import { convertTextToPixelArt, drawPixelTextInCanvas } from "./utilities/text";
+import { genSmallBox } from "./utilities/box-generator";
+import { Sound } from "./sound/sound";
+import { knight } from "./entities/sprites";
+import { createWallBlock, createFloorBlock } from "./entities/blocks/block";
+import { getWeaponSprite } from "./enums/weapon-type";
+import { randomNumbOnRange } from "./utilities/general-utilities";
 
 const speaker = [
     [null, null, null, "#edeef7", null],
@@ -53,6 +54,7 @@ let then = Date.now();
 let skipElapsedTime = 0;
 
 const init = () => {
+    GameVars.highScore = window.highscores.getScore();
     GameVars.updatePixelSize(window.innerWidth, window.innerHeight);
     GameVars.resetGameVars();
 
@@ -167,8 +169,7 @@ const drawMainMenu = () => {
     drawSprite(mainMenuCanv, rightSprite, toPixelSize(10), wKnightCenter + 4 - (rightSprite[0].length / 2), hKnightCenter - 1.5, { "wc": "#cd9722" });
 
     genSmallBox(mainMenuCanv, -1, -1, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 32, toPixelSize(2), "#060606", "#060606");
-    drawPixelTextInCanvas(convertTextToPixelArt("the knighting of"), mainMenuCanv, toPixelSize(3), Math.round(GameVars.gameW / 2 / toPixelSize(3)), 11, "#edeef7", 1);
-    drawPixelTextInCanvas(convertTextToPixelArt("sr isaac"), mainMenuCanv, toPixelSize(2), Math.round(GameVars.gameW / 2 / toPixelSize(2)), 25, "#edeef7", 1);
+    drawPixelTextInCanvas(convertTextToPixelArt("Knight Arena"), mainMenuCanv, toPixelSize(3), Math.round(GameVars.gameW / 2 / toPixelSize(3)), 11, "#edeef7", 1);
 
     genSmallBox(mainMenuCanv, -1, Math.floor(mainMenuCanv.height / toPixelSize(2)) - 16, Math.floor(mainMenuCanv.width / toPixelSize(2)) + 2, 17, toPixelSize(2), "#060606", "#060606");
     drawPixelTextInCanvas(convertTextToPixelArt("each weapon has a different atk pattern"), mainMenuCanv, toPixelSize(1), GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 24, "#edeef7", 1);
@@ -198,7 +199,7 @@ const drawSoundBtn = (isResize) => {
 const drawScore = (isResize) => {
     if (lastScore != GameVars.score || isResize) {
         scoreCanv.style.translate = toPixelSize(12) + 'px ' + toPixelSize(10) + 'px';
-        const textArray = convertTextToPixelArt(!GameVars.game ? "top score - " + GameVars.highScore : "Score - " + GameVars.score);
+        const textArray = convertTextToPixelArt(!GameVars.game ? "top score - " + window.highscores.getScore() : "Score - " + GameVars.score);
         const textLength = textArray[0].length * toPixelSize(1);
         scoreCanv.width = textLength + toPixelSize(4);
         genSmallBox(scoreCanv, 0, 0, (textArray[0].length + 3), 11, toPixelSize(1), "#00000066", "#100f0f66");
@@ -211,6 +212,7 @@ const drawGameOver = () => {
     genSmallBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
     drawPixelTextInCanvas(convertTextToPixelArt("Game over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 40, "black", 5);
     drawScoreCalc(gameOverCanv);
+    window.highscores.setScore(GameVars.score);
 }
 
 const drawScoreCalc = (canvas) => {
@@ -248,7 +250,7 @@ const skipGameOver = () => {
 }
 
 const gameLoop = () => {
-    elapsed = Date.now() - then;
+    const elapsed = Date.now() - then;
     if (elapsed > fpsInterval) {
         then = Date.now() - (elapsed % fpsInterval);
         GameVars.deltaTime = elapsed / 1000;
@@ -306,8 +308,8 @@ const updateScore = () => {
 const updateHighScore = () => {
     if (GameVars.highScore < GameVars.score) {
         GameVars.highScore = GameVars.score;
-        localStorage.setItem(GameVars.storeId, GameVars.highScore);
     }
 }
 
-init();
+window.focus();
+window.highscores.init("Knight Arena").then(init);

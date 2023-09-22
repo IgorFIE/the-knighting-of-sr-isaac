@@ -1,6 +1,4 @@
-const storeId = 'igorfie-the-knighting-of-sr-isaac';
-
-let highScore = parseInt(localStorage.getItem(storeId)) || 0;
+let highScore = 0;
 
 const isMobile = navigator.maxTouchPoints > 1 && navigator.maxTouchPoints !== 256;
 
@@ -110,7 +108,6 @@ const calcResizePos = (x, y) => {
 }
 
 export const GameVars = {
-    storeId,
     highScore,
 
     isMobile,
