@@ -6,8 +6,9 @@ with unique attack patterns against enemies.
 Prove yourself worthy of being called a knight and see how far you can go!!!
 
 ## Game instructions
+
 - `w`/`a`/`s`/`d` to walk and `v`/`b` to attack on desktop.
-- Gamepad and atk buttons `a`/`b` for mobile. 
+- Gamepad and atk buttons `a`/`b` for mobile.
 - Pick your starting weapon with `v`/`b` in the keyboard or press the buttons in mobile.
 - `v`/`b` or `a`/`b` allows you to pick a weapons to that respective hand, it also allows you to open doors.
 - Treasure room can only be opened if you have the key.
@@ -17,6 +18,7 @@ Prove yourself worthy of being called a knight and see how far you can go!!!
 ## Weapons in game
 
 ### Close Melee:
+
 - Fist: down atk
 - Shield: down-side atk, pushes enemies down
 - Axe: down-side atk
@@ -25,16 +27,19 @@ Prove yourself worthy of being called a knight and see how far you can go!!!
 - Sword: top-side-down atk
 
 ### Long Range Melee:
+
 - Spear: down atk
 - Greatsword: 360 atk
 - Halberd: top atk
 
 ### Range:
+
 - Trowing Knives: down-side atk
 - Trowing Axe: side atk
 - Crossbow: top-side atk
 
 ## Enemy Behaviours
+
 - Afraid: keeps himself at a distance from the player, if player gets close they run away.
 - Agressive: follows the player and attacks.
 - Defensive: gets close to player but keeps a distance to perform attacks.
