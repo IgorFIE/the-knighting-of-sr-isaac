@@ -1,6 +1,7 @@
 {
   "private": true,
   "license": "ISC",
+  "author": "Igor Estevao, adbenitez",
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3000",
