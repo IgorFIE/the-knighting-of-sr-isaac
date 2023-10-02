@@ -1,8 +1,7 @@
-const storeId = 'igorfie-the-knighting-of-sr-isaac';
+let highScore = 0;
 
-let highScore = parseInt(localStorage.getItem(storeId)) || 0;
-
-const isMobile = navigator.maxTouchPoints > 1 && navigator.maxTouchPoints !== 256;
+const isMobile =
+  navigator.maxTouchPoints > 1 && navigator.maxTouchPoints !== 256;
 
 let lastGameW;
 let lastGameH;
@@ -55,36 +54,36 @@ let lastPlayerLeftWeaponType;
 let heartLifeVal = 6;
 
 const resetGameVars = () => {
-    GameVars.score = -1; // -1 so the score redraws
+  GameVars.score = -1; // -1 so the score redraws
 
-    GameVars.gameBoardSize = 5;
-    GameVars.gameLevel = 1;
+  GameVars.gameBoardSize = 5;
+  GameVars.gameLevel = 1;
 
-    GameVars.keyCaught = 0;
-    GameVars.enemyKills = 0;
-    GameVars.enemyBossKills = 0;
+  GameVars.keyCaught = 0;
+  GameVars.enemyKills = 0;
+  GameVars.enemyBossKills = 0;
 
-    GameVars.player = null;
-    GameVars.lastPlayerLife = null;
-    GameVars.lastPlayerRightWeaponType = null;
-    GameVars.lastPlayerLeftWeaponType = null;
-}
+  GameVars.player = null;
+  GameVars.lastPlayerLife = null;
+  GameVars.lastPlayerRightWeaponType = null;
+  GameVars.lastPlayerLeftWeaponType = null;
+};
 
 const updatePixelSize = (width, height) => {
-    GameVars.lastGameW = GameVars.gameW;
-    GameVars.lastGameH = GameVars.gameH;
+  GameVars.lastGameW = GameVars.gameW;
+  GameVars.lastGameH = GameVars.gameH;
 
-    GameVars.gameW = width;
-    GameVars.gameH = height;
+  GameVars.gameW = width;
+  GameVars.gameH = height;
 
-    GameVars.pixelSize = pixelCal(2, 4);
+  GameVars.pixelSize = pixelCal(2, 4);
 
-    GameVars.gameWdAsPixels = width / GameVars.pixelSize;
-    GameVars.gameHgAsPixels = height / GameVars.pixelSize;
+  GameVars.gameWdAsPixels = width / GameVars.pixelSize;
+  GameVars.gameHgAsPixels = height / GameVars.pixelSize;
 
-    GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
-    GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
-}
+  GameVars.roomWidth = GameVars.gameWdAsPixels / 16;
+  GameVars.roomHeight = GameVars.gameHgAsPixels / 16;
+};
 
 // const initDebug = () => {
 //     GameVars.debug = document.createElement("div");
@@ -94,82 +93,95 @@ const updatePixelSize = (width, height) => {
 // }
 
 const pixelCal = (min, max) => {
-    let hgPixelSize = Math.round((GameVars.gameH - 270) * ((max - min) / (1100 - 270)) + min);
-    let wdPixelSize = Math.round((GameVars.gameW - 480) * ((max - min) / (1000 - 480)) + min);
-    let pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
-    return pixelSize >= 1 ? pixelSize : 1;
+  let hgPixelSize = Math.round(
+    (GameVars.gameH - 270) * ((max - min) / (1100 - 270)) + min,
+  );
+  let wdPixelSize = Math.round(
+    (GameVars.gameW - 480) * ((max - min) / (1000 - 480)) + min,
+  );
+  let pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+  return pixelSize >= 1 ? pixelSize : 1;
 };
 
 const calcResizePos = (x, y) => {
-    let newX = (GameVars.gameW * x) / GameVars.lastGameW;
-    let newY = (GameVars.gameH * y) / GameVars.lastGameH;
-    return {
-        x: newX < toPixelSize(48) ? toPixelSize(48) : newX > GameVars.gameW - toPixelSize(48) ? GameVars.gameW - toPixelSize(48) : newX,
-        y: newY < toPixelSize(48) ? toPixelSize(48) : newY > GameVars.gameH - toPixelSize(48) ? GameVars.gameH - toPixelSize(48) : newY
-    };
-}
+  let newX = (GameVars.gameW * x) / GameVars.lastGameW;
+  let newY = (GameVars.gameH * y) / GameVars.lastGameH;
+  return {
+    x:
+      newX < toPixelSize(48)
+        ? toPixelSize(48)
+        : newX > GameVars.gameW - toPixelSize(48)
+        ? GameVars.gameW - toPixelSize(48)
+        : newX,
+    y:
+      newY < toPixelSize(48)
+        ? toPixelSize(48)
+        : newY > GameVars.gameH - toPixelSize(48)
+        ? GameVars.gameH - toPixelSize(48)
+        : newY,
+  };
+};
 
 export const GameVars = {
-    storeId,
-    highScore,
+  highScore,
 
-    isMobile,
+  isMobile,
 
-    lastGameW,
-    lastGameH,
+  lastGameW,
+  lastGameH,
 
-    gameW,
-    gameH,
+  gameW,
+  gameH,
 
-    fps,
-    deltaTime,
-    // debug,
+  fps,
+  deltaTime,
+  // debug,
 
-    sound,
+  sound,
 
-    pixelSize,
-    gameWdAsPixels,
-    gameHgAsPixels,
+  pixelSize,
+  gameWdAsPixels,
+  gameHgAsPixels,
 
-    gameDiv,
+  gameDiv,
 
-    game,
-    gameBoardSize,
-    gameLevel,
+  game,
+  gameBoardSize,
+  gameLevel,
 
-    // atkCanv,
+  // atkCanv,
 
-    weaponIcons,
-    movePad,
+  weaponIcons,
+  movePad,
 
-    keys,
+  keys,
 
-    score,
-    keyCaught,
-    enemyKills,
-    enemyBossKills,
+  score,
+  keyCaught,
+  enemyKills,
+  enemyBossKills,
 
-    isGameOver,
+  isGameOver,
 
-    roomWidth,
-    roomHeight,
+  roomWidth,
+  roomHeight,
 
-    gameBoard,
-    currentRoom,
+  gameBoard,
+  currentRoom,
 
-    player,
-    lastPlayerLife,
-    lastPlayerRightWeaponType,
-    lastPlayerLeftWeaponType,
+  player,
+  lastPlayerLife,
+  lastPlayerRightWeaponType,
+  lastPlayerLeftWeaponType,
 
-    heartLifeVal,
+  heartLifeVal,
 
-    resetGameVars,
-    updatePixelSize,
-    calcResizePos
-    // initDebug
-}
+  resetGameVars,
+  updatePixelSize,
+  calcResizePos,
+  // initDebug
+};
 
 export const toPixelSize = (value) => {
-    return value * GameVars.pixelSize;
-}
+  return value * GameVars.pixelSize;
+};

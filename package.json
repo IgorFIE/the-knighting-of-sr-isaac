@@ -1,21 +1,21 @@
 {
-  "name": "the-knighting-of-sr-isaac",
-  "version": "1.0.0",
-  "description": "The Knighting of Sr Isaac is a simple game for js13k 2023 games based on the bingding of isaac with a 13th century theme.",
-  "scripts": {
-    "start": "webpack serve --open",
-    "build": "npx webpack --config webpack.config.js",
-    "compress": "npx roadroller ./dist/main.js -o ./dist/main.js"
-  },
-  "author": "Igor Estevao",
+  "private": true,
   "license": "ISC",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --port 3000",
+    "start": "concurrently \"npm run dev\" \"webxdc-dev run http://localhost:3000\"",
+    "format": "prettier --write .",
+    "check": "prettier --check ."
+  },
   "devDependencies": {
-    "terser-webpack-plugin": "^5.3.9",
-    "webpack": "^5.50.0",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^4.1.0"
+    "concurrently": "^8.1.0",
+    "prettier": "^3.0.3",
+    "vite": "^4.3.2",
+    "webxdc-dev": "^0.17.0",
+    "webxdc-vite-plugins": "github:webxdc/webxdc-vite-plugins"
   },
   "dependencies": {
-    "roadroller": "^2.1.0"
+    "webxdc-scores": "github:webxdc/webxdc-scores"
   }
 }
