@@ -5,6 +5,9 @@ with unique attack patterns against enemies.
 
 Prove yourself worthy of being called a knight and see how far you can go!!!
 
+## Credits
+This game was originally created for the [2023 js13kGames](https://js13kgames.com/) where the theme was `13TH CENTURY` by [Igor Estevao](https://github.com/IgorFIE/).
+
 ## Game instructions
 
 - `w`/`a`/`s`/`d` to walk and `v`/`b` to attack on desktop.
