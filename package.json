@@ -8,7 +8,6 @@
     "compress": "npx roadroller ./dist/main.js -o ./dist/main.js"
   },
   "author": "Igor Estevao",
-  "license": "ISC",
   "devDependencies": {
     "terser-webpack-plugin": "^5.3.9",
     "webpack": "^5.50.0",
